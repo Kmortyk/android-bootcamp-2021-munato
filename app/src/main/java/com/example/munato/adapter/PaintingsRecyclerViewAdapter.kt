@@ -22,7 +22,7 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 }
 
-class CardsRecyclerViewAdapter(val paintings: List<PaintingModel>) :
+class PaintingsRecyclerViewAdapter(private val paintings: List<PaintingModel>) :
     RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

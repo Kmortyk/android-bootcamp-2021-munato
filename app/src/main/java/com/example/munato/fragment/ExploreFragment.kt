@@ -1,13 +1,17 @@
 package com.example.munato.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.munato.R
-
-private const val ARG_PARAM1 = "param1"
+import com.example.munato.adapter.PaintingsRecyclerViewAdapter
+import com.example.munato.model.PaintingModel
 
 /**
  * A simple [Fragment] subclass.
@@ -15,6 +19,26 @@ private const val ARG_PARAM1 = "param1"
  * create an instance of this fragment.
  */
 class ExploreFragment : Fragment() {
+    companion object {
+        private const val ARG_PARAM1 = "param1"
+        private const val NUM_COLUMNS = 3
+        private const val LOG_TAG = "ExploreFragment"
+
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         * @return A new instance of fragment ExploreFragment.
+         */
+
+        @JvmStatic
+        fun newInstance(/*param1: String*/) =
+            ExploreFragment().apply {
+                arguments = Bundle().apply {
+                    // putString(ARG_PARAM1, param1)
+                }
+            }
+    }
+
     // private var param1: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,22 +53,30 @@ class ExploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_explore, container, false)
-    }
+        val view = inflater.inflate(R.layout.fragment_explore, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         * @return A new instance of fragment ExploreFragment.
-         */
+        // TODO test data
+        val data = listOf(
+            PaintingModel(1, "kmortyk", "good one", "", 1, ""),
+            PaintingModel(2, "memphis", "stars", "", 21, ""),
+            PaintingModel(3, "determin", "fine too", "", 1, ""),
+            PaintingModel(4, "kettie", "last one", "", 56, ""),
+            PaintingModel(5, "stephan", "star dance", "", 128, ""),
+            PaintingModel(6, "marie", "eye u", "", 0, ""),
+            PaintingModel(7, "kevin", "when it comes", "", 5677, ""),
+            PaintingModel(8, "evik", "loved", "", 1, ""),
+            PaintingModel(9, "buster", "best", "", 45, ""),
+        )
 
-        @JvmStatic
-        fun newInstance(/*param1: String*/) =
-            ExploreFragment().apply {
-                arguments = Bundle().apply {
-                    // putString(ARG_PARAM1, param1)
-                }
-            }
+        val rvExplore = view.findViewById<RecyclerView>(R.id.rv_explore)
+        val adapter = PaintingsRecyclerViewAdapter(data)
+
+        rvExplore.adapter = adapter
+
+        val lm = GridLayoutManager(context, NUM_COLUMNS)
+
+        rvExplore.layoutManager = lm
+
+        return view
     }
 }
