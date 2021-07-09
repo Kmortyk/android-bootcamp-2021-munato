@@ -3,6 +3,8 @@ package com.example.munato
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.munato.databinding.ActivityHomeBinding
+import com.example.munato.fragment.CreatePaintingFragment
+import com.example.munato.fragment.ExploreFragment
 
 class HomeActivity : AppCompatActivity() {
 
@@ -15,15 +17,21 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.bottomNavigationView.setOnItemSelectedListener {
+            val ftx = supportFragmentManager.beginTransaction()
+
             when(it.itemId) {
                 R.id.itm_menu_explore -> {
+                    ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
+                    ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance())
                 }
             }
 
+            ftx.addToBackStack("select_menu")
+            ftx.commit()
+
             true
         }
-
     }
 }

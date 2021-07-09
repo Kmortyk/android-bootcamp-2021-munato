@@ -17,6 +17,7 @@
         android:background="@color/primaryDarkColor">
 
         <TextView
+            android:id="@+id/itm_card_header_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/montserrat"
@@ -32,7 +33,14 @@
         android:orientation="vertical"
         android:layout_marginTop="40dp"
         android:layout_width="match_parent"
-        android:layout_height="220dp" />
+        android:layout_height="220dp">
+
+        <ImageView
+            android:id="@+id/itm_card_cover_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/itm_card_footer"
