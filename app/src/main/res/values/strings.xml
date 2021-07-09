@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Munato</string>
     <string name="log_in_button_text">Start journey</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_create">Create</string>
 </resources>

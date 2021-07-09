@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itm_menu_explore"
+        android:enabled="true"
+        android:icon="@drawable/outline_public_24"
+        android:title="@string/nav_explore"/>
+    <item
+        android:id="@+id/itm_menu_create"
+        android:enabled="true"
+        android:icon="@drawable/outline_brush_24"
+        android:title="@string/nav_create"/>
+</menu>

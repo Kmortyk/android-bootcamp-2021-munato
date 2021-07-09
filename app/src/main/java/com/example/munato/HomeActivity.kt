@@ -13,5 +13,17 @@ class HomeActivity : AppCompatActivity() {
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.itm_menu_explore -> {
+                }
+                R.id.itm_menu_create -> {
+                }
+            }
+
+            true
+        }
+
     }
 }
