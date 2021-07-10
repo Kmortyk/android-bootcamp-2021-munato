@@ -24,10 +24,19 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 class PaintingsRecyclerViewAdapter(private val paintings: List<PaintingModel>) :
     RecyclerView.Adapter<ViewHolder>() {
+    companion object {
+        const val TYPE_BIG = 1
+        const val TYPE_SMALL = 2
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout, parent, false)
-        return ViewHolder(view)
+        return if(viewType == TYPE_BIG) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout_big, parent, false)
+            ViewHolder(view)
+        } else {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout_small, parent, false)
+            ViewHolder(view)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -35,4 +44,12 @@ class PaintingsRecyclerViewAdapter(private val paintings: List<PaintingModel>) :
     }
 
     override fun getItemCount() = paintings.size
+
+    override fun getItemViewType(position: Int): Int {
+        return if(paintings[position].stars > 10) {
+            TYPE_BIG
+        } else {
+            TYPE_SMALL
+        }
+    }
 }

@@ -16,6 +16,10 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
+        ftx.commit()
+
         binding.bottomNavigationView.setOnItemSelectedListener {
             val ftx = supportFragmentManager.beginTransaction()
 

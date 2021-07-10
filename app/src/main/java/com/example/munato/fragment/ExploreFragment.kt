@@ -1,7 +1,8 @@
 package com.example.munato.fragment
 
+import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.munato.R
 import com.example.munato.adapter.PaintingsRecyclerViewAdapter
 import com.example.munato.model.PaintingModel
+
 
 /**
  * A simple [Fragment] subclass.
@@ -71,11 +74,11 @@ class ExploreFragment : Fragment() {
         val rvExplore = view.findViewById<RecyclerView>(R.id.rv_explore)
         val adapter = PaintingsRecyclerViewAdapter(data)
 
+        val paddingSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics).toInt()
+
         rvExplore.adapter = adapter
-
-        val lm = GridLayoutManager(context, NUM_COLUMNS)
-
-        rvExplore.layoutManager = lm
+        rvExplore.layoutManager = StaggeredGridLayoutManager(NUM_COLUMNS, RecyclerView.VERTICAL)
+        rvExplore.addItemDecoration(PaintingsItemDecoration(paddingSize))
 
         return view
     }

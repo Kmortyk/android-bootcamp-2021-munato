@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="27dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:id="@+id/itm_card_header"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/primaryDarkColor">
+
+        <TextView
+            android:id="@+id/itm_card_header_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/montserrat"
+            android:gravity="center|end"
+            android:paddingEnd="15dp"
+            android:text="Sample name"
+            android:textColor="@color/primaryTextColor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itm_card_cover"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp">
+
+        <ImageView
+            android:id="@+id/itm_card_cover_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itm_card_footer"
+        android:orientation="horizontal"
+        android:layout_marginTop="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/primaryDarkColor">
+
+        <TextView
+            android:id="@+id/itm_stars_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="@font/carme"
+            android:text="10"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/itm_img_star"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.523" />
+
+        <ImageView
+            android:id="@+id/itm_img_star"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/outline_star_black_24"
+            app:tint="@color/secondaryColor"
+            tools:layout_editor_absoluteY="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
