@@ -41,12 +41,11 @@ class HomeActivity : AppCompatActivity() {
 
     fun openEditorFragment() {
         val ftx = supportFragmentManager.beginTransaction()
-        ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
-        ftx.addToBackStack(null)
+        ftx.replace(R.id.home_fragment_container, EditorFragment.newInstance())
         ftx.commit()
     }
 
-    fun openStartingFragment() {
+    private fun openStartingFragment() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
         ftx.commit()

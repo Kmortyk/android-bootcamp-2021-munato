@@ -53,7 +53,6 @@ class CreatePaintingFragment : Fragment() {
         val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
 
         btnOpenEditor.setOnClickListener {
-            Log.d("a", activity.toString())
             (activity as HomeActivity).openEditorFragment()
         }
 
