@@ -46,5 +46,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.material:material:1.4.0'
-    // implementation 'com.github.ahmadaghazadeh:CodeEditor:1.0.17'
+
+    /* Code editor */
+    implementation 'com.github.Rosemoe.CodeEditor:editor:0.5.2'
+    implementation 'com.github.Rosemoe.CodeEditor:language-universal:0.5.2'
 }

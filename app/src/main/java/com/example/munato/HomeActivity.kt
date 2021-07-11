@@ -2,8 +2,10 @@ package com.example.munato
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.example.munato.databinding.ActivityHomeBinding
 import com.example.munato.fragment.CreatePaintingFragment
+import com.example.munato.fragment.EditorFragment
 import com.example.munato.fragment.ExploreFragment
 
 class HomeActivity : AppCompatActivity() {
@@ -16,9 +18,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val ftx = supportFragmentManager.beginTransaction()
-        ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
-        ftx.commit()
+        openStartingFragment()
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             val ftx = supportFragmentManager.beginTransaction()
@@ -37,5 +37,18 @@ class HomeActivity : AppCompatActivity() {
 
             true
         }
+    }
+
+    fun openEditorFragment() {
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
+        ftx.addToBackStack(null)
+        ftx.commit()
+    }
+
+    fun openStartingFragment() {
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
+        ftx.commit()
     }
 }
