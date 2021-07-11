@@ -3,6 +3,7 @@ package com.example.munato
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.munato.databinding.ActivityHomeBinding
 import com.example.munato.fragment.CreatePaintingFragment
 import com.example.munato.fragment.EditorFragment
@@ -41,7 +42,15 @@ class HomeActivity : AppCompatActivity() {
 
     fun openEditorFragment() {
         val ftx = supportFragmentManager.beginTransaction()
+        ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ftx.replace(R.id.home_fragment_container, EditorFragment.newInstance())
+        ftx.commit()
+    }
+
+    fun returnFromEditorFragment() {
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+        ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance())
         ftx.commit()
     }
 

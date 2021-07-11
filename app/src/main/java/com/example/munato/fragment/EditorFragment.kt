@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.munato.HomeActivity
 import com.example.munato.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 // private const val ARG_PARAM1 = "param1"
@@ -45,7 +47,13 @@ class EditorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_editor, container, false)
+
+        view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
+            (activity as HomeActivity).returnFromEditorFragment()
+        }
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_editor, container, false)
+        return view
     }
 }
