@@ -2,12 +2,12 @@ package com.example.munato
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.example.munato.databinding.ActivityHomeBinding
-import com.example.munato.fragment.CreatePaintingFragment
+import com.example.munato.fragment.PaintingViewFragment
 import com.example.munato.fragment.EditorFragment
 import com.example.munato.fragment.ExploreFragment
+import com.example.munato.model.PaintingModel
 
 class HomeActivity : AppCompatActivity() {
 
@@ -29,7 +29,13 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
-                    ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance(""))
+                    ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(
+                        null,
+                        "function draw(ctx, canvas) {\n" +
+                                "    ctx.fillStyle = \"blue\";\n" +
+                                "    ctx.fillRect(0, 0, canvas.width, canvas.height);\n" +
+                                "}"
+                    ))
                 }
             }
 
@@ -40,7 +46,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun openEditorFragment() {
+    fun openEditorFragment(code: String?) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ftx.replace(R.id.home_fragment_container, EditorFragment.newInstance())
@@ -50,7 +56,7 @@ class HomeActivity : AppCompatActivity() {
     fun returnFromEditorFragment(code: String) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-        ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance(code))
+        ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(null, code))
         ftx.commit()
     }
 

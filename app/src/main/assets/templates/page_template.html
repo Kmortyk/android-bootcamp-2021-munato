@@ -1,4 +1,14 @@
 <div id="container">
-    <b>Hello, world!</b>
     <canvas></canvas>
 </div>
+<script>
+    let canvas = document.querySelector('canvas');
+    ctx = canvas.getContext('2d');
+
+    // fit canvas to window
+    canvas.setAttribute('width', window.innerWidth);
+    canvas.setAttribute('height', window.innerHeight);
+
+    // call draw
+    draw(ctx, canvas)
+</script>
