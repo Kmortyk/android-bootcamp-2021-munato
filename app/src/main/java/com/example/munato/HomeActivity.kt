@@ -49,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
     fun openEditorFragment(code: String?) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ftx.replace(R.id.home_fragment_container, EditorFragment.newInstance())
+        ftx.replace(R.id.home_fragment_container, EditorFragment.newInstance(code))
         ftx.commit()
     }
 

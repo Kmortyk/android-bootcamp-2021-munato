@@ -64,7 +64,11 @@ class PaintingViewFragment : Fragment() {
         val activity = activity as HomeActivity
 
         btnOpenEditor.setOnClickListener {
-            activity.openEditorFragment(paintingModel?.code)
+            if(javascriptCode != null) {
+                activity.openEditorFragment(javascriptCode)
+            } else {
+                activity.openEditorFragment(paintingModel?.code)
+            }
         }
 
         val webView = view.findViewById<WebView>(R.id.web_view)

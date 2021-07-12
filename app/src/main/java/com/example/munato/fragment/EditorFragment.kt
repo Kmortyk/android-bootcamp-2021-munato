@@ -10,10 +10,12 @@ import android.webkit.WebView
 import com.example.munato.HomeActivity
 import com.example.munato.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.github.rosemoe.editor.langs.desc.JavaScriptDescription
+import io.github.rosemoe.editor.langs.universal.UniversalLanguage
 import io.github.rosemoe.editor.widget.CodeEditor
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-// private const val ARG_PARAM1 = "param1"
+private const val ARG_CODE = "code"
 
 /**
  * A simple [Fragment] subclass.
@@ -29,20 +31,22 @@ class EditorFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(/*param1: String*/) =
+        fun newInstance(code: String?) =
             EditorFragment().apply {
                 arguments = Bundle().apply {
-                    // putString(ARG_PARAM1, param1)
+                    if(code != null)
+                        putString(ARG_CODE, code)
                 }
             }
     }
 
-    // private var param1: String? = null
+    private var initCode: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            // param1 = it.getString(ARG_PARAM1)
+            if(it.containsKey(ARG_CODE))
+                initCode = it.getString(ARG_CODE)
         }
     }
 
@@ -51,8 +55,14 @@ class EditorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_editor, container, false)
-
         val editor = view.findViewById<CodeEditor>(R.id.code_editor)
+
+        editor.setEditorLanguage(UniversalLanguage(JavaScriptDescription()))
+        editor.refreshDrawableState() // todo bugs?
+
+        if(initCode != null) {
+            editor.setText(initCode)
+        }
 
         view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
             (activity as HomeActivity).returnFromEditorFragment(editor.text.toString())
