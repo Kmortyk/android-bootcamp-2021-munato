@@ -1,13 +1,16 @@
 package com.example.munato.fragment
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import com.example.munato.HomeActivity
 import com.example.munato.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.github.rosemoe.editor.widget.CodeEditor
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 // private const val ARG_PARAM1 = "param1"
@@ -49,8 +52,10 @@ class EditorFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_editor, container, false)
 
+        val editor = view.findViewById<CodeEditor>(R.id.code_editor)
+
         view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
-            (activity as HomeActivity).returnFromEditorFragment()
+            (activity as HomeActivity).returnFromEditorFragment(editor.text.toString())
         }
 
         // Inflate the layout for this fragment

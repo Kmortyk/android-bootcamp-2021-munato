@@ -29,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
-                    ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance())
+                    ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance(""))
                 }
             }
 
@@ -47,10 +47,10 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    fun returnFromEditorFragment() {
+    fun returnFromEditorFragment(code: String) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-        ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance())
+        ftx.replace(R.id.home_fragment_container, CreatePaintingFragment.newInstance(code))
         ftx.commit()
     }
 
