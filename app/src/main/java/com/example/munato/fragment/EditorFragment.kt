@@ -58,7 +58,6 @@ class EditorFragment : Fragment() {
         val editor = view.findViewById<CodeEditor>(R.id.code_editor)
 
         editor.setEditorLanguage(UniversalLanguage(JavaScriptDescription()))
-        editor.refreshDrawableState() // todo bugs?
 
         if(initCode != null) {
             editor.setText(initCode)
