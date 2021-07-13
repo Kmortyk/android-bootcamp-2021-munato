@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
 import com.example.munato.databinding.ActivityHomeBinding
+import com.example.munato.fragment.CollectionFragment
 import com.example.munato.fragment.PaintingViewFragment
 import com.example.munato.fragment.EditorFragment
 import com.example.munato.fragment.ExploreFragment
@@ -27,6 +28,9 @@ class HomeActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.itm_menu_explore -> {
                     ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
+                }
+                R.id.itm_menu_collection -> {
+                    ftx.replace(R.id.home_fragment_container, CollectionFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
                     ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(
