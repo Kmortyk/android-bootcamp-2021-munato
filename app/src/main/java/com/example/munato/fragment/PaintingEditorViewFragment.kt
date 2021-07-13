@@ -1,11 +1,13 @@
 package com.example.munato.fragment
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import android.webkit.WebView
 import com.example.munato.HomeActivity
 import com.example.munato.R
@@ -83,9 +85,20 @@ class PaintingViewFragment : Fragment() {
 
         template += "<script>draw(ctx, canvas);</script>"
 
-        // Log.d("a", template)
+        // https://stackoverflow.com/questions/37090396/android-webview-doesnt-load-html-sometimes
 
-        webView.loadDataWithBaseURL(null, template, "text/html", "utf-8", null)
+        webView.postDelayed({
+            webView.loadDataWithBaseURL(null, template, null, "UTF-8", null);
+        }, 100)
+
+//        Log.d("a", template)
+//        webView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+//        webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
+//        if (Build.VERSION.SDK_INT >= 19) {
+//            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+//        } else {
+//            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        }
 
         return view
     }

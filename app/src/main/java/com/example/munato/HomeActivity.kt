@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(
                         null,
                         "function draw(ctx, canvas) {\n" +
-                                "    ctx.fillStyle = \"blue\";\n" +
+                                "    ctx.fillStyle = \"#256fce\";\n" +
                                 "    ctx.fillRect(0, 0, canvas.width, canvas.height);\n" +
                                 "}"
                     ))
