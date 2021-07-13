@@ -5,6 +5,11 @@
         android:icon="@drawable/outline_public_24"
         android:title="@string/nav_explore"/>
     <item
+        android:id="@+id/itm_menu_collection"
+        android:enabled="true"
+        android:icon="@drawable/outline_collections_24"
+        android:title="@string/nav_collection"/>
+    <item
         android:id="@+id/itm_menu_create"
         android:enabled="true"
         android:icon="@drawable/outline_brush_24"

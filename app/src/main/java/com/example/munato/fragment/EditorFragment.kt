@@ -54,7 +54,9 @@ class EditorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_editor, container, false)
+
         val editor = view.findViewById<CodeEditor>(R.id.code_editor)
 
         editor.setEditorLanguage(UniversalLanguage(JavaScriptDescription()))
@@ -67,7 +69,6 @@ class EditorFragment : Fragment() {
             (activity as HomeActivity).returnFromEditorFragment(editor.text.toString())
         }
 
-        // Inflate the layout for this fragment
         return view
     }
 }
