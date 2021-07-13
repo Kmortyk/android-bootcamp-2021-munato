@@ -1,15 +1,16 @@
 package com.example.munato
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.munato.databinding.ActivityHomeBinding
 import com.example.munato.fragment.CollectionFragment
-import com.example.munato.fragment.PaintingViewFragment
 import com.example.munato.fragment.EditorFragment
 import com.example.munato.fragment.ExploreFragment
-import com.example.munato.model.PaintingModel
+import com.example.munato.fragment.PaintingViewFragment
 
 class HomeActivity : AppCompatActivity() {
 
