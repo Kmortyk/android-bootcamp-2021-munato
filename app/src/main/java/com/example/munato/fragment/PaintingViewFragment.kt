@@ -76,13 +76,15 @@ class PaintingViewFragment : Fragment() {
 
         if(javascriptCode != null) {
             webView.settings.javaScriptEnabled = true
-            template = "<script>${javascriptCode}</script>" + template
+            template += "<script>${javascriptCode}</script>"
         } else if(paintingModel != null) {
             webView.settings.javaScriptEnabled = true
-            template = "<script>${paintingModel!!.code}</script>" + template
+            template += "<script>${paintingModel!!.code}</script>"
         }
 
-        Log.d("a", template)
+        template += "<script>draw(ctx, canvas);</script>"
+
+        // Log.d("a", template)
 
         webView.loadDataWithBaseURL(null, template, "text/html", "utf-8", null)
 
