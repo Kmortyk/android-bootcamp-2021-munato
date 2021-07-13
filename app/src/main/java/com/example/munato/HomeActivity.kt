@@ -1,5 +1,6 @@
 package com.example.munato
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
@@ -33,13 +34,7 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, CollectionFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
-                    ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(
-                        null,
-                        "function draw(ctx, canvas) {\n" +
-                                "    ctx.fillStyle = \"#256fce\";\n" +
-                                "    ctx.fillRect(0, 0, canvas.width, canvas.height);\n" +
-                                "}"
-                    ))
+                    ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(null, getScriptTemplate(this)))
                 }
             }
 
@@ -48,6 +43,11 @@ class HomeActivity : AppCompatActivity() {
 
             true
         }
+    }
+
+    fun getScriptTemplate(context: Context) : String {
+        val stream = context.resources.assets.open("templates/script_template.js")
+        return stream.readBytes().decodeToString()
     }
 
     fun openEditorFragment(code: String?) {
