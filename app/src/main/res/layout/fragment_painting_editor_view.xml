@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.PaintingViewFragment"
-    android:background="@color/primaryBackgroundColor">
+    tools:context=".fragment.PaintingViewFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_open_editor"
@@ -22,13 +21,24 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="50dp">
+        android:clipToPadding="false"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        android:paddingStart="55dp"
+        android:paddingEnd="55dp">
 
-        <WebView
-            android:id="@+id/web_view"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:elevation="8dp"
+            app:cardElevation="20dp">
 
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
