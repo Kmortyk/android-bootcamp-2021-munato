@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_open_painting_view"
+        android:icon="@drawable/outline_arrow_back_24"
+        android:title="@string/painting_view_editor_action_bar_open_editor"
+        app:showAsAction="ifRoom"/>
+</menu>

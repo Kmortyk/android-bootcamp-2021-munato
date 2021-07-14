@@ -8,4 +8,6 @@
     <string name="nav_collection">Collection</string>
     <string name="fragment_collection_my">My paintings</string>
     <string name="fragment_collection_favourites">Favourites</string>
+    <string name="painting_view_editor_action_bar_publish">Publish</string>
+    <string name="painting_view_editor_action_bar_open_editor">Open editor</string>
 </resources>

@@ -3,10 +3,8 @@ package com.example.munato.fragment
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import com.example.munato.HomeActivity
@@ -47,11 +45,38 @@ class PaintingViewFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+
         arguments?.let {
             if(it.containsKey(ARG_PAINTING_MODEL))
                 paintingModel = it.getParcelable(ARG_PAINTING_MODEL)
             if(it.containsKey(ARG_JAVASCRIPT_CODE))
                 javascriptCode = it.getString(ARG_JAVASCRIPT_CODE)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.painting_view_editor_action_bar, menu)
+        super.onCreateOptionsMenu(menu,inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
+        R.id.action_publish -> {
+            true
+        }
+        R.id.action_open_editor -> {
+            val activity = activity as HomeActivity
+
+            if(javascriptCode != null) {
+                activity.openEditorFragment(javascriptCode)
+            } else {
+                activity.openEditorFragment(paintingModel?.code)
+            }
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
         }
     }
 
@@ -61,16 +86,8 @@ class PaintingViewFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_painting_editor_view, container, false)
-        val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
+        // val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
         val activity = activity as HomeActivity
-
-        btnOpenEditor.setOnClickListener {
-            if(javascriptCode != null) {
-                activity.openEditorFragment(javascriptCode)
-            } else {
-                activity.openEditorFragment(paintingModel?.code)
-            }
-        }
 
         val webView = view.findViewById<WebView>(R.id.web_view)
         var template = getHTMLPageTemplate(activity)

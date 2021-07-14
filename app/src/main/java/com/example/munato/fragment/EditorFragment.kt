@@ -1,9 +1,7 @@
 package com.example.munato.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.munato.HomeActivity
@@ -41,12 +39,40 @@ class EditorFragment : Fragment() {
     }
 
     private var initCode: String? = null
+    private var editor: CodeEditor? = null // todo bad practice
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+
         arguments?.let {
             if(it.containsKey(ARG_CODE))
                 initCode = it.getString(ARG_CODE)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.editor_action_bar, menu)
+        super.onCreateOptionsMenu(menu,inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
+        R.id.action_open_painting_view -> {
+            val code = if(editor != null) {
+                editor!!.text.toString()
+            } else {
+                ""
+            }
+
+            val activity = activity as HomeActivity
+
+            activity.returnFromEditorFragment(code)
+
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
         }
     }
 
@@ -58,18 +84,18 @@ class EditorFragment : Fragment() {
         val activity = activity as HomeActivity
         val view = inflater.inflate(R.layout.fragment_editor, container, false)
 
-        val editor = view.findViewById<CodeEditor>(R.id.code_editor)
-
-        editor.setEditorLanguage(UniversalLanguage(JavaScriptDescription()))
-        editor.typefaceText = ResourcesCompat.getFont(activity, R.font.jetbrainsmono_medium)
-
-        if(initCode != null) {
-            editor.setText(initCode)
+        editor = view.findViewById(R.id.code_editor)
+        editor!!.apply {
+            setEditorLanguage(UniversalLanguage(JavaScriptDescription()))
+            typefaceText = ResourcesCompat.getFont(activity, R.font.jetbrainsmono_medium)
+            if(initCode != null) {
+                setText(initCode)
+            }
         }
 
-        view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
-            activity.returnFromEditorFragment(editor.text.toString())
-        }
+//        view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
+//            activity.returnFromEditorFragment(editor.text.toString())
+//        }
 
         return view
     }

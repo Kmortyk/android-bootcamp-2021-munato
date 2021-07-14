@@ -7,15 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".fragment.PaintingViewFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_open_editor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/outline_arrow_forward_black_36"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/btn_open_editor"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:clickable="true"-->
+<!--        android:src="@drawable/outline_arrow_forward_black_36"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/linearLayout"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <LinearLayout
         android:id="@+id/linearLayout"
