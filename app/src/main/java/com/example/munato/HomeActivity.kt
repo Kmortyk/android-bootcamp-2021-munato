@@ -2,15 +2,11 @@ package com.example.munato
 
 import android.content.Context
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.example.munato.databinding.ActivityHomeBinding
-import com.example.munato.fragment.CollectionFragment
-import com.example.munato.fragment.EditorFragment
-import com.example.munato.fragment.ExploreFragment
-import com.example.munato.fragment.PaintingViewFragment
+import com.example.munato.fragment.*
+import com.example.munato.model.PaintingModel
 
 class HomeActivity : AppCompatActivity() {
 
@@ -68,6 +64,13 @@ class HomeActivity : AppCompatActivity() {
     private fun openStartingFragment() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
+        ftx.commit()
+    }
+
+    fun openPublishPaintingFragment(code: String) {
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(code))
         ftx.commit()
     }
 }
