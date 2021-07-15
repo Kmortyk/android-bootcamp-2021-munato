@@ -18,4 +18,11 @@
         <!-- Customize your theme here. -->
 
     </style>
+
+    <style name="GreenSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">#b2ff59</item>
+        <item name="colorSwitchThumbNormal">#e7ff8c</item>
+        <item name="android:colorForeground">#42221f1f</item>
+    </style>
+
 </resources>

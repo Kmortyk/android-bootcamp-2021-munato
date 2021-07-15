@@ -10,4 +10,12 @@
     <string name="fragment_collection_favourites">Favourites</string>
     <string name="painting_view_editor_action_bar_publish">Publish</string>
     <string name="painting_view_editor_action_bar_open_editor">Open editor</string>
+    <string name="fragment_publish_button">Publish</string>
+    <string name="fragment_publish_author_label">Author</string>
+    <string name="fragment_publish_author_hint">Write your name here</string>
+    <string name="fragment_publish_title_label">Title</string>
+    <string name="fragment_publish_title_hint">Write painting title here</string>
+    <string name="fragment_publish_public_code_label">Make my code public</string>
+    <string name="fragment_publish_painting_id_label">Painting ID</string>
+    <string name="fragment_publish_painting_id_placeholder">0xCAFEBABE</string>
 </resources>

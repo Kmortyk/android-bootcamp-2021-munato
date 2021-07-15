@@ -1,16 +1,14 @@
 package com.example.munato.fragment
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.webkit.WebSettings
 import android.webkit.WebView
 import com.example.munato.HomeActivity
 import com.example.munato.R
 import com.example.munato.model.PaintingModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_JAVASCRIPT_CODE = "javascript_code"
@@ -63,6 +61,19 @@ class PaintingViewFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
         R.id.action_publish -> {
+            val activity = activity as HomeActivity
+
+            val code = when {
+                javascriptCode != null -> { javascriptCode!! }
+                paintingModel != null -> { paintingModel!!.code!! }
+                else -> {
+                    Log.e("PaintingEditorView", "empty code to publish")
+                    ""
+                }
+            }
+
+            activity.openPublishPaintingFragment(code)
+
             true
         }
         R.id.action_open_editor -> {

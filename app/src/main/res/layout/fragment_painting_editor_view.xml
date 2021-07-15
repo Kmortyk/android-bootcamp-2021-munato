@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:paddingTop="50dp"
         android:paddingBottom="50dp"
+        android:clipToPadding="false"
         android:paddingStart="55dp"
         android:paddingEnd="55dp">
 
@@ -30,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:elevation="8dp"
-            app:cardElevation="16dp">
+            app:cardElevation="8dp">
 
             <WebView
                 android:id="@+id/web_view"
