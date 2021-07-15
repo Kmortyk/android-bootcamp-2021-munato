@@ -9,6 +9,8 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import com.example.munato.HomeActivity
 import com.example.munato.R
+import com.example.munato.fragment.logic.getHTMLPageTemplate
+import com.example.munato.fragment.logic.tools.ScreenshotWebViewClient
 import com.example.munato.model.PaintingModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -90,6 +92,9 @@ class PaintingViewFragment : Fragment() {
         val activity = activity as HomeActivity
 
         val webView = view.findViewById<WebView>(R.id.web_view)
+
+        webView.webViewClient = ScreenshotWebViewClient()
+
         var template = getHTMLPageTemplate(activity)
 
         if(javascriptCode != null) {
@@ -118,10 +123,5 @@ class PaintingViewFragment : Fragment() {
 //        }
 
         return view
-    }
-
-    fun getHTMLPageTemplate(context: Context) : String {
-        val stream = context.resources.assets.open("templates/page_template.html")
-        return stream.readBytes().decodeToString()
     }
 }
