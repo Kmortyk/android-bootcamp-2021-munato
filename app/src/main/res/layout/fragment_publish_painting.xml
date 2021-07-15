@@ -119,6 +119,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_publish_recreate_paintign_id"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             app:iconPadding="0dp"
@@ -132,6 +133,7 @@
                             app:icon="@drawable/outline_autorenew_black_24" />
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_publish_copy_painting_id"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             app:iconPadding="0dp"
