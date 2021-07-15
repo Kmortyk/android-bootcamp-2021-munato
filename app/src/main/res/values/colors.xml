@@ -10,4 +10,7 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="primaryBackgroundColor">#e1e2e1</color>
     <color name="secondaryTextColor">#000000</color>
+
+    <color name="colorGreen">#00c853</color>
+    <color name="colorLightGreen">#5efc82</color>
 </resources>
