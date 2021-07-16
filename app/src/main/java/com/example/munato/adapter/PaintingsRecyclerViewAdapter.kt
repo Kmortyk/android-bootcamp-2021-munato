@@ -5,7 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.munato.HomeActivity
 import com.example.munato.R
 import com.example.munato.model.PaintingModel
 
@@ -22,7 +24,7 @@ class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     }
 }
 
-class PaintingsRecyclerViewAdapter(private val paintings: List<PaintingModel>) :
+class PaintingsRecyclerViewAdapter(private val activity: HomeActivity, private val paintings: List<PaintingModel>) :
     RecyclerView.Adapter<PaintingCardViewHolder>() {
     companion object {
         const val TYPE_BIG = 1
@@ -41,6 +43,9 @@ class PaintingsRecyclerViewAdapter(private val paintings: List<PaintingModel>) :
 
     override fun onBindViewHolder(holder: PaintingCardViewHolder, position: Int) {
         holder.setData(paintings[position])
+        holder.itemView.setOnClickListener {
+            activity.openPaintingViewFragment(paintings[position])
+        }
     }
 
     override fun getItemCount() = paintings.size

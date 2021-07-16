@@ -3,11 +3,13 @@ package com.example.munato.fragment
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.munato.HomeActivity
 import com.example.munato.R
 import com.example.munato.adapter.PaintingsRecyclerViewAdapter
 import com.example.munato.model.PaintingModel
@@ -69,7 +71,7 @@ class ExploreFragment : Fragment() {
         )
 
         val rvExplore = view.findViewById<RecyclerView>(R.id.rv_explore)
-        val adapter = PaintingsRecyclerViewAdapter(data)
+        val adapter = PaintingsRecyclerViewAdapter(activity as HomeActivity, data)
 
         val paddingSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics).toInt()
 

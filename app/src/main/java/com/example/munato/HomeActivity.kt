@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, CollectionFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
-                    ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(null, getScriptTemplate(this)))
+                    ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, getScriptTemplate(this)))
                 }
             }
 
@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
     fun returnFromEditorFragment(code: String) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-        ftx.replace(R.id.home_fragment_container, PaintingViewFragment.newInstance(null, code))
+        ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, code))
         ftx.commit()
     }
 
@@ -71,6 +71,14 @@ class HomeActivity : AppCompatActivity() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(code))
+        ftx.commit()
+    }
+
+    fun openPaintingViewFragment(paintingModel: PaintingModel) {
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        ftx.replace(R.id.home_fragment_container, PaintingViewExploreFragment.newInstance(paintingModel))
+        ftx.addToBackStack("painting_view")
         ftx.commit()
     }
 }
