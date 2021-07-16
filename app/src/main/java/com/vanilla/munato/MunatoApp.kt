@@ -6,5 +6,4 @@ class MunatoApp : Application() {
     override fun onCreate() {
         super.onCreate()
     }
-
 }

@@ -4,6 +4,8 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
@@ -84,5 +86,16 @@ class HomeActivity : AppCompatActivity() {
         ftx.replace(R.id.home_fragment_container, PaintingViewExploreFragment.newInstance(paintingModel))
         ftx.addToBackStack("painting_view")
         ftx.commit()
+    }
+
+    /* -- Database ------------------------------------------------------------------------------ */
+    // TODO MVVM move to model
+
+    fun publishPainting(paintingModel: PaintingModel) {
+        val database = Firebase.database
+        val paintingsRef = database.getReference("paintings")
+        val childRef = paintingsRef.push()
+
+        // serialize
     }
 }
