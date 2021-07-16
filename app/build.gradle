@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -50,4 +51,9 @@ dependencies {
     /* Code editor */
     implementation 'com.github.Rosemoe.CodeEditor:editor:0.5.2'
     implementation 'com.github.Rosemoe.CodeEditor:language-universal:0.5.2'
+
+    /* Firebase */
+    implementation platform('com.google.firebase:firebase-bom:28.2.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database'
 }

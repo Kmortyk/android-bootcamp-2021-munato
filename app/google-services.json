@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "613052024729",
+    "firebase_url": "https://munato-19efb-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "munato-19efb",
+    "storage_bucket": "munato-19efb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613052024729:android:2326d8f94e01623ac77508",
+        "android_client_info": {
+          "package_name": "com.vanilla.munato"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613052024729-4mtgifhsdhq59g7m3ocpukneiessklfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDokll4bVV9bmW2lxO5brVvjDgGGDLo-XE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613052024729-4mtgifhsdhq59g7m3ocpukneiessklfv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
