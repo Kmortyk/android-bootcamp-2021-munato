@@ -18,7 +18,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        openStartingFragment()
+        openExploreFragment()
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             val ftx = supportFragmentManager.beginTransaction()
@@ -51,6 +51,7 @@ class HomeActivity : AppCompatActivity() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ftx.replace(R.id.home_fragment_container, EditorFragment.newInstance(code))
+        ftx.addToBackStack("editor")
         ftx.commit()
     }
 
@@ -58,10 +59,11 @@ class HomeActivity : AppCompatActivity() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
         ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, code))
+        ftx.addToBackStack("editor_return")
         ftx.commit()
     }
 
-    private fun openStartingFragment() {
+    private fun openExploreFragment() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
         ftx.commit()
@@ -71,6 +73,7 @@ class HomeActivity : AppCompatActivity() {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(code))
+        ftx.addToBackStack("publish_painting")
         ftx.commit()
     }
 
