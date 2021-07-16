@@ -98,16 +98,21 @@ class HomeActivity : AppCompatActivity() {
     // TODO MVVM move to model
 
     fun publishPainting(paintingModel: PaintingModel) {
-        val database = Firebase.database
-        val paintingsRef = database.getReference("paintings")
-        val childRef = paintingsRef.push()
+        Thread {
+            // get container refs
+            val paintingsRef = Firebase.database.getReference("paintings")
+            val childRef = paintingsRef.push()
 
-        // serialize
-        val serialized = Gson().toJson(paintingModel)
+            // serialize and post
+            val serialized = Gson().toJson(paintingModel)
+            childRef.setValue(serialized)
 
-        childRef.setValue(serialized)
+            // show snack
+            runOnUiThread {
+                Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
+            }
+        }.run()
 
-        Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
         openExploreFragment()
     }
 }
