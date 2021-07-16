@@ -1,4 +1,4 @@
-package com.example.munato.fragment
+package com.vanilla.munato.fragment
 
 import android.graphics.Rect
 import android.view.View

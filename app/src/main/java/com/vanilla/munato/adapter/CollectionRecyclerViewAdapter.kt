@@ -1,14 +1,13 @@
-package com.example.munato.adapter;
+package com.vanilla.munato.adapter;
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.munato.R
-import com.example.munato.model.PaintingModel
+import com.vanilla.munato.R
+import com.vanilla.munato.model.PaintingModel
 
 class CollectionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvHeader: TextView = itemView.findViewById(R.id.collection_tv_painting_name)

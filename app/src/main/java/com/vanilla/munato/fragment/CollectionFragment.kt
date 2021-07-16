@@ -1,4 +1,4 @@
-package com.example.munato.fragment
+package com.vanilla.munato.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.munato.R
-import com.example.munato.adapter.CollectionRecyclerViewAdapter
-import com.example.munato.model.PaintingModel
+import com.vanilla.munato.R
+import com.vanilla.munato.adapter.CollectionRecyclerViewAdapter
+import com.vanilla.munato.model.PaintingModel
 import com.google.android.material.tabs.TabLayout
 
 

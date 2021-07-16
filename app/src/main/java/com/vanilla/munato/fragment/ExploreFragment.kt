@@ -1,18 +1,17 @@
-package com.example.munato.fragment
+package com.vanilla.munato.fragment
 
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.munato.HomeActivity
-import com.example.munato.R
-import com.example.munato.adapter.PaintingsRecyclerViewAdapter
-import com.example.munato.model.PaintingModel
+import com.vanilla.munato.HomeActivity
+import com.vanilla.munato.R
+import com.vanilla.munato.adapter.PaintingsRecyclerViewAdapter
+import com.vanilla.munato.model.PaintingModel
 
 
 /**

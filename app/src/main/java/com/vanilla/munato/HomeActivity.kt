@@ -1,12 +1,12 @@
-package com.example.munato
+package com.vanilla.munato
 
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
-import com.example.munato.databinding.ActivityHomeBinding
-import com.example.munato.fragment.*
-import com.example.munato.model.PaintingModel
+import com.vanilla.munato.databinding.ActivityHomeBinding
+import com.vanilla.munato.fragment.*
+import com.vanilla.munato.model.PaintingModel
 
 class HomeActivity : AppCompatActivity() {
 

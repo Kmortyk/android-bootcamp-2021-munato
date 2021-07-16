@@ -1,4 +1,4 @@
-package com.example.munato.model
+package com.vanilla.munato.model
 
 import android.os.Parcel
 import android.os.Parcelable

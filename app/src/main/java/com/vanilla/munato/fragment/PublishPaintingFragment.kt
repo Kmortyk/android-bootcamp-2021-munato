@@ -1,4 +1,4 @@
-package com.example.munato.fragment
+package com.vanilla.munato.fragment
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -14,7 +14,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.example.munato.R
+import com.vanilla.munato.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import java.security.SecureRandom

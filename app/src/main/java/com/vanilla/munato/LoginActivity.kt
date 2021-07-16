@@ -1,10 +1,9 @@
-package com.example.munato
+package com.vanilla.munato
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.munato.databinding.ActivityHomeBinding
-import com.example.munato.databinding.ActivityLoginBinding
+import com.vanilla.munato.databinding.ActivityLoginBinding
 
 /*
 *   Необходимо использовать многопоточность
