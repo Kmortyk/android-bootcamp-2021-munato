@@ -3,13 +3,21 @@ package com.example.munato.adapter;
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.munato.R
 import com.example.munato.model.PaintingModel
 
 class CollectionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun setData(model: PaintingModel) {
+    val tvHeader: TextView = itemView.findViewById(R.id.collection_tv_painting_name)
+    val tvStarsCount: TextView = itemView.findViewById(R.id.collection_itm_stars_text)
+    val btnEdit: Button = itemView.findViewById(R.id.collection_btn_edit)
 
+    fun setData(model: PaintingModel) {
+        tvHeader.text = model.name
+        tvStarsCount.text = model.stars.toString()
     }
 }
 

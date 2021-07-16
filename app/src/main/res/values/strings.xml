@@ -18,4 +18,7 @@
     <string name="fragment_publish_public_code_label">Make my code public</string>
     <string name="fragment_publish_painting_id_label">Painting ID</string>
     <string name="fragment_publish_painting_id_placeholder">0xCAFEBABE</string>
+    <string name="collection_itm_painting_name_placeholder">Painting name</string>
+    <string name="collection_itm_edit_button">Edit</string>
+    <string name="collection_itm_painting_stars_placeholder">10</string>
 </resources>
