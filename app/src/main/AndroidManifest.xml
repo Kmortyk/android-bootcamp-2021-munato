@@ -8,16 +8,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Munato">
+        android:theme="@style/Theme.Munato"
+        android:name=".MunatoApp">
 
-        <activity android:name="com.vanilla.munato.LoginActivity">
+        <activity android:name="com.vanilla.munato.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="com.vanilla.munato.HomeActivity"
+        <activity android:name="com.vanilla.munato.activity.HomeActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
 

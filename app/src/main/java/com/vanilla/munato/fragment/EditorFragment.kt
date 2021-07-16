@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import com.vanilla.munato.HomeActivity
+import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
 import io.github.rosemoe.editor.langs.desc.JavaScriptDescription
 import io.github.rosemoe.editor.langs.universal.UniversalLanguage
