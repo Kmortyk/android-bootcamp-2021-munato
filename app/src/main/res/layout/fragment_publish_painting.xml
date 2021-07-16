@@ -49,7 +49,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName3"
+                        android:id="@+id/fragment_publish_et_author"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="-4dp"
@@ -67,7 +67,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName4"
+                        android:id="@+id/fragment_publish_et_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="-4dp"
@@ -166,6 +166,7 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/fragment_publish_btn_publish"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"

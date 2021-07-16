@@ -9,7 +9,7 @@ data class PaintingModel(
     val name: String?, // name of the picture
     val code: String?, // javascript code for this scene
     val stars: Int, // number of stars for this painting
-    val coverServerPath: String?, // path for cover of this painting
+    val paintingID: String?, // path for cover of this painting
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -27,7 +27,7 @@ data class PaintingModel(
         parcel.writeString(name)
         parcel.writeString(code)
         parcel.writeInt(stars)
-        parcel.writeString(coverServerPath)
+        parcel.writeString(paintingID)
     }
 
     override fun describeContents() = 0 // todo

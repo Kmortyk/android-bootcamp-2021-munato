@@ -2,10 +2,13 @@ package com.vanilla.munato.activity
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
@@ -68,14 +71,17 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openExploreFragment() {
         val ftx = supportFragmentManager.beginTransaction()
-        ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
+        ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
+        ftx.addToBackStack("explore")
         ftx.commit()
     }
 
     fun openPublishPaintingFragment(code: String) {
+        val username = "kmortyk" //TODO get username
+
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(code))
+        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(username, code))
         ftx.addToBackStack("publish_painting")
         ftx.commit()
     }
@@ -97,5 +103,11 @@ class HomeActivity : AppCompatActivity() {
         val childRef = paintingsRef.push()
 
         // serialize
+        val serialized = Gson().toJson(paintingModel)
+
+        childRef.setValue(serialized)
+
+        Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
+        openExploreFragment()
     }
 }

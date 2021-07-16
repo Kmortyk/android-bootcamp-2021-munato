@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getSystemService
@@ -17,10 +18,13 @@ import androidx.fragment.app.Fragment
 import com.vanilla.munato.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.vanilla.munato.activity.HomeActivity
+import com.vanilla.munato.model.PaintingModel
 import java.security.SecureRandom
 
 
 private const val ARG_CODE = "code"
+private const val ARG_USERNAME = "username"
 const val PAINTING_ID_SIZE = 256
 
 /**
@@ -37,20 +41,23 @@ class PublishPaintingFragment : Fragment() {
          * @return A new instance of fragment PublishPaintingFragment.
          */
         @JvmStatic
-        fun newInstance(code: String) =
+        fun newInstance(username: String, code: String) =
             PublishPaintingFragment().apply {
                 arguments = Bundle().apply {
+                    putString(ARG_USERNAME, username)
                     putString(ARG_CODE, code)
                 }
             }
     }
 
     private var code: String? = null
+    private var username: String? = null
     private var paintingID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            username = it.getString(ARG_USERNAME)
             code = it.getString(ARG_CODE)
         }
     }
@@ -65,6 +72,12 @@ class PublishPaintingFragment : Fragment() {
         val cardViewPaintingIDBar = view.findViewById<CardView>(R.id.card_view_painting_id_bar)
         val btnRecreatePaintingID = view.findViewById<MaterialButton>(R.id.btn_publish_recreate_paintign_id)
         val btnCopyPaintingID = view.findViewById<MaterialButton>(R.id.btn_publish_copy_painting_id)
+        val btnPublish = view.findViewById<MaterialButton>(R.id.fragment_publish_btn_publish)
+
+        val etAuthor = view.findViewById<EditText>(R.id.fragment_publish_et_author)
+        val etTitle = view.findViewById<EditText>(R.id.fragment_publish_et_title)
+
+        etAuthor.setText(if(username != null) username else "")
 
         paintingID = generatePaintingID()
 
@@ -100,6 +113,20 @@ class PublishPaintingFragment : Fragment() {
 
                 Snackbar.make(view, "Copied to clipboard", Snackbar.LENGTH_SHORT).show()
             }
+        }
+
+        btnPublish.setOnClickListener {
+            val paintingModel = PaintingModel(
+                0, // unknown at the moment
+                etAuthor.text.toString(),
+                etTitle.text.toString(),
+                code,
+                0,
+                paintingID,
+            )
+
+            (activity as HomeActivity)
+                .publishPainting(paintingModel)
         }
 
         return view
