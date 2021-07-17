@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryBackgroundColor"
-    tools:context=".LoginActivity">
+    tools:context=".activity.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"
         android:tintMode="src_over"
         app:srcCompat="@drawable/pexels_karolina_grabowska_4046810"
-        app:tint="#22FF8B11" />
+        app:tint="#25AC6D4B" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_log_in"
