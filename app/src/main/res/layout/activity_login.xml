@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"
         android:tintMode="src_over"
         app:srcCompat="@drawable/pexels_karolina_grabowska_4046810"
-        app:tint="#25FF5B00" />
+        app:tint="#25AC6D4B" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_log_in"
@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         app:cornerRadius="100dp"
         android:elevation="5dp"
-        android:backgroundTint="@color/primaryColor"
+        android:backgroundTint="@color/primaryDarkColor"
         android:text="@string/log_in_button_text" />
 
 </FrameLayout>
