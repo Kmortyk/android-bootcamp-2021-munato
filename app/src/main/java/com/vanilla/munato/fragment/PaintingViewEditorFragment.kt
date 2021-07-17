@@ -9,6 +9,7 @@ import android.webkit.WebView
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
 import com.vanilla.munato.fragment.logic.getHTMLPageTemplate
+import com.vanilla.munato.fragment.logic.webViewShot
 import com.vanilla.munato.fragment.logic.webViewShotDebug
 import com.vanilla.munato.model.PaintingModel
 
@@ -63,10 +64,6 @@ class PaintingViewEditorFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
         R.id.action_publish -> {
-            val webView = requireView().findViewById<WebView>(R.id.web_view)
-
-            webViewShotDebug(webView)
-
             val activity = activity as HomeActivity
 
             val code = when {
@@ -78,7 +75,9 @@ class PaintingViewEditorFragment : Fragment() {
                 }
             }
 
-            activity.openPublishPaintingFragment(code)
+            val webView = requireView().findViewById<WebView>(R.id.web_view)
+
+            activity.openPublishPaintingFragment(code, webViewShot(webView))
 
             true
         }
