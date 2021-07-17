@@ -24,7 +24,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        openExploreFragment()
+        openExploreFragment(true)
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             val ftx = supportFragmentManager.beginTransaction()
@@ -69,10 +69,16 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    private fun openExploreFragment() {
+    private fun openExploreFragment(add: Boolean) {
         val ftx = supportFragmentManager.beginTransaction()
-        ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
-        ftx.addToBackStack("explore")
+
+        if(add) {
+            ftx.add(R.id.home_fragment_container, ExploreFragment.newInstance())
+        } else {
+            ftx.replace(R.id.home_fragment_container, ExploreFragment.newInstance())
+            ftx.addToBackStack("explore")
+        }
+
         ftx.commit()
     }
 
@@ -113,6 +119,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }.run()
 
-        openExploreFragment()
+        openExploreFragment(false)
     }
 }
