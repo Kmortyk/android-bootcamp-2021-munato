@@ -10,6 +10,8 @@ import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
 import com.vanilla.munato.model.PaintingModel
 
+const val PAINTINGS_DIFFERENCE = true
+
 class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvHeader: TextView = itemView.findViewById(R.id.itm_card_header_text)
     val ivCardCover: ImageView = itemView.findViewById(R.id.itm_card_cover_img)
@@ -31,11 +33,11 @@ class PaintingsRecyclerViewAdapter(private val activity: HomeActivity, private v
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaintingCardViewHolder {
-        return if(viewType == TYPE_BIG) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout_big, parent, false)
+        return if(PAINTINGS_DIFFERENCE && viewType == TYPE_SMALL) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout_small, parent, false)
             PaintingCardViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout_small, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.itm_card_layout_big, parent, false)
             PaintingCardViewHolder(view)
         }
     }

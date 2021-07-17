@@ -72,7 +72,7 @@ class ExploreFragment : Fragment() {
         val rvExplore = view.findViewById<RecyclerView>(R.id.rv_explore)
         val adapter = PaintingsRecyclerViewAdapter(activity as HomeActivity, data)
 
-        val paddingSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10f, resources.displayMetrics).toInt()
+        val paddingSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics).toInt()
 
         rvExplore.adapter = adapter
         rvExplore.layoutManager = StaggeredGridLayoutManager(NUM_COLUMNS, RecyclerView.VERTICAL)
