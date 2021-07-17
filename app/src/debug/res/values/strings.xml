@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="image_here">image here</string>
+    <string name="web_view_shot">WebView shot here:</string>
 </resources>

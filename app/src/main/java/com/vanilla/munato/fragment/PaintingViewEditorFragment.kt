@@ -1,6 +1,6 @@
 package com.vanilla.munato.fragment
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,9 +8,8 @@ import androidx.fragment.app.Fragment
 import android.webkit.WebView
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
-import com.example.munato.fragment.logic.getHTMLPageTemplate
-import com.example.munato.fragment.logic.tools.ScreenshotWebViewClient
-import com.example.munato.fragment.logic.tools.ScreenshotWebViewClientDebug
+import com.vanilla.munato.fragment.logic.getHTMLPageTemplate
+import com.vanilla.munato.fragment.logic.webViewShotDebug
 import com.vanilla.munato.model.PaintingModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,6 +63,10 @@ class PaintingViewEditorFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
         R.id.action_publish -> {
+            val webView = requireView().findViewById<WebView>(R.id.web_view)
+
+            webViewShotDebug(webView)
+
             val activity = activity as HomeActivity
 
             val code = when {
@@ -94,6 +97,7 @@ class PaintingViewEditorFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -104,8 +108,6 @@ class PaintingViewEditorFragment : Fragment() {
         val activity = activity as HomeActivity
 
         val webView = view.findViewById<WebView>(R.id.web_view)
-
-        webView.webViewClient = ScreenshotWebViewClientDebug(requireContext())
 
         var template = getHTMLPageTemplate(activity)
 
