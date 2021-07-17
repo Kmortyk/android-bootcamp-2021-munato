@@ -2,10 +2,14 @@ package com.vanilla.munato.activity
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
@@ -46,6 +50,8 @@ class HomeActivity : AppCompatActivity() {
 
             true
         }
+
+        requestPaintings() // TODO remove
     }
 
     fun getScriptTemplate(context: Context) : String {
@@ -121,4 +127,24 @@ class HomeActivity : AppCompatActivity() {
 
         openExploreFragment(false)
     }
+
+    fun requestPaintings() : List<PaintingModel> {
+        val paintingsRef = Firebase.database.getReference("paintings")
+
+        paintingsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(paintingSnapshot in snapshot.children) {
+                    val str = paintingSnapshot.value.toString()
+                    val paintingModel = Gson().fromJson(str, PaintingModel::class.java)
+
+                    Log.d("a", paintingModel.toString())
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) { /* none */ }
+        })
+
+        return listOf()
+    }
+
 }
