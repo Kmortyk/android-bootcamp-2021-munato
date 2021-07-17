@@ -17,7 +17,7 @@ open class ScreenshotWebViewClient : WebViewClient() {
             throw NullPointerException("WebView is null in onPageFinished in " + javaClass.canonicalName)
         }
 
-        configureWebViewMeasure(view)
+        //configureWebViewMeasure(view)
 
         val bitmap = webViewShot(view)
 

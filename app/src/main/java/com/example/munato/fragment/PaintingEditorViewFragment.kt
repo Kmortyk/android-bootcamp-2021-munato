@@ -11,6 +11,7 @@ import com.example.munato.HomeActivity
 import com.example.munato.R
 import com.example.munato.fragment.logic.getHTMLPageTemplate
 import com.example.munato.fragment.logic.tools.ScreenshotWebViewClient
+import com.example.munato.fragment.logic.tools.ScreenshotWebViewClientDebug
 import com.example.munato.model.PaintingModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -93,7 +94,7 @@ class PaintingViewFragment : Fragment() {
 
         val webView = view.findViewById<WebView>(R.id.web_view)
 
-        webView.webViewClient = ScreenshotWebViewClient()
+        webView.webViewClient = ScreenshotWebViewClientDebug(requireContext())
 
         var template = getHTMLPageTemplate(activity)
 
