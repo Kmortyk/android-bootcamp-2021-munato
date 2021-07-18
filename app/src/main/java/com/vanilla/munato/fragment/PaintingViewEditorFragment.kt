@@ -78,7 +78,7 @@ class PaintingViewEditorFragment : Fragment() {
             }
 
             val webView = requireView().findViewById<WebView>(R.id.web_view)
-            val preview = takeScreenshot(webView)
+            val preview = takeScreenshotDebug(webView)
 
             (activity as HomeActivity).openPublishPaintingFragment(code, preview)
 
