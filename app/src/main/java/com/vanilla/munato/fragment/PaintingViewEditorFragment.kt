@@ -6,17 +6,17 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.Toast
-import com.vanilla.munato.activity.HomeActivity
+import androidx.fragment.app.Fragment
 import com.vanilla.munato.R
+import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingModel
+
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_JAVASCRIPT_CODE = "javascript_code"
@@ -81,7 +81,7 @@ class PaintingViewEditorFragment : Fragment() {
             val webView = requireView().findViewById<WebView>(R.id.web_view)
             val preview = takeScreenshotDebug(webView)
 
-            (activity as HomeActivity).openPublishPaintingFragment(code, preview)
+            // (activity as HomeActivity).openPublishPaintingFragment(code, preview)
 
             true
         }
@@ -107,12 +107,10 @@ class PaintingViewEditorFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_painting_view, container, false)
-        // val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
         val activity = activity as HomeActivity
-
         val webView = view.findViewById<WebView>(R.id.web_view)
-
         var template = getHTMLPageTemplate(activity)
+        // val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
 
         if(javascriptCode != null) {
             webView.settings.javaScriptEnabled = true
@@ -125,19 +123,9 @@ class PaintingViewEditorFragment : Fragment() {
         template += "<script>draw(ctx, canvas);</script>"
 
         // https://stackoverflow.com/questions/37090396/android-webview-doesnt-load-html-sometimes
-
         webView.postDelayed({
             webView.loadDataWithBaseURL(null, template, null, "UTF-8", null);
         }, 100)
-
-//        Log.d("a", template)
-//        webView.settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-//        webView.settings.cacheMode = WebSettings.LOAD_NO_CACHE;
-//        if (Build.VERSION.SDK_INT >= 19) {
-//            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-//        } else {
-//            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-//        }
 
         return view
     }
@@ -162,31 +150,26 @@ class PaintingViewEditorFragment : Fragment() {
         // show dialog with preview
         AlertDialog.Builder(ctx)
             .setView(alertDialog)
-            .setPositiveButton(android.R.string.ok) {
-                    dialogInterface: DialogInterface, _: Int ->
+            .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
             }
-            .setNegativeButton(android.R.string.cancel) {
-                    dialogInterface: DialogInterface, _: Int ->
+            .setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.cancel()
             }
             .show()
     }
 
-    fun getHTMLPageTemplate(context: Context) : String {
-        val stream = context.resources.assets.open("templates/page_template.html")
-        return stream.readBytes().decodeToString()
-    }
-
-    fun takeScreenshot(view: WebView) : Bitmap {
-        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+    private fun takeScreenshot(webView: WebView) : Bitmap {
+        val bitmap = Bitmap.createBitmap(webView.width, webView.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        val paint = Paint()
 
-        canvas.drawBitmap(bitmap, 0f, 0f, paint)
-
-        view.draw(canvas)
+        webView.draw(canvas)
 
         return bitmap
+    }
+
+    private fun getHTMLPageTemplate(context: Context) : String {
+        val stream = context.resources.assets.open("templates/page_template.html")
+        return stream.readBytes().decodeToString()
     }
 }
