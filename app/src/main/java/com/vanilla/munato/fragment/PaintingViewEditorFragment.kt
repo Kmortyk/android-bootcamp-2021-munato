@@ -5,14 +5,16 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
-import android.graphics.Canvas
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.*
+import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.vanilla.munato.R
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingModel
@@ -69,19 +71,8 @@ class PaintingViewEditorFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
         R.id.action_publish -> {
-            val code = when {
-                javascriptCode != null -> { javascriptCode!! }
-                paintingModel != null -> { paintingModel!!.code!! }
-                else -> {
-                    Log.e("PaintingEditorView", "empty code to publish")
-                    ""
-                }
-            }
-
             val webView = requireView().findViewById<WebView>(R.id.web_view)
-            val preview = takeScreenshotDebug(webView)
-
-            // (activity as HomeActivity).openPublishPaintingFragment(code, preview)
+            fetchScreenshot(webView)
 
             true
         }
@@ -130,25 +121,45 @@ class PaintingViewEditorFragment : Fragment() {
         return view
     }
 
-    fun takeScreenshotDebug(view: WebView) : Bitmap {
-        val result = takeScreenshot(view)
+    private fun fetchScreenshot(webView: WebView) {
+        webView.evaluateJavascript("canvas.toDataURL();") {
+            if(it == null || it == "" || !it.contains(",")) {
+                val view = view
+                if(view != null) {
+                    Snackbar.make(view, "Sorry, can't publish your work \uD83D\uDE13", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                val code = when {
+                    javascriptCode != null -> { javascriptCode!! }
+                    paintingModel != null -> { paintingModel!!.code!! }
+                    else -> {
+                        Log.e("PaintingEditorView", "empty code to publish")
+                        ""
+                    }
+                }
 
-        Toast.makeText(view.context, result.width.toString() + " " + result.height.toString(), Toast.LENGTH_LONG).show()
+                Log.d("PaintingViewEditor", it)
 
-        showPreviewDialog(view.context, result)
+                val data = it.substring(it.indexOf(",") + 1)
+                val decodedString: ByteArray = Base64.decode(data, Base64.DEFAULT)
+                val preview = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
 
-        return result
+                // showPreviewDialog(preview)
+
+                (activity as HomeActivity).openPublishPaintingFragment(code, preview)
+            }
+        }
     }
 
-    @SuppressLint("InflateParams")
-    private fun showPreviewDialog(ctx: Context, b: Bitmap) {
-        val alertDialog = LayoutInflater.from(ctx).inflate(R.layout.alert_dialog_image, null)
+    // TODO debug func
+    private fun showPreviewDialog(b: Bitmap) {
+        val alertDialog = LayoutInflater.from(context).inflate(R.layout.alert_dialog_image, null)
 
         val imageView = alertDialog.findViewById<ImageView>(R.id.alert_dialog_image)
         imageView.setImageBitmap(b)
 
         // show dialog with preview
-        AlertDialog.Builder(ctx)
+        AlertDialog.Builder(context)
             .setView(alertDialog)
             .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
                 dialogInterface.dismiss()
@@ -157,15 +168,6 @@ class PaintingViewEditorFragment : Fragment() {
                 dialogInterface.cancel()
             }
             .show()
-    }
-
-    private fun takeScreenshot(webView: WebView) : Bitmap {
-        val bitmap = Bitmap.createBitmap(webView.width, webView.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-
-        webView.draw(canvas)
-
-        return bitmap
     }
 
     private fun getHTMLPageTemplate(context: Context) : String {
