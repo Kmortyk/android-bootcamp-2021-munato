@@ -1,16 +1,20 @@
 package com.vanilla.munato.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.webkit.WebView
+import android.widget.ImageView
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
-import com.vanilla.munato.fragment.logic.getHTMLPageTemplate
-import com.vanilla.munato.fragment.logic.webViewShot
-import com.vanilla.munato.fragment.logic.webViewShotDebug
 import com.vanilla.munato.model.PaintingModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,8 +68,6 @@ class PaintingViewEditorFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
         R.id.action_publish -> {
-            val activity = activity as HomeActivity
-
             val code = when {
                 javascriptCode != null -> { javascriptCode!! }
                 paintingModel != null -> { paintingModel!!.code!! }
@@ -76,8 +78,9 @@ class PaintingViewEditorFragment : Fragment() {
             }
 
             val webView = requireView().findViewById<WebView>(R.id.web_view)
+            val preview = takeScreenshot(webView)
 
-            activity.openPublishPaintingFragment(code, webViewShot(webView))
+            (activity as HomeActivity).openPublishPaintingFragment(code, preview)
 
             true
         }
@@ -136,5 +139,51 @@ class PaintingViewEditorFragment : Fragment() {
 //        }
 
         return view
+    }
+
+    fun takeScreenshotDebug(view: WebView) : Bitmap {
+        val result = takeScreenshot(view)
+
+        showPreviewDialog(view.context, result)
+
+        return result
+    }
+
+    @SuppressLint("InflateParams")
+    private fun showPreviewDialog(ctx: Context, b: Bitmap) {
+        val alertDialog = LayoutInflater.from(ctx).inflate(R.layout.alert_dialog_image, null)
+
+        val imageView = alertDialog.findViewById<ImageView>(R.id.alert_dialog_image)
+        imageView.setImageBitmap(b)
+
+        // show dialog with preview
+        AlertDialog.Builder(ctx)
+            .setView(alertDialog)
+            .setPositiveButton(android.R.string.ok) {
+                    dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .setNegativeButton(android.R.string.cancel) {
+                    dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.cancel()
+            }
+            .show()
+    }
+
+    fun getHTMLPageTemplate(context: Context) : String {
+        val stream = context.resources.assets.open("templates/page_template.html")
+        return stream.readBytes().decodeToString()
+    }
+
+    fun takeScreenshot(view: WebView) : Bitmap {
+        val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val paint = Paint()
+
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+
+        view.draw(canvas)
+
+        return bitmap
     }
 }
