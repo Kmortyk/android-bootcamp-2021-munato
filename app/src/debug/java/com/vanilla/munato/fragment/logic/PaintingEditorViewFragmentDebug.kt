@@ -6,12 +6,17 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.view.LayoutInflater
+import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
+import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.vanilla.munato.R
 
-fun webViewShotDebug(view: WebView) : Bitmap {
-    val result = webViewShot(view)
+fun viewShotDebug(view: View) : Bitmap {
+    val result = viewShot(view)
+
+    Toast.makeText(view.context, result.width.toString() + " " + result.height.toString(), Toast.LENGTH_LONG).show()
 
     showDialog(view.context, result)
 

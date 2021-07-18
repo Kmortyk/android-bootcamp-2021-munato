@@ -9,8 +9,8 @@ import android.webkit.WebView
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
 import com.vanilla.munato.fragment.logic.getHTMLPageTemplate
-import com.vanilla.munato.fragment.logic.webViewShot
-import com.vanilla.munato.fragment.logic.webViewShotDebug
+import com.vanilla.munato.fragment.logic.viewShot
+import com.vanilla.munato.fragment.logic.viewShotDebug
 import com.vanilla.munato.model.PaintingModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,7 +77,7 @@ class PaintingViewEditorFragment : Fragment() {
 
             val webView = requireView().findViewById<WebView>(R.id.web_view)
 
-            activity.openPublishPaintingFragment(code, webViewShot(webView))
+            activity.openPublishPaintingFragment(code, viewShotDebug(webView))
 
             true
         }

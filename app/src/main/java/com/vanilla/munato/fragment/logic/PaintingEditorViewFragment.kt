@@ -4,16 +4,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.view.View
 import android.webkit.WebView
 
-fun webViewShot(view: WebView) : Bitmap {
-    val bitmap = Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+fun viewShot(view: View) : Bitmap {
+    val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
 
     val canvas = Canvas(bitmap)
-
-    val paint = Paint()
-
-    canvas.drawBitmap(bitmap, 0f, canvas.height.toFloat(), paint)
 
     view.draw(canvas)
 
