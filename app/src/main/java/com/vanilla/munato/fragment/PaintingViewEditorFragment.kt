@@ -77,7 +77,7 @@ class PaintingViewEditorFragment : Fragment() {
 
             val webView = requireView().findViewById<WebView>(R.id.web_view)
 
-            activity.openPublishPaintingFragment(code, viewShotDebug(webView))
+            activity.openPublishPaintingFragment(code, viewShot(webView))
 
             true
         }
