@@ -1,6 +1,6 @@
 package com.vanilla.munato.fragment
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import android.webkit.WebView
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
+import com.vanilla.munato.fragment.logic.getHTMLPageTemplate
+import com.vanilla.munato.fragment.logic.webViewShot
+import com.vanilla.munato.fragment.logic.webViewShotDebug
 import com.vanilla.munato.model.PaintingModel
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,7 +75,9 @@ class PaintingViewEditorFragment : Fragment() {
                 }
             }
 
-            activity.openPublishPaintingFragment(code)
+            val webView = requireView().findViewById<WebView>(R.id.web_view)
+
+            activity.openPublishPaintingFragment(code, webViewShot(webView))
 
             true
         }
@@ -91,6 +96,7 @@ class PaintingViewEditorFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -101,6 +107,7 @@ class PaintingViewEditorFragment : Fragment() {
         val activity = activity as HomeActivity
 
         val webView = view.findViewById<WebView>(R.id.web_view)
+
         var template = getHTMLPageTemplate(activity)
 
         if(javascriptCode != null) {
@@ -129,10 +136,5 @@ class PaintingViewEditorFragment : Fragment() {
 //        }
 
         return view
-    }
-
-    fun getHTMLPageTemplate(context: Context) : String {
-        val stream = context.resources.assets.open("templates/page_template.html")
-        return stream.readBytes().decodeToString()
     }
 }
