@@ -2,25 +2,25 @@ package com.vanilla.munato
 
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.vanilla.munato.model.PaintingModel
 
 class PaintingsRepository {
-    val db = Firebase.database
+    private val db = Firebase.database
 
     fun publishPainting(paintingModel: PaintingModel) {
         // get container refs
         val paintingsRef = db.getReference("paintings")
         val childRef = paintingsRef.push()
 
-        // serialize and post
-        val serialized = Gson().toJson(paintingModel)
-        childRef.setValue(serialized)
+        childRef.child("paintingID").setValue(paintingModel.paintingID)
+        childRef.child("user").setValue(paintingModel.user)
+        childRef.child("name").setValue(paintingModel.name)
+        childRef.child("code").setValue(paintingModel.code)
+        childRef.child("stars").setValue(paintingModel.stars)
     }
 
     fun requestPaintings(fromNodeID: String?) : List<PaintingModel> {

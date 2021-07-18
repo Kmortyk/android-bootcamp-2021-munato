@@ -59,15 +59,15 @@ class CollectionFragment : Fragment() {
         val layoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = CollectionRecyclerViewAdapter(listOf(
-            PaintingModel(1, "kmortyk", "good one", "", 1, ""),
-            PaintingModel(2, "memphis", "stars", "", 21, ""),
-            PaintingModel(3, "determin", "fine too", "", 1, ""),
-            PaintingModel(4, "kettie", "last one", "", 56, ""),
-            PaintingModel(5, "stephan", "star dance", "", 128, ""),
-            PaintingModel(6, "marie", "eye u", "", 0, ""),
-            PaintingModel(7, "kevin", "when it comes", "", 5677, ""),
-            PaintingModel(8, "evik", "loved", "", 1, ""),
-            PaintingModel(9, "buster", "best", "", 45, ""),
+            PaintingModel("", "kmortyk", "good one", "", 1),
+            PaintingModel("", "memphis", "stars", "", 21),
+            PaintingModel("", "determin", "fine too", "", 1),
+            PaintingModel("", "kettie", "last one", "", 56),
+            PaintingModel("", "stephan", "star dance", "", 128),
+            PaintingModel("", "marie", "eye u", "", 0),
+            PaintingModel("", "kevin", "when it comes", "", 5677),
+            PaintingModel("", "evik", "loved", "", 1),
+            PaintingModel("", "buster", "best", "", 45),
         ))
 
         val dividerItemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)

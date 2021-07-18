@@ -2,10 +2,7 @@ package com.vanilla.munato.fragment
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
 import android.graphics.Bitmap
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -128,12 +125,11 @@ class PublishPaintingFragment : Fragment() {
 
         btnPublish.setOnClickListener {
             val paintingModel = PaintingModel(
-                0, // unknown at the moment
+                paintingID, // unknown at the moment
                 etAuthor.text.toString(),
                 etTitle.text.toString(),
                 code,
                 0,
-                paintingID,
             )
 
             (activity as HomeActivity)
