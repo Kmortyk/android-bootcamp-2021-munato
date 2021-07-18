@@ -56,7 +56,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun getScriptTemplate(context: Context) : String {
-        val stream = context.resources.assets.open("templates/script_template.js")
+        val examples = arrayOf(
+            "templates/script_template.js",
+            "templates/script_example_1.js"
+        )
+
+        val stream = context.resources.assets.open(examples.random())
         return stream.readBytes().decodeToString()
     }
 
