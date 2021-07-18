@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import com.vanilla.munato.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
@@ -21,6 +22,7 @@ import com.vanilla.munato.model.PaintingModel
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private val paintingsRepository = PaintingsRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +52,6 @@ class HomeActivity : AppCompatActivity() {
 
             true
         }
-
-        requestPaintings() // TODO remove
     }
 
     fun getScriptTemplate(context: Context) : String {
@@ -106,45 +106,9 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    /* -- Database ------------------------------------------------------------------------------ */
-    // TODO MVVM move to model
-
     fun publishPainting(paintingModel: PaintingModel) {
-        Thread {
-            // get container refs
-            val paintingsRef = Firebase.database.getReference("paintings")
-            val childRef = paintingsRef.push()
-
-            // serialize and post
-            val serialized = Gson().toJson(paintingModel)
-            childRef.setValue(serialized)
-
-            // show snack
-            runOnUiThread {
-                Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
-            }
-        }.run()
-
+        paintingsRepository.publishPainting(paintingModel)
+        Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
         openExploreFragment(false)
     }
-
-    fun requestPaintings() : List<PaintingModel> {
-        val paintingsRef = Firebase.database.getReference("paintings")
-
-        paintingsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for(paintingSnapshot in snapshot.children) {
-                    val str = paintingSnapshot.value.toString()
-                    val paintingModel = Gson().fromJson(str, PaintingModel::class.java)
-
-                    Log.d("a", paintingModel.toString())
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) { /* none */ }
-        })
-
-        return listOf()
-    }
-
 }
