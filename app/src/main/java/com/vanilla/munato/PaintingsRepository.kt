@@ -36,7 +36,9 @@ class PaintingsRepository {
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) { /* none */ }
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("PaintingsRepository", error.toString())
+            }
         })
 
         return listOf()
