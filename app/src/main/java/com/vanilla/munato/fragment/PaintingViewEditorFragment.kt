@@ -13,6 +13,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.webkit.WebView
 import android.widget.ImageView
+import android.widget.Toast
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
 import com.vanilla.munato.model.PaintingModel
@@ -143,6 +144,8 @@ class PaintingViewEditorFragment : Fragment() {
 
     fun takeScreenshotDebug(view: WebView) : Bitmap {
         val result = takeScreenshot(view)
+
+        Toast.makeText(view.context, result.width.toString() + " " + result.height.toString(), Toast.LENGTH_LONG).show()
 
         showPreviewDialog(view.context, result)
 
