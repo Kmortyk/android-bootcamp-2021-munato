@@ -4,12 +4,15 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.graphics.Bitmap
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.getSystemService
@@ -25,6 +28,8 @@ import java.security.SecureRandom
 
 private const val ARG_CODE = "code"
 private const val ARG_USERNAME = "username"
+private const val ARG_IMAGE= "image"
+
 const val PAINTING_ID_SIZE = 256
 
 /**
@@ -41,17 +46,19 @@ class PublishPaintingFragment : Fragment() {
          * @return A new instance of fragment PublishPaintingFragment.
          */
         @JvmStatic
-        fun newInstance(username: String, code: String) =
+        fun newInstance(username: String, code: String, image: Bitmap) =
             PublishPaintingFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_USERNAME, username)
                     putString(ARG_CODE, code)
+                    putParcelable(ARG_IMAGE, image)
                 }
             }
     }
 
     private var code: String? = null
     private var username: String? = null
+    private var image: Bitmap? = null
     private var paintingID: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +66,7 @@ class PublishPaintingFragment : Fragment() {
         arguments?.let {
             username = it.getString(ARG_USERNAME)
             code = it.getString(ARG_CODE)
+            image = it.getParcelable(ARG_IMAGE)
         }
     }
 
@@ -76,6 +84,9 @@ class PublishPaintingFragment : Fragment() {
 
         val etAuthor = view.findViewById<EditText>(R.id.fragment_publish_et_author)
         val etTitle = view.findViewById<EditText>(R.id.fragment_publish_et_title)
+        val userImage = view.findViewById<ImageView>(R.id.fragment_publish_userImage)
+
+        userImage.setImageBitmap(image)
 
         etAuthor.setText(if(username != null) username else "")
 

@@ -1,6 +1,7 @@
 package com.vanilla.munato.activity
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -88,12 +89,12 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    fun openPublishPaintingFragment(code: String) {
+    fun openPublishPaintingFragment(code: String, image: Bitmap) {
         val username = "kmortyk" //TODO get username
 
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(username, code))
+        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(username, code, image))
         ftx.addToBackStack("publish_painting")
         ftx.commit()
     }
