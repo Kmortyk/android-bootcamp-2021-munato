@@ -50,7 +50,8 @@ class HomeActivity : AppCompatActivity() {
     fun getScriptTemplate(context: Context) : String {
         val examples = arrayOf(
             "templates/script_example_1.js",
-            "templates/script_example_2.js"
+            "templates/script_example_2.js",
+            "templates/script_example_3.js"
         )
 
         val stream = context.resources.assets.open(examples.random())
