@@ -32,7 +32,7 @@ class PaintingsRepository {
                     val str = paintingSnapshot.value.toString()
                     val paintingModel = Gson().fromJson(str, PaintingModel::class.java)
 
-                    Log.d("a", paintingModel.toString())
+                    // Log.d("a", paintingModel.toString())
                 }
             }
 
