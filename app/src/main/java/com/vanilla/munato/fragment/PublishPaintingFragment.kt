@@ -124,16 +124,20 @@ class PublishPaintingFragment : Fragment() {
         }
 
         btnPublish.setOnClickListener {
-            val paintingModel = PaintingModel(
-                paintingID, // unknown at the moment
-                etAuthor.text.toString(),
-                etTitle.text.toString(),
-                code,
-                0,
-            )
+            if(etTitle.text.isBlank()) {
+                etTitle.error = "Title cannot be empty or blank"
+            } else {
+                val paintingModel = PaintingModel(
+                    paintingID, // unknown at the moment
+                    etAuthor.text.toString(),
+                    etTitle.text.toString(),
+                    code,
+                    0,
+                )
 
-            (activity as HomeActivity)
-                .publishPainting(paintingModel)
+                (activity as HomeActivity)
+                    .publishPainting(paintingModel)
+            }
         }
 
         return view
