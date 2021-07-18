@@ -20,7 +20,6 @@ function draw(ctx, canvas) {
     ctx.fillText("TEA", canvas.width * 0.5 + 30, 50);
 
     // draw glass
-    ctx.fillStyle = "white";
     let tw = 60
 
     ctx.fillStyle = colors[0];
