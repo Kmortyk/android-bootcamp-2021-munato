@@ -4,30 +4,27 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class PaintingModel(
-    val id: Int, // id for pagination
+    val paintingID: String?, // id for pagination
     val user: String?, // username
     val name: String?, // name of the picture
     val code: String?, // javascript code for this scene
-    val stars: Int, // number of stars for this painting
-    val paintingID: String?, // path for cover of this painting
+    val stars: Int, // path for cover of this painting
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readInt(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readInt()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(id)
+        parcel.writeString(paintingID)
         parcel.writeString(user)
         parcel.writeString(name)
         parcel.writeString(code)
         parcel.writeInt(stars)
-        parcel.writeString(paintingID)
     }
 
     override fun describeContents() = 0 // todo

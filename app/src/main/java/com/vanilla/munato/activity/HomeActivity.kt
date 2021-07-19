@@ -3,17 +3,9 @@ package com.vanilla.munato.activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.gson.Gson
 import com.vanilla.munato.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
@@ -56,7 +48,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun getScriptTemplate(context: Context) : String {
-        val stream = context.resources.assets.open("templates/script_template.js")
+        val examples = arrayOf(
+            "templates/script_example_1.js",
+            "templates/script_example_2.js",
+            "templates/script_example_3.js"
+        )
+
+        val stream = context.resources.assets.open(examples.random())
         return stream.readBytes().decodeToString()
     }
 
