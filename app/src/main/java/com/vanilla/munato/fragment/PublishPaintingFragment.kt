@@ -20,6 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingModel
+import com.vanilla.munato.model.PaintingPreview
 import java.security.SecureRandom
 
 
@@ -83,6 +84,10 @@ class PublishPaintingFragment : Fragment() {
         val etTitle = view.findViewById<EditText>(R.id.fragment_publish_et_title)
         val userImage = view.findViewById<ImageView>(R.id.fragment_publish_userImage)
 
+        if (image == null) {
+            throw NullPointerException("User's image is null")
+        }
+
         userImage.setImageBitmap(image)
 
         etAuthor.setText(if(username != null) username else "")
@@ -136,7 +141,7 @@ class PublishPaintingFragment : Fragment() {
                 )
 
                 (activity as HomeActivity)
-                    .publishPainting(paintingModel)
+                    .publishPainting(PaintingPreview(paintingModel, image!!))
             }
         }
 
