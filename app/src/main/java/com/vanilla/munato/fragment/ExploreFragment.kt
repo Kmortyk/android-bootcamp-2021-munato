@@ -53,30 +53,34 @@ class ExploreFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_explore, container, false)
+        val activity = activity as HomeActivity
 
         // TODO test data
-        val data = listOf(
-            PaintingModel("", "kmortyk", "good one", "", 1),
-            PaintingModel("", "memphis", "stars", "", 21),
-            PaintingModel("", "determin", "fine too", "", 1),
-            PaintingModel("", "kettie", "last one", "", 56),
-            PaintingModel("", "stephan", "star dance", "", 128),
-            PaintingModel("", "marie", "eye u", "", 0),
-            PaintingModel("", "kevin", "when it comes", "", 5677),
-            PaintingModel("", "evik", "loved", "", 1),
-            PaintingModel("", "buster", "best", "", 45),
-        )
+//        val data = listOf(
+//            PaintingModel("", "kmortyk", "good one", "", 1),
+//            PaintingModel("", "memphis", "stars", "", 21),
+//            PaintingModel("", "determin", "fine too", "", 1),
+//            PaintingModel("", "kettie", "last one", "", 56),
+//            PaintingModel("", "stephan", "star dance", "", 128),
+//            PaintingModel("", "marie", "eye u", "", 0),
+//            PaintingModel("", "kevin", "when it comes", "", 5677),
+//            PaintingModel("", "evik", "loved", "", 1),
+//            PaintingModel("", "buster", "best", "", 45),
+//        )
 
         val rvExplore = view.findViewById<RecyclerView>(R.id.rv_explore)
-        val adapter = PaintingsRecyclerViewAdapter(activity as HomeActivity, data)
+        val adapter = PaintingsRecyclerViewAdapter(activity)
 
         val paddingSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics).toInt()
 
         rvExplore.adapter = adapter
         rvExplore.layoutManager = StaggeredGridLayoutManager(NUM_COLUMNS, RecyclerView.VERTICAL)
         rvExplore.addItemDecoration(PaintingsItemDecoration(paddingSize))
+
+        activity.loadPaintings {
+            adapter.updateData(it)
+        }
 
         return view
     }

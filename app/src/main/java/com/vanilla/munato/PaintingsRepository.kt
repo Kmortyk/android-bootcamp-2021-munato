@@ -3,8 +3,6 @@ package com.vanilla.munato
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -79,12 +77,14 @@ class PaintingsRepository {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(paintingSnapshot in snapshot.children) {
-                    loadPreview(paintingSnapshot) {
-                        resultList.add(Painting(
-                            loadModel(paintingSnapshot),
-                            it,
-                        ))
-                    }
+                    resultList.add(Painting(
+                        loadModel(paintingSnapshot),
+                        EmptyPaintingPreview,
+                    ))
+
+//                    loadPreview(paintingSnapshot) {
+//
+//                    }
                 }
 
                 callback(resultList)
@@ -122,24 +122,21 @@ class PaintingsRepository {
     private fun loadPreview(snapshot: DataSnapshot, onSuccessFunction: (PaintingPreview) -> Unit) {
         if(!snapshot.hasChild(KEY_PAINTING_ID)) {
             Log.e(LOG_TAG, "can't load preview for painting without paintingID, id '${snapshot.key}'")
+            onSuccessFunction(EmptyPaintingPreview)
             return
         }
 
         val paintingID = snapshot.child(KEY_PAINTING_ID).getValue(String::class.java)
         val storageRef = storage.getReference(STORAGE_IMAGES_DIR)
 
-        val pictureRef = storageRef.parent?.child("${paintingID}.jpg")
-
-        if(pictureRef == null) {
-            Log.e(LOG_TAG, "can't find preview for painting preview for painting '${snapshot.key}'")
-            return
-        }
+        val pictureRef = storageRef.child("${paintingID}.jpg")
 
         pictureRef.getBytes(DOWNLOAD_BANDWIDTH).addOnSuccessListener {
             val preview = BitmapFactory.decodeByteArray(it, 0, it.size)
             onSuccessFunction(preview as PaintingPreview)
         }.addOnFailureListener {
             Log.e(LOG_TAG, "error while downloading preview: $it'")
+            onSuccessFunction(EmptyPaintingPreview)
         }
     }
 

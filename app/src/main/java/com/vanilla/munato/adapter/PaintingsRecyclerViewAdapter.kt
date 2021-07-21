@@ -6,27 +6,30 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
+import com.vanilla.munato.activity.HomeActivity
+import com.vanilla.munato.model.Painting
 import com.vanilla.munato.model.PaintingModel
 
 const val PAINTINGS_DIFFERENCE = true
 
 class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val tvHeader: TextView = itemView.findViewById(R.id.itm_card_header_text)
-    val ivCardCover: ImageView = itemView.findViewById(R.id.itm_card_cover_img)
-    val tvStarsCount: TextView = itemView.findViewById(R.id.itm_stars_text)
+    private val tvHeader: TextView = itemView.findViewById(R.id.itm_card_header_text)
+    private val ivCardCover: ImageView = itemView.findViewById(R.id.itm_card_cover_img)
+    private val tvStarsCount: TextView = itemView.findViewById(R.id.itm_stars_text)
 
-    fun setData(model: PaintingModel) {
-        tvHeader.text = model.name
-        // TODO load or create cover
-        // ivCardCover.drawable = loadImage(model.coverServerPath)
-        tvStarsCount.text = model.stars.toString()
+    fun setData(painting: Painting) {
+        tvHeader.text = painting.model.name
+        ivCardCover.setImageBitmap(painting.preview)
+        tvStarsCount.text = painting.model.stars.toString()
     }
 }
 
-class PaintingsRecyclerViewAdapter(private val activity: HomeActivity, private val paintings: List<PaintingModel>) :
+class PaintingsRecyclerViewAdapter(private val activity: HomeActivity) :
     RecyclerView.Adapter<PaintingCardViewHolder>() {
+
+    private val paintings: MutableList<Painting> = mutableListOf()
+
     companion object {
         const val TYPE_BIG = 1
         const val TYPE_SMALL = 2
@@ -52,10 +55,16 @@ class PaintingsRecyclerViewAdapter(private val activity: HomeActivity, private v
     override fun getItemCount() = paintings.size
 
     override fun getItemViewType(position: Int): Int {
-        return if(paintings[position].stars > 10) {
+        return if(paintings[position].model.stars > 10) {
             TYPE_BIG
         } else {
             TYPE_SMALL
         }
+    }
+
+    fun updateData(data: List<Painting>) {
+        paintings.clear()
+        paintings.addAll(data)
+        notifyDataSetChanged()
     }
 }
