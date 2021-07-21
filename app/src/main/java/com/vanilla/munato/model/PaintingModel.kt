@@ -3,6 +3,14 @@ package com.vanilla.munato.model
 import android.os.Parcel
 import android.os.Parcelable
 
+val EmptyPaintingModel = PaintingModel(
+    "",
+    "<unknown>",
+    "<unknown>",
+    "function draw(ctx, canvas) { \\n }",
+    0,
+)
+
 data class PaintingModel(
     val paintingID: String?, // id for pagination
     val user: String?, // username

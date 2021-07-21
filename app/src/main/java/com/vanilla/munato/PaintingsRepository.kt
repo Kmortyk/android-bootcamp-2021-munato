@@ -1,15 +1,17 @@
 package com.vanilla.munato
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
-import com.vanilla.munato.model.PaintingModel
-import com.vanilla.munato.model.Painting
+import com.vanilla.munato.model.*
 import java.io.ByteArrayOutputStream
+
 
 class PaintingsRepository {
     companion object {
@@ -20,6 +22,9 @@ class PaintingsRepository {
         const val KEY_NAME = "name"
         const val KEY_CODE = "code"
         const val KEY_STARS = "stars"
+
+        const val STORAGE_IMAGES_DIR = "images"
+        const val DOWNLOAD_BANDWIDTH: Long = 1024 * 1024 // 1 MB
     }
 
     private val db = Firebase.database
@@ -50,7 +55,7 @@ class PaintingsRepository {
     }
 
     private fun publishPaintingPreview(painting: Painting, onSuccessFunction: () -> Unit) {
-        val storageRef = storage.getReference("images/" + painting.model.paintingID + ".jpg")
+        val storageRef = storage.getReference(STORAGE_IMAGES_DIR + "/" + painting.model.paintingID + ".jpg")
         val compressedStream = ByteArrayOutputStream()
 
         painting.preview.compress(Bitmap.CompressFormat.JPEG, 100, compressedStream)
@@ -66,28 +71,76 @@ class PaintingsRepository {
 
     // DOWNLOAD
 
-    fun requestPaintings(fromNodeID: String?) : List<Painting> {
+    fun loadPaintings(callback: (List<Painting>) -> Unit) {
         val paintingsRef = db.getReference("paintings")
-        val storageRef = storage.getReference("images")
 
         paintingsRef.addValueEventListener(object : ValueEventListener {
+            val resultList = mutableListOf<Painting>()
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(paintingSnapshot in snapshot.children) {
-                    val str = paintingSnapshot.value.toString()
-                    val paintingModel = Gson().fromJson(str, PaintingModel::class.java)
-
-                    val pictureRef = storageRef.parent?.child(paintingModel.paintingID + ".jpg")
-
-                    Log.d("a", paintingModel.toString())
-                    Log.d("b", pictureRef!!.bucket)
+                    loadPreview(paintingSnapshot) {
+                        resultList.add(Painting(
+                            loadModel(paintingSnapshot),
+                            it,
+                        ))
+                    }
                 }
+
+                callback(resultList)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e(LOG_TAG, error.toString())
             }
         })
-
-        return listOf()
     }
+
+    private fun loadModel(snapshot: DataSnapshot) : PaintingModel {
+        if(!snapshot.hasChild(KEY_PAINTING_ID) || !snapshot.hasChild(KEY_USER) ||
+            !snapshot.hasChild(KEY_NAME) || !snapshot.hasChild(KEY_CODE) || !snapshot.hasChild(KEY_STARS)) {
+            Log.e(LOG_TAG, "snapshot has no necessary fields, id '${snapshot.key}'")
+            return EmptyPaintingModel
+        }
+
+        val stars = snapshot.child(KEY_STARS).value.toString().toIntOrNull()
+
+        if(stars == null) {
+            Log.e(LOG_TAG, "error while converting '${snapshot.child(KEY_STARS).value}' to int.")
+            return EmptyPaintingModel
+        }
+
+        return PaintingModel(
+            snapshot.child(KEY_PAINTING_ID).getValue(String::class.java),
+            snapshot.child(KEY_USER).getValue(String::class.java),
+            snapshot.child(KEY_NAME).getValue(String::class.java),
+            snapshot.child(KEY_CODE).getValue(String::class.java),
+            stars,
+        )
+    }
+
+    private fun loadPreview(snapshot: DataSnapshot, onSuccessFunction: (PaintingPreview) -> Unit) {
+        if(!snapshot.hasChild(KEY_PAINTING_ID)) {
+            Log.e(LOG_TAG, "can't load preview for painting without paintingID, id '${snapshot.key}'")
+            return
+        }
+
+        val paintingID = snapshot.child(KEY_PAINTING_ID).getValue(String::class.java)
+        val storageRef = storage.getReference(STORAGE_IMAGES_DIR)
+
+        val pictureRef = storageRef.parent?.child("${paintingID}.jpg")
+
+        if(pictureRef == null) {
+            Log.e(LOG_TAG, "can't find preview for painting preview for painting '${snapshot.key}'")
+            return
+        }
+
+        pictureRef.getBytes(DOWNLOAD_BANDWIDTH).addOnSuccessListener {
+            val preview = BitmapFactory.decodeByteArray(it, 0, it.size)
+            onSuccessFunction(preview as PaintingPreview)
+        }.addOnFailureListener {
+            Log.e(LOG_TAG, "error while downloading preview: $it'")
+        }
+    }
+
 }
