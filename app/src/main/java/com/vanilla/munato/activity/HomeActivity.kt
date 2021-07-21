@@ -11,6 +11,7 @@ import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
 import com.vanilla.munato.model.PaintingModel
+import com.vanilla.munato.model.PaintingPreview
 
 class HomeActivity : AppCompatActivity() {
 
@@ -105,8 +106,12 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    fun publishPainting(paintingModel: PaintingModel) {
-        paintingsRepository.publishPainting(paintingModel)
+    fun publishPainting(paintingPreview: PaintingPreview) {
+        paintingsRepository.publishPainting(paintingPreview, this::onPublishPainting)
+        Snackbar.make(binding.root, "Painting loading to the server...", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun onPublishPainting() {
         Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
         openExploreFragment(false)
     }
