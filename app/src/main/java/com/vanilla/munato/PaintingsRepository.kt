@@ -2,49 +2,67 @@ package com.vanilla.munato
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
 import com.vanilla.munato.model.PaintingModel
-import com.vanilla.munato.model.PaintingPreview
+import com.vanilla.munato.model.Painting
 import java.io.ByteArrayOutputStream
 
 class PaintingsRepository {
+    companion object {
+        const val LOG_TAG = "PaintingsRepository"
+
+        const val KEY_PAINTING_ID = "paintingID"
+        const val KEY_USER = "user"
+        const val KEY_NAME = "name"
+        const val KEY_CODE = "code"
+        const val KEY_STARS = "stars"
+    }
+
     private val db = Firebase.database
     private val storage = Firebase.storage
 
-    fun publishPainting(paintingPreview: PaintingPreview, onSuccessFunction: () -> Unit) {
-        // get container refs
-        val paintingsRef = db.getReference("paintings")
-        val storageRef = storage.getReference("images/" + paintingPreview.model.paintingID + ".jpg")
-
-        val childRef = paintingsRef.push()
-
-        val baos = ByteArrayOutputStream()
-        paintingPreview.preview.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-
-        val uploadTask = storageRef.putBytes(data)
-        uploadTask.addOnFailureListener {
-            Log.e("PaintingsRepository", it.toString())
-            throw it
-        }.addOnSuccessListener { taskSnapshot ->
-            val model = paintingPreview.model
-
-            childRef.child("paintingID").setValue(model.paintingID)
-            childRef.child("user").setValue(model.user)
-            childRef.child("name").setValue(model.name)
-            childRef.child("code").setValue(model.code)
-            childRef.child("stars").setValue(model.stars)
-
-            onSuccessFunction()
+    fun publishPainting(painting: Painting, onSuccessFunction: () -> Unit) {
+        publishPaintingPreview(painting) {
+            publishPaintingModel(painting) {
+                onSuccessFunction()
+            }
         }
     }
 
-    fun requestPaintings(fromNodeID: String?) : List<PaintingPreview> {
+    private fun publishPaintingModel(painting: Painting, onSuccessFunction: () -> Unit) {
+        val paintingsRef = db.getReference("paintings")
+        val childRef = paintingsRef.push()
+        val model = painting.model
+
+        childRef.child(KEY_PAINTING_ID).setValue(model.paintingID)
+        childRef.child(KEY_USER).setValue(model.user)
+        childRef.child(KEY_NAME).setValue(model.name)
+        childRef.child(KEY_CODE).setValue(model.code)
+        childRef.child(KEY_STARS).setValue(model.stars)
+
+        onSuccessFunction()
+    }
+
+    private fun publishPaintingPreview(painting: Painting, onSuccessFunction: () -> Unit) {
+        val storageRef = storage.getReference("images/" + painting.model.paintingID + ".jpg")
+        val compressedStream = ByteArrayOutputStream()
+
+        painting.preview.compress(Bitmap.CompressFormat.JPEG, 100, compressedStream)
+
+        storageRef.putBytes(compressedStream.toByteArray())
+            .addOnFailureListener {
+                Log.e(LOG_TAG, it.toString())
+            }
+            .addOnSuccessListener {
+                onSuccessFunction()
+            }
+    }
+
+    fun requestPaintings(fromNodeID: String?) : List<Painting> {
         val paintingsRef = db.getReference("paintings")
         val storageRef = storage.getReference("images")
 
@@ -62,7 +80,7 @@ class PaintingsRepository {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("PaintingsRepository", error.toString())
+                Log.e(LOG_TAG, error.toString())
             }
         })
 

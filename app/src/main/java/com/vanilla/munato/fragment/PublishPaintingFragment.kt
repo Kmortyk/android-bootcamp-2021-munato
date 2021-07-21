@@ -20,7 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingModel
-import com.vanilla.munato.model.PaintingPreview
+import com.vanilla.munato.model.Painting
 import java.security.SecureRandom
 
 
@@ -141,7 +141,7 @@ class PublishPaintingFragment : Fragment() {
                 )
 
                 (activity as HomeActivity)
-                    .publishPainting(PaintingPreview(paintingModel, image!!))
+                    .publishPainting(Painting(paintingModel, image!!))
             }
         }
 
