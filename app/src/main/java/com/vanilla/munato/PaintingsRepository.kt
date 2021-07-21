@@ -25,6 +25,8 @@ class PaintingsRepository {
     private val db = Firebase.database
     private val storage = Firebase.storage
 
+    // PUBLISH
+
     fun publishPainting(painting: Painting, onSuccessFunction: () -> Unit) {
         publishPaintingPreview(painting) {
             publishPaintingModel(painting) {
@@ -61,6 +63,8 @@ class PaintingsRepository {
                 onSuccessFunction()
             }
     }
+
+    // DOWNLOAD
 
     fun requestPaintings(fromNodeID: String?) : List<Painting> {
         val paintingsRef = db.getReference("paintings")

@@ -151,7 +151,9 @@ class PaintingViewEditorFragment : Fragment() {
         }
     }
 
-    // TODO debug func
+    /**
+     * Debug function. Shows dialog with preview.
+     */
     private fun showPreviewDialog(b: Bitmap) {
         val alertDialog = LayoutInflater.from(context).inflate(R.layout.alert_dialog_image, null)
 

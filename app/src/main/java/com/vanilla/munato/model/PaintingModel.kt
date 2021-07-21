@@ -27,7 +27,7 @@ data class PaintingModel(
         parcel.writeInt(stars)
     }
 
-    override fun describeContents() = 0 // todo
+    override fun describeContents() = 0
 
     companion object CREATOR : Parcelable.Creator<PaintingModel> {
         override fun createFromParcel(parcel: Parcel): PaintingModel {

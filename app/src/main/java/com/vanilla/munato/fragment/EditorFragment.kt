@@ -26,7 +26,6 @@ class EditorFragment : Fragment() {
          * this fragment using the provided parameters.
          * @return A new instance of fragment EditorFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(code: String?) =
             EditorFragment().apply {
