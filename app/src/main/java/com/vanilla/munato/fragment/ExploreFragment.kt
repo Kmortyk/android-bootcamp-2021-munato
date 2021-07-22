@@ -20,9 +20,7 @@ import com.vanilla.munato.adapter.PaintingsRecyclerViewAdapter
  */
 class ExploreFragment : Fragment() {
     companion object {
-        private const val ARG_PARAM1 = "param1"
         private const val NUM_COLUMNS = 3
-        private const val LOG_TAG = "ExploreFragment"
 
         /**
          * Use this factory method to create a new instance of
@@ -78,7 +76,7 @@ class ExploreFragment : Fragment() {
         rvExplore.addItemDecoration(PaintingsItemDecoration(paddingSize))
 
         activity.loadPaintings {
-            adapter.updateData(it)
+            adapter.addData(it)
         }
 
         return view

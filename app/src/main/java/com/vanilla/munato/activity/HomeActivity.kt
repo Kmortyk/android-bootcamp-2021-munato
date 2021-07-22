@@ -111,8 +111,8 @@ class HomeActivity : AppCompatActivity() {
         Snackbar.make(binding.root, "Painting loading to the server...", Snackbar.LENGTH_SHORT).show()
     }
 
-    fun loadPaintings(callback: (List<PaintingDownloadData>) -> Unit) {
-        paintingsRepository.loadPaintings(callback)
+    fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
+        paintingsRepository.loadPaintings(onPaintingLoaded)
     }
 
     private fun onPublishPainting() {

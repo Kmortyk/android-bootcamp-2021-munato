@@ -1,5 +1,6 @@
 package com.vanilla.munato.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +24,11 @@ class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         tvStarsCount.text = painting.model.stars.toString()
 
         // start loading preview
-        Glide.with(itemView.context)
-            .load(painting.previewURL)
-            .into(ivCardCover)
+        if(painting.previewURL != Uri.EMPTY) {
+            Glide.with(itemView.context)
+                .load(painting.previewURL)
+                .into(ivCardCover)
+        }
     }
 }
 
@@ -66,9 +69,8 @@ class PaintingsRecyclerViewAdapter(private val activity: HomeActivity) :
         }
     }
 
-    fun updateData(data: List<PaintingDownloadData>) {
-        paintings.clear()
-        paintings.addAll(data)
-        notifyDataSetChanged()
+    fun addData(paintingDownloadData: PaintingDownloadData) {
+        paintings.add(paintingDownloadData)
+        notifyItemInserted(paintings.size - 1)
     }
 }

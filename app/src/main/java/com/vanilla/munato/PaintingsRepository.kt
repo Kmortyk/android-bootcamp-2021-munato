@@ -9,6 +9,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.vanilla.munato.model.*
 import java.io.ByteArrayOutputStream
+import java.lang.Exception
 
 
 class PaintingsRepository {
@@ -69,23 +70,18 @@ class PaintingsRepository {
 
     // DOWNLOAD
 
-    fun loadPaintings(callback: (List<PaintingDownloadData>) -> Unit) {
+    fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
         val paintingsRef = db.getReference("paintings")
 
         paintingsRef.addValueEventListener(object : ValueEventListener {
-            val resultList = mutableListOf<PaintingDownloadData>()
-
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(paintingSnapshot in snapshot.children) {
+                    val model = loadModel(paintingSnapshot)
+
                     loadPreview(paintingSnapshot) {
-                        resultList.add(PaintingDownloadData(
-                            loadModel(paintingSnapshot),
-                            it,
-                        ))
+                        onPaintingLoaded(PaintingDownloadData(model, it))
                     }
                 }
-
-                callback(resultList)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -117,10 +113,10 @@ class PaintingsRepository {
         )
     }
 
-    private fun loadPreview(snapshot: DataSnapshot, onSuccessFunction: (Uri) -> Unit) {
+    private fun loadPreview(snapshot: DataSnapshot, onLoadedFunction: (Uri) -> Unit) {
         if(!snapshot.hasChild(KEY_PAINTING_ID)) {
             Log.e(LOG_TAG, "can't load preview for painting without paintingID, id '${snapshot.key}'")
-            onSuccessFunction(Uri.EMPTY)
+            onLoadedFunction(Uri.EMPTY)
             return
         }
 
@@ -130,11 +126,11 @@ class PaintingsRepository {
         storageRef.downloadUrl
             .addOnSuccessListener {
                 Log.d(LOG_TAG, "image exists, uri: $it'")
-                onSuccessFunction(it)
+                onLoadedFunction(it)
             }
             .addOnFailureListener {
                 Log.e(LOG_TAG, "error while downloading preview: $it'")
-                onSuccessFunction(Uri.EMPTY)
+                onLoadedFunction(Uri.EMPTY)
             }
     }
 
