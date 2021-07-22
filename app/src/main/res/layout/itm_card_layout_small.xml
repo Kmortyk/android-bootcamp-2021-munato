@@ -25,25 +25,27 @@
         android:layout_width="match_parent"
         android:layout_height="160dp">
 
-        <TextView
-            android:layout_gravity="end"
-            android:id="@+id/itm_card_header_text"
-            android:layout_width="90dp"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/montserrat"
-            android:gravity="center|end"
-            android:maxLength="10"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_marginEnd="15dp"
-            android:text="Sample name"
-            android:textIsSelectable="false"
-            android:textColor="@color/primaryTextColor" />
+<!--        <TextView-->
+<!--            android:layout_gravity="end"-->
+<!--            android:id="@+id/itm_card_header_text"-->
+<!--            android:layout_width="90dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:fontFamily="@font/montserrat"-->
+<!--            android:gravity="center|end"-->
+<!--            android:maxLength="10"-->
+<!--            android:maxLines="1"-->
+<!--            android:ellipsize="end"-->
+<!--            android:layout_marginEnd="15dp"-->
+<!--            android:text="Sample name"-->
+<!--            android:textIsSelectable="false"-->
+<!--            android:textColor="@color/primaryTextColor" />-->
 
         <ImageView
             android:id="@+id/itm_card_cover_img"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/panorama_3311973_1920_2" />
 
     </LinearLayout>
 

@@ -15,12 +15,12 @@ import com.vanilla.munato.model.PaintingDownloadData
 const val PAINTINGS_DIFFERENCE = true
 
 class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val tvHeader: TextView = itemView.findViewById(R.id.itm_card_header_text)
+//    private val tvHeader: TextView = itemView.findViewById(R.id.itm_card_header_text)
     private val ivCardCover: ImageView = itemView.findViewById(R.id.itm_card_cover_img)
     private val tvStarsCount: TextView = itemView.findViewById(R.id.itm_stars_text)
 
     fun setData(painting: PaintingDownloadData) {
-        tvHeader.text = painting.model.name
+//        tvHeader.text = painting.model.name
         tvStarsCount.text = painting.model.stars.toString()
 
         // start loading preview
