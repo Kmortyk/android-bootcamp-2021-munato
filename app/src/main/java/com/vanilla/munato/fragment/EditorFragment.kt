@@ -37,7 +37,7 @@ class EditorFragment : Fragment() {
     }
 
     private var initCode: String? = null
-    private var editor: CodeEditor? = null // todo bad practice
+    private var editor: CodeEditor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

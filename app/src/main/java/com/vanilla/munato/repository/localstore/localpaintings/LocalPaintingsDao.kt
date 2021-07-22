@@ -11,7 +11,7 @@ interface LocalPaintingsDao {
     @Query("SELECT * FROM local_paintings")
     fun getAll(): List<LocalPaintingsEntity>
 
-    @Update // TODO
+    @Update // TODO implement update
     fun updatePaintingID(uid: Int, paintingID: String)
 
     @Insert // TODO, save preview as base64 string

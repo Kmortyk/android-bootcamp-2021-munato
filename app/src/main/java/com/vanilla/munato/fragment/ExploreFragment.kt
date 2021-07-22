@@ -53,19 +53,6 @@ class ExploreFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_explore, container, false)
         val activity = activity as HomeActivity
 
-        // TODO test data
-//        val data = listOf(
-//            PaintingModel("", "kmortyk", "good one", "", 1),
-//            PaintingModel("", "memphis", "stars", "", 21),
-//            PaintingModel("", "determin", "fine too", "", 1),
-//            PaintingModel("", "kettie", "last one", "", 56),
-//            PaintingModel("", "stephan", "star dance", "", 128),
-//            PaintingModel("", "marie", "eye u", "", 0),
-//            PaintingModel("", "kevin", "when it comes", "", 5677),
-//            PaintingModel("", "evik", "loved", "", 1),
-//            PaintingModel("", "buster", "best", "", 45),
-//        )
-
         val rvExplore = view.findViewById<RecyclerView>(R.id.rv_explore)
         val adapter = PaintingsRecyclerViewAdapter(activity)
 
