@@ -14,6 +14,6 @@ interface LocalPaintingsDao {
     @Update // TODO
     fun updatePaintingID(uid: Int, paintingID: String)
 
-    @Insert // TODO
+    @Insert // TODO, save preview as base64 string
     fun insert(code: String, preview: PaintingPreview)
 }
