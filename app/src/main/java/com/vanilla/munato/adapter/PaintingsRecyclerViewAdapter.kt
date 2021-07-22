@@ -69,9 +69,10 @@ class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         var blueBucket: Long = 0
         var pixelCount: Long = 0
 
-        for (y in 0 until bitmap.height) {
-            for (x in 0 until bitmap.width) {
+        for (y in 0 until bitmap.height step 2) {
+            for (x in 0 until bitmap.width step 2) {
                 val c = bitmap.getPixel(x, y)
+
                 pixelCount++
 
                 redBucket += Color.red(c)
