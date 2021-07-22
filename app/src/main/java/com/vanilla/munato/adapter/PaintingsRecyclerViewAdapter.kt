@@ -121,11 +121,12 @@ class PaintingsRecyclerViewAdapter(private val activity: HomeActivity) :
     override fun getItemCount() = paintings.size
 
     override fun getItemViewType(position: Int): Int {
-        return if(paintings[position].getModel().stars > 10) {
-            TYPE_BIG
-        } else {
-            TYPE_SMALL
-        }
+        return if(isBig(position)) TYPE_BIG else TYPE_SMALL
+    }
+
+    private fun isBig(position: Int) : Boolean {
+        // paintings[position].getModel().stars > 10
+        return position % 2 == 0 && position % 3 == 0
     }
 
     fun addData(paintingDownloadData: PaintingDownloadData) {

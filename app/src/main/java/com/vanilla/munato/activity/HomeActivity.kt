@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
-import com.vanilla.munato.PaintingsRepository
+import com.vanilla.munato.repository.server.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*

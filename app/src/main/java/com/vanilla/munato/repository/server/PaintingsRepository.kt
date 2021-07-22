@@ -1,4 +1,4 @@
-package com.vanilla.munato
+package com.vanilla.munato.repository.server
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -9,7 +9,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.vanilla.munato.model.*
 import java.io.ByteArrayOutputStream
-import java.lang.Exception
 
 
 class PaintingsRepository {
@@ -23,7 +22,6 @@ class PaintingsRepository {
         const val KEY_STARS = "stars"
 
         const val STORAGE_IMAGES_DIR = "images"
-        const val DOWNLOAD_BANDWIDTH: Long = 1024 * 1024 // 1 MB
     }
 
     private val db = Firebase.database
