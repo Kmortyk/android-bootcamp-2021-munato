@@ -62,4 +62,7 @@ dependencies {
 
     /* Coroutines */
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+
+    /* Glide */
+    implementation group: 'com.github.bumptech.glide', name: 'glide', version: '4.12.0'
 }

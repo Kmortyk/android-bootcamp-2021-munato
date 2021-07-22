@@ -10,7 +10,8 @@ import com.vanilla.munato.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
-import com.vanilla.munato.model.Painting
+import com.vanilla.munato.model.PaintingDownloadData
+import com.vanilla.munato.model.PaintingPublishData
 
 class HomeActivity : AppCompatActivity() {
 
@@ -97,7 +98,7 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    fun openPaintingViewFragment(painting: Painting) {
+    fun openPaintingViewFragment(painting: PaintingDownloadData) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         ftx.replace(R.id.home_fragment_container, PaintingViewExploreFragment.newInstance(painting.model))
@@ -105,12 +106,12 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    fun publishPainting(paintingPreview: Painting) {
+    fun publishPainting(paintingPreview: PaintingPublishData) {
         paintingsRepository.publishPainting(paintingPreview, this::onPublishPainting)
         Snackbar.make(binding.root, "Painting loading to the server...", Snackbar.LENGTH_SHORT).show()
     }
 
-    fun loadPaintings(callback: (List<Painting>) -> Unit) {
+    fun loadPaintings(callback: (List<PaintingDownloadData>) -> Unit) {
         paintingsRepository.loadPaintings(callback)
     }
 

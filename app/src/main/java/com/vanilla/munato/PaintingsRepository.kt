@@ -1,7 +1,7 @@
 package com.vanilla.munato
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
@@ -30,7 +30,7 @@ class PaintingsRepository {
 
     // PUBLISH
 
-    fun publishPainting(painting: Painting, onSuccessFunction: () -> Unit) {
+    fun publishPainting(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
         publishPaintingPreview(painting) {
             publishPaintingModel(painting) {
                 onSuccessFunction()
@@ -38,7 +38,7 @@ class PaintingsRepository {
         }
     }
 
-    private fun publishPaintingModel(painting: Painting, onSuccessFunction: () -> Unit) {
+    private fun publishPaintingModel(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
         val paintingsRef = db.getReference("paintings")
         val childRef = paintingsRef.push()
         val model = painting.model
@@ -52,7 +52,7 @@ class PaintingsRepository {
         onSuccessFunction()
     }
 
-    private fun publishPaintingPreview(painting: Painting, onSuccessFunction: () -> Unit) {
+    private fun publishPaintingPreview(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
         val storageRef = storage.getReference(STORAGE_IMAGES_DIR + "/" + painting.model.paintingID + ".jpg")
         val compressedStream = ByteArrayOutputStream()
 
@@ -69,22 +69,20 @@ class PaintingsRepository {
 
     // DOWNLOAD
 
-    fun loadPaintings(callback: (List<Painting>) -> Unit) {
+    fun loadPaintings(callback: (List<PaintingDownloadData>) -> Unit) {
         val paintingsRef = db.getReference("paintings")
 
         paintingsRef.addValueEventListener(object : ValueEventListener {
-            val resultList = mutableListOf<Painting>()
+            val resultList = mutableListOf<PaintingDownloadData>()
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 for(paintingSnapshot in snapshot.children) {
-                    resultList.add(Painting(
-                        loadModel(paintingSnapshot),
-                        EmptyPaintingPreview,
-                    ))
-
-//                    loadPreview(paintingSnapshot) {
-//
-//                    }
+                    loadPreview(paintingSnapshot) {
+                        resultList.add(PaintingDownloadData(
+                            loadModel(paintingSnapshot),
+                            it,
+                        ))
+                    }
                 }
 
                 callback(resultList)
@@ -119,25 +117,25 @@ class PaintingsRepository {
         )
     }
 
-    private fun loadPreview(snapshot: DataSnapshot, onSuccessFunction: (PaintingPreview) -> Unit) {
+    private fun loadPreview(snapshot: DataSnapshot, onSuccessFunction: (Uri) -> Unit) {
         if(!snapshot.hasChild(KEY_PAINTING_ID)) {
             Log.e(LOG_TAG, "can't load preview for painting without paintingID, id '${snapshot.key}'")
-            onSuccessFunction(EmptyPaintingPreview)
+            onSuccessFunction(Uri.EMPTY)
             return
         }
 
         val paintingID = snapshot.child(KEY_PAINTING_ID).getValue(String::class.java)
-        val storageRef = storage.getReference(STORAGE_IMAGES_DIR)
+        val storageRef = storage.getReference("$STORAGE_IMAGES_DIR/$paintingID.jpg")
 
-        val pictureRef = storageRef.child("${paintingID}.jpg")
-
-        pictureRef.getBytes(DOWNLOAD_BANDWIDTH).addOnSuccessListener {
-            val preview = BitmapFactory.decodeByteArray(it, 0, it.size)
-            onSuccessFunction(preview as PaintingPreview)
-        }.addOnFailureListener {
-            Log.e(LOG_TAG, "error while downloading preview: $it'")
-            onSuccessFunction(EmptyPaintingPreview)
-        }
+        storageRef.downloadUrl
+            .addOnSuccessListener {
+                Log.d(LOG_TAG, "image exists, uri: $it'")
+                onSuccessFunction(it)
+            }
+            .addOnFailureListener {
+                Log.e(LOG_TAG, "error while downloading preview: $it'")
+                onSuccessFunction(Uri.EMPTY)
+            }
     }
 
 }

@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.vanilla.munato.R
 import com.vanilla.munato.activity.HomeActivity
-import com.vanilla.munato.model.Painting
-import com.vanilla.munato.model.PaintingModel
+import com.vanilla.munato.model.PaintingDownloadData
 
 const val PAINTINGS_DIFFERENCE = true
 
@@ -18,17 +18,21 @@ class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val ivCardCover: ImageView = itemView.findViewById(R.id.itm_card_cover_img)
     private val tvStarsCount: TextView = itemView.findViewById(R.id.itm_stars_text)
 
-    fun setData(painting: Painting) {
+    fun setData(painting: PaintingDownloadData) {
         tvHeader.text = painting.model.name
-        ivCardCover.setImageBitmap(painting.preview)
         tvStarsCount.text = painting.model.stars.toString()
+
+        // start loading preview
+        Glide.with(itemView.context)
+            .load(painting.previewURL)
+            .into(ivCardCover)
     }
 }
 
 class PaintingsRecyclerViewAdapter(private val activity: HomeActivity) :
     RecyclerView.Adapter<PaintingCardViewHolder>() {
 
-    private val paintings: MutableList<Painting> = mutableListOf()
+    private val paintings: MutableList<PaintingDownloadData> = mutableListOf()
 
     companion object {
         const val TYPE_BIG = 1
@@ -62,7 +66,7 @@ class PaintingsRecyclerViewAdapter(private val activity: HomeActivity) :
         }
     }
 
-    fun updateData(data: List<Painting>) {
+    fun updateData(data: List<PaintingDownloadData>) {
         paintings.clear()
         paintings.addAll(data)
         notifyDataSetChanged()
