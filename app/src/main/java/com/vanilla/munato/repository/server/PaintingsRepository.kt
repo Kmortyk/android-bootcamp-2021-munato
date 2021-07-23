@@ -62,12 +62,12 @@ class PaintingsRepository {
         painting.preview.compress(Bitmap.CompressFormat.JPEG, 100, compressedStream)
 
         storageRef.putBytes(compressedStream.toByteArray())
+            .addOnSuccessListener {
+                onSuccessFunction()
+            }
             .addOnFailureListener {
                 Log.e(LOG_TAG, it.toString())
                 onFailureFunction(it)
-            }
-            .addOnSuccessListener {
-                onSuccessFunction()
             }
     }
 
