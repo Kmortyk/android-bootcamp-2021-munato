@@ -107,16 +107,36 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun publishPainting(paintingPreview: PaintingPublishData) {
-        paintingsRepository.publishPainting(paintingPreview, this::onPublishPainting)
-        Snackbar.make(binding.root, "Painting loading to the server...", Snackbar.LENGTH_SHORT).show()
+        processSnack("Painting loading to the server")
+
+        paintingsRepository.publishPainting(paintingPreview,
+            onSuccessFunction = {
+                successSnack("Painting successfully published")
+                openExploreFragment(false)
+            },
+            onFailureFunction = {
+                failSnack("Fail to publish painting (${it.message})")
+            })
     }
 
     fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
-        paintingsRepository.loadPaintings(onPaintingLoaded)
+        paintingsRepository.loadPaintings(
+            onPaintingLoaded=onPaintingLoaded,
+            onFailure = {
+                failSnack("Fail to load paintings (${it.message})")
+            }
+        )
     }
 
-    private fun onPublishPainting() {
-        Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
-        openExploreFragment(false)
+    private fun processSnack(message: String) {
+        Snackbar.make(binding.root, "$message...", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun successSnack(message: String) {
+        Snackbar.make(binding.root, "$message ✨", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun failSnack(message: String) {
+        Snackbar.make(binding.root, "$message \uD83D\uDE1E", Snackbar.LENGTH_SHORT).show()
     }
 }

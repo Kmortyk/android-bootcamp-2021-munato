@@ -29,12 +29,16 @@ class PaintingsRepository {
 
     // PUBLISH
 
-    fun publishPainting(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
-        publishPaintingPreview(painting) {
-            publishPaintingModel(painting) {
-                onSuccessFunction()
-            }
-        }
+    fun publishPainting(painting: PaintingPublishData, onSuccessFunction: () -> Unit, onFailureFunction: (Exception) -> Unit) {
+        publishPaintingPreview(painting,
+            onSuccessFunction={
+                publishPaintingModel(painting) {
+                    onSuccessFunction()
+                }
+            },
+            onFailureFunction={
+                onFailureFunction(it)
+            })
     }
 
     private fun publishPaintingModel(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
@@ -51,7 +55,7 @@ class PaintingsRepository {
         onSuccessFunction()
     }
 
-    private fun publishPaintingPreview(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
+    private fun publishPaintingPreview(painting: PaintingPublishData, onSuccessFunction: () -> Unit, onFailureFunction: (Exception) -> Unit) {
         val storageRef = storage.getReference(STORAGE_IMAGES_DIR + "/" + painting.model.paintingID + ".jpg")
         val compressedStream = ByteArrayOutputStream()
 
@@ -60,6 +64,7 @@ class PaintingsRepository {
         storageRef.putBytes(compressedStream.toByteArray())
             .addOnFailureListener {
                 Log.e(LOG_TAG, it.toString())
+                onFailureFunction(it)
             }
             .addOnSuccessListener {
                 onSuccessFunction()
@@ -68,7 +73,7 @@ class PaintingsRepository {
 
     // DOWNLOAD
 
-    fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
+    fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit, onFailure: (DatabaseError) -> Unit) {
         val paintingsRef = db.getReference("paintings")
 
         paintingsRef.addValueEventListener(object : ValueEventListener {
@@ -84,6 +89,7 @@ class PaintingsRepository {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e(LOG_TAG, error.toString())
+                onFailure(error)
             }
         })
     }
@@ -95,12 +101,7 @@ class PaintingsRepository {
             return EmptyPaintingModel
         }
 
-        val stars = snapshot.child(KEY_STARS).value.toString().toIntOrNull()
-
-        if(stars == null) {
-            Log.e(LOG_TAG, "error while converting '${snapshot.child(KEY_STARS).value}' to int.")
-            return EmptyPaintingModel
-        }
+        val stars = snapshot.child(KEY_STARS).value.toString().toInt()
 
         return PaintingModel(
             snapshot.child(KEY_PAINTING_ID).getValue(String::class.java),
