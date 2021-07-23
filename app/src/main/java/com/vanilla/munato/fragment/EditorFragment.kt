@@ -26,7 +26,6 @@ class EditorFragment : Fragment() {
          * this fragment using the provided parameters.
          * @return A new instance of fragment EditorFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(code: String?) =
             EditorFragment().apply {
@@ -38,7 +37,7 @@ class EditorFragment : Fragment() {
     }
 
     private var initCode: String? = null
-    private var editor: CodeEditor? = null // todo bad practice
+    private var editor: CodeEditor? = null // TODO check after screen rotating
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

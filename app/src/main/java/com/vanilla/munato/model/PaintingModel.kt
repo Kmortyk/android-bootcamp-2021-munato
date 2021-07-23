@@ -3,6 +3,14 @@ package com.vanilla.munato.model
 import android.os.Parcel
 import android.os.Parcelable
 
+val EmptyPaintingModel = PaintingModel(
+    "",
+    "<unknown>",
+    "<unknown>",
+    "function draw(ctx, canvas) { \\n }",
+    0,
+)
+
 data class PaintingModel(
     val paintingID: String?, // id for pagination
     val user: String?, // username
@@ -27,7 +35,7 @@ data class PaintingModel(
         parcel.writeInt(stars)
     }
 
-    override fun describeContents() = 0 // todo
+    override fun describeContents() = 0
 
     companion object CREATOR : Parcelable.Creator<PaintingModel> {
         override fun createFromParcel(parcel: Parcel): PaintingModel {

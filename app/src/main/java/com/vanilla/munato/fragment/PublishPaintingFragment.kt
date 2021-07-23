@@ -20,7 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingModel
-import com.vanilla.munato.model.PaintingPreview
+import com.vanilla.munato.model.PaintingPublishData
 import java.security.SecureRandom
 
 
@@ -28,7 +28,7 @@ private const val ARG_CODE = "code"
 private const val ARG_USERNAME = "username"
 private const val ARG_IMAGE= "image"
 
-const val PAINTING_ID_SIZE = 256
+const val PAINTING_ID_SIZE = 128
 
 /**
  * A simple [Fragment] subclass.
@@ -141,7 +141,7 @@ class PublishPaintingFragment : Fragment() {
                 )
 
                 (activity as HomeActivity)
-                    .publishPainting(PaintingPreview(paintingModel, image!!))
+                    .publishPainting(PaintingPublishData(paintingModel, image!!))
             }
         }
 

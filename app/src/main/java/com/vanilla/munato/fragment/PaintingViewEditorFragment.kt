@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.*
-import android.webkit.ValueCallback
 import android.webkit.WebView
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -151,7 +150,9 @@ class PaintingViewEditorFragment : Fragment() {
         }
     }
 
-    // TODO debug func
+    /**
+     * Debug function. Shows dialog with preview.
+     */
     private fun showPreviewDialog(b: Bitmap) {
         val alertDialog = LayoutInflater.from(context).inflate(R.layout.alert_dialog_image, null)
 

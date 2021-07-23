@@ -6,12 +6,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
-import com.vanilla.munato.PaintingsRepository
+import com.vanilla.munato.repository.server.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
-import com.vanilla.munato.model.PaintingModel
-import com.vanilla.munato.model.PaintingPreview
+import com.vanilla.munato.model.PaintingDownloadData
+import com.vanilla.munato.model.PaintingPublishData
 
 class HomeActivity : AppCompatActivity() {
 
@@ -98,21 +98,45 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    fun openPaintingViewFragment(paintingModel: PaintingModel) {
+    fun openPaintingViewFragment(painting: PaintingDownloadData) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ftx.replace(R.id.home_fragment_container, PaintingViewExploreFragment.newInstance(paintingModel))
+        ftx.replace(R.id.home_fragment_container, PaintingViewExploreFragment.newInstance(painting.model))
         ftx.addToBackStack("painting_view")
         ftx.commit()
     }
 
-    fun publishPainting(paintingPreview: PaintingPreview) {
-        paintingsRepository.publishPainting(paintingPreview, this::onPublishPainting)
-        Snackbar.make(binding.root, "Painting loading to the server...", Snackbar.LENGTH_SHORT).show()
+    fun publishPainting(paintingPreview: PaintingPublishData) {
+        processSnack("Painting loading to the server")
+
+        paintingsRepository.publishPainting(paintingPreview,
+            onSuccessFunction = {
+                successSnack("Painting successfully published")
+                openExploreFragment(false)
+            },
+            onFailureFunction = {
+                failSnack("Fail to publish painting (${it.message})")
+            })
     }
 
-    private fun onPublishPainting() {
-        Snackbar.make(binding.root, "Painting successfully published ✨", Snackbar.LENGTH_SHORT).show()
-        openExploreFragment(false)
+    fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
+        paintingsRepository.loadPaintings(
+            onPaintingLoaded=onPaintingLoaded,
+            onFailure = {
+                failSnack("Fail to load paintings (${it.message})")
+            }
+        )
+    }
+
+    private fun processSnack(message: String) {
+        Snackbar.make(binding.root, "$message...", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun successSnack(message: String) {
+        Snackbar.make(binding.root, "$message ✨", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun failSnack(message: String) {
+        Snackbar.make(binding.root, "$message \uD83D\uDE1E", Snackbar.LENGTH_SHORT).show()
     }
 }
