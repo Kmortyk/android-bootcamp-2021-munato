@@ -37,7 +37,7 @@ class EditorFragment : Fragment() {
     }
 
     private var initCode: String? = null
-    private var editor: CodeEditor? = null
+    private var editor: CodeEditor? = null // TODO check after screen rotating
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
