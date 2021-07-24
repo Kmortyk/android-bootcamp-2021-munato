@@ -15,7 +15,6 @@ class PaintingsRepository {
     companion object {
         const val LOG_TAG = "PaintingsRepository"
 
-        const val KEY_PAINTING_ID = "paintingID"
         const val KEY_USER = "user"
         const val KEY_NAME = "name"
         const val KEY_CODE = "code"
@@ -42,11 +41,19 @@ class PaintingsRepository {
     }
 
     private fun publishPaintingModel(painting: PaintingPublishData, onSuccessFunction: () -> Unit) {
+        val paintingID = painting.model.paintingID
+
+        if(paintingID == null) {
+            Log.e(LOG_TAG, "paintingID is null")
+            return
+        }
+
         val paintingsRef = db.getReference("paintings")
-        val childRef = paintingsRef.push()
+        val childRef = paintingsRef.child(paintingID)
         val model = painting.model
 
-        childRef.child(KEY_PAINTING_ID).setValue(model.paintingID)
+        childRef.setValue("")
+
         childRef.child(KEY_USER).setValue(model.user)
         childRef.child(KEY_NAME).setValue(model.name)
         childRef.child(KEY_CODE).setValue(model.code)
@@ -57,9 +64,10 @@ class PaintingsRepository {
 
     private fun publishPaintingPreview(painting: PaintingPublishData, onSuccessFunction: () -> Unit, onFailureFunction: (Exception) -> Unit) {
         val storageRef = storage.getReference(STORAGE_IMAGES_DIR + "/" + painting.model.paintingID + ".jpg")
+        val preview = Bitmap.createScaledBitmap(painting.preview, painting.preview.width / 2, painting.preview.height / 2, false)
         val compressedStream = ByteArrayOutputStream()
 
-        painting.preview.compress(Bitmap.CompressFormat.JPEG, 100, compressedStream)
+        preview.compress(Bitmap.CompressFormat.JPEG, 70, compressedStream)
 
         storageRef.putBytes(compressedStream.toByteArray())
             .addOnSuccessListener {
@@ -95,7 +103,7 @@ class PaintingsRepository {
     }
 
     private fun loadModel(snapshot: DataSnapshot) : PaintingModel {
-        if(!snapshot.hasChild(KEY_PAINTING_ID) || !snapshot.hasChild(KEY_USER) ||
+        if(!snapshot.hasChild(KEY_USER) ||
             !snapshot.hasChild(KEY_NAME) || !snapshot.hasChild(KEY_CODE) || !snapshot.hasChild(KEY_STARS)) {
             Log.e(LOG_TAG, "snapshot has no necessary fields, id '${snapshot.key}'")
             return EmptyPaintingModel
@@ -109,7 +117,7 @@ class PaintingsRepository {
         }
 
         return PaintingModel(
-            snapshot.child(KEY_PAINTING_ID).getValue(String::class.java),
+            snapshot.key,
             snapshot.child(KEY_USER).getValue(String::class.java),
             snapshot.child(KEY_NAME).getValue(String::class.java),
             snapshot.child(KEY_CODE).getValue(String::class.java),
@@ -118,13 +126,7 @@ class PaintingsRepository {
     }
 
     private fun loadPreview(snapshot: DataSnapshot, onLoadedFunction: (Uri) -> Unit) {
-        if(!snapshot.hasChild(KEY_PAINTING_ID)) {
-            Log.e(LOG_TAG, "can't load preview for painting without paintingID, id '${snapshot.key}'")
-            onLoadedFunction(Uri.EMPTY)
-            return
-        }
-
-        val paintingID = snapshot.child(KEY_PAINTING_ID).getValue(String::class.java)
+        val paintingID = snapshot.key
         val storageRef = storage.getReference("$STORAGE_IMAGES_DIR/$paintingID.jpg")
 
         storageRef.downloadUrl
