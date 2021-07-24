@@ -13,13 +13,13 @@ import com.vanilla.munato.fragment.*
 import com.vanilla.munato.model.PaintingDownloadData
 import com.vanilla.munato.model.PaintingPublishData
 import com.vanilla.munato.repository.localstore.LocalRepository
-import com.vanilla.munato.repository.server.UsersRepository
+import com.vanilla.munato.repository.server.UserRepository
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     private val paintingsRepository = lazy { PaintingsRepository() }
-    private val usersRepository = lazy { UsersRepository() }
+    private val usersRepository = lazy { UserRepository() }
     private val localRepository = lazy { LocalRepository(applicationContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,15 +132,11 @@ class HomeActivity : AppCompatActivity() {
         )
     }
 
-    fun loadFavourites(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
-        // TODO
-    }
-
-    fun processSnack(message: String) {
+    private fun processSnack(message: String) {
         Snackbar.make(binding.root, "$message...", Snackbar.LENGTH_SHORT).show()
     }
 
-    fun successSnack(message: String) {
+    private fun successSnack(message: String) {
         Snackbar.make(binding.root, "$message ✨", Snackbar.LENGTH_SHORT).show()
     }
 
@@ -149,18 +145,43 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun addToFavourite(paintingID: String) {
-        // add to local storage TODO do we need ?
-        // localRepository.value.addFavourite(paintingID)
-
-        // add to account on server
         usersRepository.value.addFavourite(paintingID)
     }
 
+    fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit) {
+        usersRepository.value.loadFavourites(
+            onFavouritesLoaded = {
+                onFavouritesLoaded(it)
+            },
+            onFailure = {
+                failSnack("Fail to load favourites (${it.message})")
+            }
+        )
+    }
+
     fun addStarToPainting(paintingID: String) {
-        // if starred in account
-        // - do nothing
-        // else
-        // - add paintingID to account
-        // - increase painting stars counter
+        usersRepository.value.hasStarred(paintingID,
+            onSuccess = {
+                if(!it) {
+                    // if not starred in account
+                    // add paintingID to account
+                    usersRepository.value.addStarred(paintingID)
+                    // increase painting stars counter
+                    paintingsRepository.value.addStar(paintingID,
+                        onSuccess = {
+                            successSnack("Painting is starred")
+                        },
+                        onFailure = { err ->
+                            failSnack("Oops something went wrong (${err.message})")
+                        },
+                    )
+                } else {
+                    // if starred in account
+                    // do nothing
+                    successSnack("Already starred")
+                }
+            }, onFailure = {
+                failSnack("Oops something went wrong (${it.message})")
+            })
     }
 }

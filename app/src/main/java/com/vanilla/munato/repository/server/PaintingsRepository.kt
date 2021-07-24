@@ -101,7 +101,12 @@ class PaintingsRepository {
             return EmptyPaintingModel
         }
 
-        val stars = snapshot.child(KEY_STARS).value.toString().toInt()
+        val stars = snapshot.child(KEY_STARS).value.toString().toIntOrNull()
+
+        if(stars == null) {
+            Log.e(LOG_TAG, "stars count is not numeric value ('${snapshot.child(KEY_STARS).value}')")
+            return EmptyPaintingModel
+        }
 
         return PaintingModel(
             snapshot.child(KEY_PAINTING_ID).getValue(String::class.java),
@@ -133,4 +138,27 @@ class PaintingsRepository {
             }
     }
 
+    fun addStar(paintingID: String, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
+        val paintingsRef = db.getReference("paintings")
+        val childRef = paintingsRef.child(paintingID)
+
+        childRef.child(KEY_STARS).runTransaction(object: Transaction.Handler {
+            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                val value = currentData.value ?: return Transaction.abort()
+                val previous = value.toString().toIntOrNull() ?: return Transaction.abort()
+
+                currentData.value = previous + 1
+
+                return Transaction.success(currentData)
+            }
+
+            override fun onComplete(error: DatabaseError?, committed: Boolean, currentData: DataSnapshot?) {
+                if(error != null) {
+                    onFailure(error)
+                } else {
+                    onSuccess()
+                }
+            }
+        })
+    }
 }
