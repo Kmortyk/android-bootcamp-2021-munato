@@ -1,7 +1,9 @@
 package com.vanilla.munato.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.webkit.WebView
@@ -50,16 +52,55 @@ class PaintingViewExploreFragment : Fragment() {
         super.onCreateOptionsMenu(menu,inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
-        R.id.action_fork -> {
-
-            true
+    override fun onOptionsItemSelected(item: MenuItem) : Boolean {
+        if(activity == null) {
+            Log.e("PaintingView", "activity is null")
+            return false
         }
-        else -> {
-            super.onOptionsItemSelected(item)
+
+        val paintingModel = paintingModel
+
+        if(paintingModel == null) {
+            Log.e("PaintingView", "painting model is null")
+            return false
+        }
+
+        val paintingID = paintingModel.paintingID
+        val activity = activity as HomeActivity
+
+        return when (item.itemId) {
+            R.id.action_star -> {
+                if(paintingID == null) {
+                    activity.failSnack("Painting is not published")
+                    return false
+                }
+
+                activity.addStarToPainting(paintingID)
+                true
+            }
+
+            R.id.action_add_to_favourite -> {
+                if(paintingID == null) {
+                    activity.failSnack("Painting is not published")
+                    return false
+                }
+
+                activity.addToFavourite(paintingID)
+                true
+            }
+
+            R.id.action_fork -> {
+                activity.openEditorFragment(paintingModel.code)
+                true
+            }
+
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled") // don't care
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

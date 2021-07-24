@@ -12,11 +12,15 @@ import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
 import com.vanilla.munato.model.PaintingDownloadData
 import com.vanilla.munato.model.PaintingPublishData
+import com.vanilla.munato.repository.localstore.LocalRepository
+import com.vanilla.munato.repository.server.UsersRepository
 
 class HomeActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityHomeBinding
-    private val paintingsRepository = PaintingsRepository()
+
+    private val paintingsRepository = lazy { PaintingsRepository() }
+    private val usersRepository = lazy { UsersRepository() }
+    private val localRepository = lazy { LocalRepository(applicationContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +113,7 @@ class HomeActivity : AppCompatActivity() {
     fun publishPainting(paintingPreview: PaintingPublishData) {
         processSnack("Painting loading to the server")
 
-        paintingsRepository.publishPainting(paintingPreview,
+        paintingsRepository.value.publishPainting(paintingPreview,
             onSuccessFunction = {
                 successSnack("Painting successfully published")
                 openExploreFragment(false)
@@ -120,23 +124,43 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
-        paintingsRepository.loadPaintings(
-            onPaintingLoaded=onPaintingLoaded,
+        paintingsRepository.value.loadPaintings(
+            onPaintingLoaded = onPaintingLoaded,
             onFailure = {
                 failSnack("Fail to load paintings (${it.message})")
             }
         )
     }
 
-    private fun processSnack(message: String) {
+    fun loadFavourites(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
+        // TODO
+    }
+
+    fun processSnack(message: String) {
         Snackbar.make(binding.root, "$message...", Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun successSnack(message: String) {
+    fun successSnack(message: String) {
         Snackbar.make(binding.root, "$message ✨", Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun failSnack(message: String) {
+    fun failSnack(message: String) {
         Snackbar.make(binding.root, "$message \uD83D\uDE1E", Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun addToFavourite(paintingID: String) {
+        // add to local storage TODO do we need ?
+        // localRepository.value.addFavourite(paintingID)
+
+        // add to account on server
+        usersRepository.value.addFavourite(paintingID)
+    }
+
+    fun addStarToPainting(paintingID: String) {
+        // if starred in account
+        // - do nothing
+        // else
+        // - add paintingID to account
+        // - increase painting stars counter
     }
 }
