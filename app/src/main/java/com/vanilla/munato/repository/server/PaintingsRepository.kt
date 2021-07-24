@@ -144,8 +144,15 @@ class PaintingsRepository {
 
         childRef.child(KEY_STARS).runTransaction(object: Transaction.Handler {
             override fun doTransaction(currentData: MutableData): Transaction.Result {
-                val value = currentData.value ?: return Transaction.abort()
-                val previous = value.toString().toIntOrNull() ?: return Transaction.abort()
+                val value = currentData.value ?: run {
+                    Log.e(LOG_TAG, "current data value is null")
+                    return Transaction.abort()
+                }
+
+                val previous = value.toString().toIntOrNull() ?: run {
+                    Log.e(LOG_TAG, "previous data value is not number ${value.toString()}")
+                    return Transaction.abort()
+                }
 
                 currentData.value = previous + 1
 
