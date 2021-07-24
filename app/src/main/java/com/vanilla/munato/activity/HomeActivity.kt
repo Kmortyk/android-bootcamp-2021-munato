@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseError
 import com.vanilla.munato.repository.server.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
@@ -158,6 +159,18 @@ class HomeActivity : AppCompatActivity() {
                 failSnack("Fail to load favourites (${it.message})")
             }
         )
+    }
+
+    fun isStarred(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        usersRepository.value.hasStarred(paintingID,
+            onSuccess = onSuccess,
+            onFailure = onFailure)
+    }
+
+    fun isFavourite(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        usersRepository.value.isFavourite(paintingID,
+            onSuccess = onSuccess,
+            onFailure = onFailure)
     }
 
     fun addStarToPainting(paintingID: String) {

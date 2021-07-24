@@ -28,6 +28,18 @@ class UserRepository {
         userRef().child(KEY_FAVOURITE).child(paintingID).setValue("")
     }
 
+    fun isFavourite(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        userRef().child(KEY_FAVOURITE).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                onSuccess(snapshot.hasChild(paintingID))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onFailure(error)
+            }
+        })
+    }
+
     fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit, onFailure: (DatabaseError) -> Unit) {
         userRef().child(KEY_FAVOURITE).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

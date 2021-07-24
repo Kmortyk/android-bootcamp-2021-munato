@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.webkit.WebView
+import androidx.core.content.res.ResourcesCompat
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.R
 import com.vanilla.munato.model.PaintingModel
@@ -35,6 +36,7 @@ class PaintingViewExploreFragment : Fragment() {
     }
 
     private var paintingModel: PaintingModel? = null
+    private var fragmentMenu: Menu? = null // TODO check after rotate screen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,58 @@ class PaintingViewExploreFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.painting_view_explore_action_bar, menu)
         super.onCreateOptionsMenu(menu,inflater)
+
+        fragmentMenu = menu
+
+        // update app bar after init
+        updateAppBar()
+    }
+
+    private fun updateAppBar() {
+        if(activity == null) {
+            return
+        }
+
+        val activity = activity as HomeActivity
+        val paintingID = paintingModel?.paintingID ?: return
+
+        activity.isStarred(paintingID,
+            onSuccess = { starred ->
+                if(starred) {
+                    menuFillStar()
+                }
+
+                activity.isFavourite(paintingID,
+                    onSuccess = { favourite ->
+                        if(favourite) {
+                            menuFillHeart()
+                        }
+                    },
+                    onFailure = {
+                        activity.failSnack("Oops something went wrong ($it)")
+                    })
+            },
+            onFailure = {
+                activity.failSnack("Oops something went wrong ($it)")
+            })
+    }
+
+    private fun menuFillStar() {
+        val activity = activity as HomeActivity
+        val menu = fragmentMenu ?: return
+
+        val starFilledDrawable = ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_star_white_24, activity.theme)
+
+        menu.findItem(R.id.action_star).icon = starFilledDrawable
+    }
+
+    private fun menuFillHeart() {
+        val activity = activity as HomeActivity
+        val menu = fragmentMenu ?: return
+
+        val heartFilledDrawable = ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_favorite_white_24, activity.theme)
+
+        menu.findItem(R.id.action_add_to_favourite).icon = heartFilledDrawable
     }
 
     override fun onOptionsItemSelected(item: MenuItem) : Boolean {
@@ -76,6 +130,9 @@ class PaintingViewExploreFragment : Fragment() {
                 }
 
                 activity.addStarToPainting(paintingID)
+
+                menuFillStar()
+
                 true
             }
 
@@ -86,6 +143,9 @@ class PaintingViewExploreFragment : Fragment() {
                 }
 
                 activity.addToFavourite(paintingID)
+
+                menuFillHeart()
+
                 true
             }
 
