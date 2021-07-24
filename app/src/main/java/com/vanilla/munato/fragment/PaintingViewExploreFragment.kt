@@ -91,6 +91,7 @@ class PaintingViewExploreFragment : Fragment() {
 
             R.id.action_fork -> {
                 activity.openEditorFragment(paintingModel.code)
+                activity.successSnack("Successfully forked")
                 true
             }
 

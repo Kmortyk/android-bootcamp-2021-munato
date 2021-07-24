@@ -136,7 +136,7 @@ class HomeActivity : AppCompatActivity() {
         Snackbar.make(binding.root, "$message...", Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun successSnack(message: String) {
+    fun successSnack(message: String) {
         Snackbar.make(binding.root, "$message ✨", Snackbar.LENGTH_SHORT).show()
     }
 
@@ -146,6 +146,7 @@ class HomeActivity : AppCompatActivity() {
 
     fun addToFavourite(paintingID: String) {
         usersRepository.value.addFavourite(paintingID)
+        successSnack("Added to favourite")
     }
 
     fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit) {
