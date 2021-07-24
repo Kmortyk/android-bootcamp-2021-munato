@@ -14,6 +14,6 @@ class MunatoApp : Application() {
         FirebaseApp.initializeApp(baseContext)
 
         // TODO dark theme
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 }

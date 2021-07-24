@@ -29,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        openExploreFragment(true)
+        openExploreFragment(add=true)
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             val ftx = supportFragmentManager.beginTransaction()
@@ -117,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
         paintingsRepository.value.publishPainting(paintingPreview,
             onSuccessFunction = {
                 successSnack("Painting successfully published")
-                openExploreFragment(false)
+                openExploreFragment(add=false)
             },
             onFailureFunction = {
                 failSnack("Fail to publish painting (${it.message})")
