@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Munato</string>
+    <string name="log_in_img_description">Beautiful background image</string>
     <string name="log_in_button_text">Start journey</string>
+    <string name="log_out_button_text">Login another account</string>
+    <string name="log_out_error_text">Failed to logout from your account</string>
     <string name="nav_explore">Explore</string>
     <string name="nav_create">Create</string>
     <string name="nav_collection">Collection</string>
@@ -23,4 +26,5 @@
     <string name="fragment_publish_userImage">Your image here</string>
     <string name="painting_view_explore_action_bar_to_favourite">To favourite</string>
     <string name="painting_view_explore_action_bar_add_star">Add star</string>
+    <string name="login_err_code">Failed to login. Error code:</string>
 </resources>
