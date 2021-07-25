@@ -6,17 +6,22 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseError
 import com.vanilla.munato.repository.server.PaintingsRepository
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
 import com.vanilla.munato.model.PaintingDownloadData
 import com.vanilla.munato.model.PaintingPublishData
+import com.vanilla.munato.repository.localstore.LocalRepository
+import com.vanilla.munato.repository.server.UserRepository
 
 class HomeActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityHomeBinding
-    private val paintingsRepository = PaintingsRepository()
+
+    private val paintingsRepository = lazy { PaintingsRepository() }
+    private val usersRepository = lazy { UserRepository() }
+    private val localRepository = lazy { LocalRepository(applicationContext) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        openExploreFragment(true)
+        openExploreFragment(add=true)
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             val ftx = supportFragmentManager.beginTransaction()
@@ -109,10 +114,10 @@ class HomeActivity : AppCompatActivity() {
     fun publishPainting(paintingPreview: PaintingPublishData) {
         processSnack("Painting loading to the server")
 
-        paintingsRepository.publishPainting(paintingPreview,
+        paintingsRepository.value.publishPainting(paintingPreview,
             onSuccessFunction = {
                 successSnack("Painting successfully published")
-                openExploreFragment(false)
+                openExploreFragment(add=false)
             },
             onFailureFunction = {
                 failSnack("Fail to publish painting (${it.message})")
@@ -120,8 +125,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun loadPaintings(onPaintingLoaded: (PaintingDownloadData) -> Unit) {
-        paintingsRepository.loadPaintings(
-            onPaintingLoaded=onPaintingLoaded,
+        paintingsRepository.value.loadPaintings(
+            onPaintingLoaded = onPaintingLoaded,
             onFailure = {
                 failSnack("Fail to load paintings (${it.message})")
             }
@@ -132,11 +137,65 @@ class HomeActivity : AppCompatActivity() {
         Snackbar.make(binding.root, "$message...", Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun successSnack(message: String) {
+    fun successSnack(message: String) {
         Snackbar.make(binding.root, "$message ✨", Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun failSnack(message: String) {
+    fun failSnack(message: String) {
         Snackbar.make(binding.root, "$message \uD83D\uDE1E", Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun addToFavourite(paintingID: String) {
+        usersRepository.value.addFavourite(paintingID)
+        successSnack("Added to favourite")
+    }
+
+    fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit) {
+        usersRepository.value.loadFavourites(
+            onFavouritesLoaded = {
+                onFavouritesLoaded(it)
+            },
+            onFailure = {
+                failSnack("Fail to load favourites (${it.message})")
+            }
+        )
+    }
+
+    fun isStarred(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        usersRepository.value.hasStarred(paintingID,
+            onSuccess = onSuccess,
+            onFailure = onFailure)
+    }
+
+    fun isFavourite(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        usersRepository.value.isFavourite(paintingID,
+            onSuccess = onSuccess,
+            onFailure = onFailure)
+    }
+
+    fun addStarToPainting(paintingID: String) {
+        usersRepository.value.hasStarred(paintingID,
+            onSuccess = {
+                if(!it) {
+                    // if not starred in account
+                    // add paintingID to account
+                    usersRepository.value.addStarred(paintingID)
+                    // increase painting stars counter
+                    paintingsRepository.value.addStar(paintingID,
+                        onSuccess = {
+                            successSnack("Painting is starred")
+                        },
+                        onFailure = { err ->
+                            failSnack("Oops something went wrong (${err.message})")
+                        },
+                    )
+                } else {
+                    // if starred in account
+                    // do nothing
+                    successSnack("Already starred")
+                }
+            }, onFailure = {
+                failSnack("Oops something went wrong (${it.message})")
+            })
     }
 }

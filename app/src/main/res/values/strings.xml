@@ -21,4 +21,6 @@
     <string name="collection_itm_painting_stars_placeholder">10</string>
     <string name="painting_view_explore_action_bar_fork">Fork</string>
     <string name="fragment_publish_userImage">Your image here</string>
+    <string name="painting_view_explore_action_bar_to_favourite">To favourite</string>
+    <string name="painting_view_explore_action_bar_add_star">Add star</string>
 </resources>
