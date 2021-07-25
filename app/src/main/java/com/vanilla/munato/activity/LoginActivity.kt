@@ -1,8 +1,11 @@
 package com.vanilla.munato.activity
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -12,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
 import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityLoginBinding
+import java.lang.NullPointerException
 
 /*
 *   Необходимо использовать многопоточность
@@ -30,7 +34,8 @@ class LoginActivity : AppCompatActivity() {
 
     // Choose authentication providers
     private val providers = arrayListOf(
-        AuthUI.IdpConfig.EmailBuilder().build())
+        AuthUI.IdpConfig.EmailBuilder().build()
+    )
 
     // Create and launch sign-in intent
     private val signInIntent = AuthUI.getInstance()
@@ -64,6 +69,10 @@ class LoginActivity : AppCompatActivity() {
                     Snackbar.make(it, R.string.log_out_error_text, Snackbar.LENGTH_LONG).show()
                 }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
@@ -89,5 +98,12 @@ class LoginActivity : AppCompatActivity() {
         errorCode?.let {
             Snackbar.make(binding.root, "${resources.getString(R.string.login_err_code)} $it", Snackbar.LENGTH_LONG).show()
         }
+    }
+}
+
+public fun onUserLogout(activity: Activity?) {
+    activity?.let {
+        Toast.makeText(it, R.string.log_out_another_device_text, Toast.LENGTH_LONG).show()
+        it.finish()
     }
 }
