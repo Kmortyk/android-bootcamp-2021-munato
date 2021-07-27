@@ -23,7 +23,7 @@
         android:layout_gravity="center"
         android:elevation="5dp"
         android:orientation="vertical"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_log_in"
