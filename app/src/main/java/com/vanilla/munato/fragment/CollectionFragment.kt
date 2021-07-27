@@ -84,10 +84,19 @@ class CollectionFragment : Fragment() {
     }
 
     fun selectMyTab() {
-        val adapter = MyPaintingsRecyclerViewAdapter()
-        recyclerView?.adapter = MyPaintingsRecyclerViewAdapter()
-        (activity as HomeActivity).loadMyPaintingsFromLocalStorage {
-            adapter.setData(it)
+        recyclerView?.let { recyclerView ->
+            val adapter = MyPaintingsRecyclerViewAdapter()
+            val activity = activity as HomeActivity
+
+            recyclerView.adapter = adapter
+
+            activity.apply {
+                loadMyPaintingsFromLocalStorage {
+                    runOnUiThread {
+                        adapter.setData(it)
+                    }
+                }
+            }
         }
     }
 

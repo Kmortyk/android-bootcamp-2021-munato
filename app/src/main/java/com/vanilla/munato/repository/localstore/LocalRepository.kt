@@ -1,6 +1,7 @@
 package com.vanilla.munato.repository.localstore
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.vanilla.munato.model.PaintingModel
@@ -40,6 +41,8 @@ class LocalRepository(applicationContext: Context) {
             val res = mutableListOf<PaintingPublishData>()
 
             for(record in localPaintingsDao.getAll()) {
+                Log.d("LocalRepository", "load painting " + record.uid)
+
                 val data = PaintingPublishData(
                     PaintingModel(record.paintingID, "", "", record.code, 0),
                     PaintingPreviewMethods.fromBase64(record.paintingID)
