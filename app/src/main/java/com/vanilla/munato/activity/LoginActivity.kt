@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -24,6 +26,8 @@ import java.lang.NullPointerException
 *  */
 
 class LoginActivity : AppCompatActivity() {
+
+    val LOG_TAG = "LoginActivity"
 
     // See: https://developer.android.com/training/basics/intents/result
     private val signInLauncher = registerForActivityResult(
@@ -76,8 +80,13 @@ class LoginActivity : AppCompatActivity() {
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
+            hideUI()
             runFirebaseLogin()
+
+            return
         }
+
+        showUI()
     }
 
     private fun runFirebaseLogin() {
@@ -86,18 +95,22 @@ class LoginActivity : AppCompatActivity() {
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
-        if (result.resultCode == RESULT_OK) {
-            // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
-            if (user != null) {
-                return
+        if (result.resultCode != RESULT_OK) {
+            Log.e(LOG_TAG, "onSignInResult result code: " + result.resultCode.toString())
+
+            val errorCode = response?.error?.errorCode
+            errorCode?.let {
+                Snackbar.make(binding.root, "${resources.getString(R.string.login_err_code)} $it", Snackbar.LENGTH_LONG).show()
             }
         }
+    }
 
-        val errorCode = response?.error?.errorCode
-        errorCode?.let {
-            Snackbar.make(binding.root, "${resources.getString(R.string.login_err_code)} $it", Snackbar.LENGTH_LONG).show()
-        }
+    private fun hideUI() {
+        binding.loginUi.visibility = View.INVISIBLE
+    }
+
+    private fun showUI() {
+        binding.loginUi.visibility = View.VISIBLE
     }
 }
 

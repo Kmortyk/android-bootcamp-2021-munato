@@ -17,29 +17,31 @@
         android:contentDescription="@string/log_in_img_description" />
 
     <LinearLayout
+        android:id="@+id/login_ui"
         android:layout_width="278dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:elevation="5dp"
         android:orientation="vertical"
-        android:elevation="5dp">
+        android:visibility="invisible">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_log_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:cornerRadius="100dp"
             android:backgroundTint="@color/primaryDarkColor"
-            android:text="@string/log_in_button_text" />
+            android:text="@string/log_in_button_text"
+            app:cornerRadius="100dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_log_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:cornerRadius="100dp"
             android:backgroundTint="@color/primaryDarkColor"
-            android:text="@string/log_out_button_text" />
+            android:text="@string/log_out_button_text"
+            app:cornerRadius="100dp" />
 
     </LinearLayout>
 
