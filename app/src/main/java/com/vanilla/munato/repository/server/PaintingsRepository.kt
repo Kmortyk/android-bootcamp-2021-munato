@@ -64,12 +64,9 @@ class PaintingsRepository {
 
     private fun publishPaintingPreview(painting: PaintingPublishData, onSuccessFunction: () -> Unit, onFailureFunction: (Exception) -> Unit) {
         val storageRef = storage.getReference(STORAGE_IMAGES_DIR + "/" + painting.model.paintingID + ".jpg")
-        val preview = Bitmap.createScaledBitmap(painting.preview, painting.preview.width / 2, painting.preview.height / 2, false)
-        val compressedStream = ByteArrayOutputStream()
+        val preview = PaintingPreviewMethods.compressForPublish(painting.preview)
 
-        preview.compress(Bitmap.CompressFormat.JPEG, 70, compressedStream)
-
-        storageRef.putBytes(compressedStream.toByteArray())
+        storageRef.putBytes(preview)
             .addOnSuccessListener {
                 onSuccessFunction()
             }

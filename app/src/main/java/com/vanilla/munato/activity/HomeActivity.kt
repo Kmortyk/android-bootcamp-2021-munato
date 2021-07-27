@@ -12,6 +12,7 @@ import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
 import com.vanilla.munato.model.PaintingDownloadData
+import com.vanilla.munato.model.PaintingPreview
 import com.vanilla.munato.model.PaintingPublishData
 import com.vanilla.munato.repository.localstore.LocalRepository
 import com.vanilla.munato.repository.server.UserRepository
@@ -42,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, CollectionFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
-                    ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, getScriptTemplate(this)))
+                    ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(getScriptTemplate(this)))
                 }
             }
 
@@ -75,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
     fun returnFromEditorFragment(code: String) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-        ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, code))
+        ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(code))
         ftx.addToBackStack("editor_return")
         ftx.commit()
     }
@@ -197,5 +198,9 @@ class HomeActivity : AppCompatActivity() {
             }, onFailure = {
                 failSnack("Oops something went wrong (${it.message})")
             })
+    }
+
+    fun saveToLocalStorage(code: String, preview: PaintingPreview) {
+        localRepository.value.savePainting(code, preview)
     }
 }
