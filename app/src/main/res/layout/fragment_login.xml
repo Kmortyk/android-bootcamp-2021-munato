@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryBackgroundColor"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.EntryActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -28,18 +28,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:cornerRadius="100dp"
             android:backgroundTint="@color/primaryDarkColor"
-            android:text="@string/log_in_button_text" />
+            android:fontFamily="@font/questrial"
+            android:text="@string/log_in_button_text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="100dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_log_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:cornerRadius="100dp"
             android:backgroundTint="@color/primaryDarkColor"
-            android:text="@string/log_out_button_text" />
+            android:fontFamily="@font/questrial"
+            android:text="@string/log_out_button_text"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="100dp" />
 
     </LinearLayout>
 

@@ -28,4 +28,6 @@
     <string name="painting_view_explore_action_bar_to_favourite">To favourite</string>
     <string name="painting_view_explore_action_bar_add_star">Add star</string>
     <string name="login_err_code">Failed to login. Error code:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
