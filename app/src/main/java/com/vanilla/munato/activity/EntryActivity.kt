@@ -31,6 +31,7 @@ import java.lang.NullPointerException
 class EntryActivity : AppCompatActivity() {
     companion object {
         const val KEY_FIRST_START = "first_start"
+        const val SHARED_PREFS_NAME = "munato"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,18 +61,15 @@ class EntryActivity : AppCompatActivity() {
         ftx.commit()
     }
 
-    private fun firstStart() : Boolean {
-        val sp = getSharedPreferences("munato", MODE_PRIVATE)
+    fun firstStart() : Boolean {
+        return !getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE).contains(KEY_FIRST_START)
+    }
 
-        if(!sp.contains(KEY_FIRST_START)) {
-            val editor = sp.edit()
-            editor.putBoolean(KEY_FIRST_START, true)
-            editor.apply()
-
-            return true
-        }
-
-        return false
+    fun addFirstStartFlag() {
+        val sp = getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.putBoolean(KEY_FIRST_START, true)
+        editor.apply()
     }
 
     fun openHomeActivity() {

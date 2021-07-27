@@ -59,6 +59,10 @@ class LoginFragment : Fragment() {
             val activity = it as EntryActivity
 
             view.findViewById<Button>(R.id.btn_log_in).setOnClickListener {
+                if(activity.firstStart()) {
+                    activity.addFirstStartFlag()
+                }
+
                 activity.openHomeActivity()
             }
 
