@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vanilla.munato.R
-import com.vanilla.munato.adapter.CollectionRecyclerViewAdapter
-import com.vanilla.munato.model.PaintingModel
 import com.google.android.material.tabs.TabLayout
+import com.vanilla.munato.activity.HomeActivity
+import com.vanilla.munato.adapter.FavouritePaintingsRecyclerViewAdapter
+import com.vanilla.munato.adapter.MyPaintingsRecyclerViewAdapter
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,27 +26,14 @@ private const val ARG_PARAM1 = "param1"
  */
 class CollectionFragment : Fragment() {
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         * @return A new instance of fragment CollectionFragment.
-         */
         @JvmStatic
-        fun newInstance(/*param1: String*/) =
-            CollectionFragment().apply {
-                arguments = Bundle().apply {
-                    // putString(ARG_PARAM1, param1)
-                }
-            }
+        fun newInstance() = CollectionFragment().apply {}
     }
 
-    // private var param1: String? = null
+    private var recyclerView: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            // param1 = it.getString(ARG_PARAM1)
-        }
     }
 
     override fun onCreateView(
@@ -55,40 +43,33 @@ class CollectionFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_collection, container, false)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.fragment_collection_recycler_view)
-        val layoutManager = LinearLayoutManager(activity)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = CollectionRecyclerViewAdapter(listOf(
-            PaintingModel("", "kmortyk", "good one", "", 1),
-            PaintingModel("", "memphis", "stars", "", 21),
-            PaintingModel("", "determin", "fine too", "", 1),
-            PaintingModel("", "kettie", "last one", "", 56),
-            PaintingModel("", "stephan", "star dance", "", 128),
-            PaintingModel("", "marie", "eye u", "", 0),
-            PaintingModel("", "kevin", "when it comes", "", 5677),
-            PaintingModel("", "evik", "loved", "", 1),
-            PaintingModel("", "buster", "best", "", 45),
-        ))
+        recyclerView = view.findViewById(R.id.fragment_collection_recycler_view)
 
-        val dividerItemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
-        val spaceDrawable = ResourcesCompat.getDrawable(resources, R.drawable.space, null)
+        recyclerView?.let { recyclerView ->
+            val layoutManager = LinearLayoutManager(activity)
+            recyclerView.layoutManager = layoutManager
 
-        if(spaceDrawable != null) { // in case
-            dividerItemDecoration.setDrawable(spaceDrawable)
+            selectMyTab()
+
+            val dividerItemDecoration = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
+            val spaceDrawable = ResourcesCompat.getDrawable(resources, R.drawable.space, null)
+
+            if(spaceDrawable != null) { // in case
+                dividerItemDecoration.setDrawable(spaceDrawable)
+            }
+
+            recyclerView.addItemDecoration(dividerItemDecoration)
         }
-
-        recyclerView.addItemDecoration(dividerItemDecoration)
 
         view.findViewById<TabLayout>(R.id.collection_tab_layout).addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if(tab != null) {
                     when(tab.id) {
                         R.id.collection_tab_my -> {
-
+                            selectMyTab()
                         }
-
                         R.id.collection_tab_favourites -> {
-
+                            selectFavouritesTab()
                         }
                     }
                 }
@@ -100,5 +81,18 @@ class CollectionFragment : Fragment() {
         })
 
         return view
+    }
+
+    fun selectMyTab() {
+        val adapter = MyPaintingsRecyclerViewAdapter()
+        recyclerView?.adapter = MyPaintingsRecyclerViewAdapter()
+        (activity as HomeActivity).loadMyPaintingsFromLocalStorage {
+            adapter.setData(it)
+        }
+    }
+
+    fun selectFavouritesTab() {
+        val adapter = FavouritePaintingsRecyclerViewAdapter()
+        recyclerView?.adapter = adapter
     }
 }

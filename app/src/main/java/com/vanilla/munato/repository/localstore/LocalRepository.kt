@@ -21,7 +21,7 @@ class LocalRepository(applicationContext: Context) {
     init {
         db = Room.databaseBuilder(
             applicationContext,
-            LocalStorage::class.java, "munato-db"
+            LocalStorage::class.java, "munato-db.sqlite"
         ).build()
 
         localPaintingsDao = db.localPaintingsDao()

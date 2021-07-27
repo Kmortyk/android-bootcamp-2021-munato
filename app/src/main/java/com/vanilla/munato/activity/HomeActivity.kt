@@ -202,5 +202,12 @@ class HomeActivity : AppCompatActivity() {
 
     fun saveToLocalStorage(code: String, preview: PaintingPreview) {
         localRepository.value.savePainting(code, preview)
+        successSnack("Painting saved")
+    }
+
+    fun loadMyPaintingsFromLocalStorage(onLoad: (List<PaintingPublishData>) -> Unit) {
+        localRepository.value.loadPaintings {
+            onLoad(it)
+        }
     }
 }

@@ -8,7 +8,7 @@ import com.vanilla.munato.model.PaintingPreview
 
 @Dao
 interface LocalPaintingsDao {
-    @Query("SELECT * FROM local_paintings")
+    @Query("SELECT * FROM local_paintings;")
     fun getAll(): List<LocalPaintingsEntity>
 
     @Update

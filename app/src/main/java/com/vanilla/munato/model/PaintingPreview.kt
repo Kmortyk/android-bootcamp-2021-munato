@@ -8,6 +8,8 @@ import java.io.ByteArrayOutputStream
 
 typealias PaintingPreview = Bitmap
 
+val EmptyPaintingPreview: PaintingPreview = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+
 class PaintingPreviewMethods {
     companion object {
         fun toBase64(preview: PaintingPreview) : String {
@@ -17,6 +19,10 @@ class PaintingPreviewMethods {
         fun fromBase64(base64: String) : PaintingPreview {
             val data = base64.substring(base64.indexOf(",") + 1)
             val decodedString: ByteArray = Base64.decode(data, Base64.DEFAULT)
+
+            if(decodedString.isEmpty()) {
+                return EmptyPaintingPreview
+            }
 
             return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
         }

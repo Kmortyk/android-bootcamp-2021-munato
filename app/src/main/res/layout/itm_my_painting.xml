@@ -12,7 +12,14 @@
         app:cardCornerRadius="15dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:cardUseCompatPadding="true"/>
+        app:cardUseCompatPadding="true">
+
+        <ImageView
+            android:id="@+id/itm_my_painting_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         app:cardCornerRadius="15dp"
