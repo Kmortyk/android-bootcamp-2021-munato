@@ -12,7 +12,7 @@ import com.vanilla.munato.model.PaintingModel
 class FavouritePaintingsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvHeader: TextView = itemView.findViewById(R.id.collection_tv_painting_name)
     val tvStarsCount: TextView = itemView.findViewById(R.id.collection_itm_stars_text)
-    val btnFork: Button = itemView.findViewById(R.id.collection_btn_edit)
+    // val btnFork: Button = itemView.findViewById(R.id.collection_btn_edit)
 
     fun setData(model: PaintingModel) {
         tvHeader.text = model.name

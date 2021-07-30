@@ -30,7 +30,7 @@ class LocalRepository(applicationContext: Context) {
 
     fun savePainting(code: String, preview: PaintingPreview) {
         GlobalScope.launch {
-            val entity = LocalPaintingsEntity(0, code, PaintingPreviewMethods.toBase64(preview))
+            val entity = LocalPaintingsEntity(0, code, PaintingPreviewMethods.compressForPublish(preview))
             localPaintingsDao.insert(entity)
         }
     }
@@ -41,11 +41,12 @@ class LocalRepository(applicationContext: Context) {
             val res = mutableListOf<PaintingPublishData>()
 
             for(record in localPaintingsDao.getAll()) {
-                Log.d("LocalRepository", "load painting " + record.uid)
+                // Log.d("LocalRepository", "load painting " + record.uid)
+                Log.d("LocalRepository", "load painting " + record.preview)
 
                 val data = PaintingPublishData(
                     PaintingModel(record.paintingID, "", "", record.code, 0),
-                    PaintingPreviewMethods.fromBase64(record.paintingID)
+                    PaintingPreviewMethods.fromBytes(record.preview)
                 )
 
                 res.add(data)

@@ -17,7 +17,12 @@ class PaintingPreviewMethods {
         }
 
         fun fromBase64(base64: String) : PaintingPreview {
-            val data = base64.substring(base64.indexOf(",") + 1)
+            val data = if(base64.contains(',')) {
+                base64.substring(base64.indexOf(",") + 1)
+            } else {
+                base64
+            }
+
             val decodedString: ByteArray = Base64.decode(data, Base64.DEFAULT)
 
             if(decodedString.isEmpty()) {
@@ -25,6 +30,13 @@ class PaintingPreviewMethods {
             }
 
             return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        }
+
+        fun fromBytes(bytes: ByteArray?) : PaintingPreview {
+            if(bytes == null)
+                return EmptyPaintingPreview
+
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
         }
 
         fun compressForPublish(preview: PaintingPreview): ByteArray {

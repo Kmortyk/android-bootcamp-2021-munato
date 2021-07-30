@@ -40,6 +40,7 @@ class MyPaintingsRecyclerViewAdapter() : RecyclerView.Adapter<MyPaintingsItemVie
     fun setData(list: List<PaintingPublishData>) {
         paintings.clear()
         paintings.addAll(list)
+
         notifyDataSetChanged()
     }
 }
