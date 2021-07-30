@@ -11,24 +11,29 @@ import com.vanilla.munato.R
 import com.vanilla.munato.model.PaintingModel
 import com.vanilla.munato.model.PaintingPublishData
 
-class MyPaintingsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class MyPaintingsItemViewHolder(itemView: View, private val openEditorFun: (String) -> Unit) : RecyclerView.ViewHolder(itemView) {
     private val tvHeader = itemView.findViewById<TextView>(R.id.collection_tv_painting_name)
     private val ivPreview = itemView.findViewById<ImageView>(R.id.itm_my_painting_preview)
-//    val btnEdit: Button = itemView.findViewById(R.id.collection_btn_edit)
+    private val btnEdit: Button = itemView.findViewById(R.id.collection_btn_edit)
 
     fun setData(model: PaintingPublishData) {
-        tvHeader.text = model.model.name
+        tvHeader.text = "${model.model.user} - ${model.model.name}"
         ivPreview.setImageBitmap(model.preview)
+
+        btnEdit.setOnClickListener {
+            openEditorFun(model.model.code ?: "")
+        }
     }
 }
 
-class MyPaintingsRecyclerViewAdapter() : RecyclerView.Adapter<MyPaintingsItemViewHolder>() {
+class MyPaintingsRecyclerViewAdapter(private val openEditorFun: (String) -> Unit) : RecyclerView.Adapter<MyPaintingsItemViewHolder>() {
     private val paintings = mutableListOf<PaintingPublishData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPaintingsItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.itm_my_painting, parent, false)
-        return MyPaintingsItemViewHolder(view)
+
+        return MyPaintingsItemViewHolder(view, openEditorFun)
     }
 
     override fun onBindViewHolder(holder: MyPaintingsItemViewHolder, position: Int) {

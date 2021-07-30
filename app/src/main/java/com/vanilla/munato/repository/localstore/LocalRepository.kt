@@ -12,7 +12,9 @@ import com.vanilla.munato.repository.localstore.localpaintings.LocalPaintingsDao
 import com.vanilla.munato.repository.localstore.localpaintings.LocalPaintingsEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+import java.sql.Date
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 class LocalRepository(applicationContext: Context) {
 
@@ -42,10 +44,14 @@ class LocalRepository(applicationContext: Context) {
 
             for(record in localPaintingsDao.getAll()) {
                 // Log.d("LocalRepository", "load painting " + record.uid)
-                Log.d("LocalRepository", "load painting " + record.preview)
+                Log.d("LocalRepository", "load painting " + record.uid)
+
+                // TODO timestamp as a name
+
+                val date = Date(Timestamp(record.timestamp).time)
 
                 val data = PaintingPublishData(
-                    PaintingModel(record.paintingID, "", "", record.code, 0),
+                    PaintingModel(record.paintingID, record.user, date.toString(), record.code, 0),
                     PaintingPreviewMethods.fromBytes(record.preview)
                 )
 

@@ -85,8 +85,10 @@ class CollectionFragment : Fragment() {
 
     fun selectMyTab() {
         recyclerView?.let { recyclerView ->
-            val adapter = MyPaintingsRecyclerViewAdapter()
             val activity = activity as HomeActivity
+            val adapter = MyPaintingsRecyclerViewAdapter({ it ->
+                activity.openEditorFragment(it)
+            })
 
             recyclerView.adapter = adapter
 
