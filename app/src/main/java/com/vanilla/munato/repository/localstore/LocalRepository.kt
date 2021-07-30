@@ -28,9 +28,9 @@ class LocalRepository(applicationContext: Context) {
         localPaintingsDao = db.localPaintingsDao()
     }
 
-    fun savePainting(code: String, preview: PaintingPreview) {
+    fun savePainting(user: String, code: String, preview: PaintingPreview) {
         GlobalScope.launch {
-            val entity = LocalPaintingsEntity(0, code, PaintingPreviewMethods.compressForPublish(preview))
+            val entity = LocalPaintingsEntity(0, user, code, PaintingPreviewMethods.compressForPublish(preview))
             localPaintingsDao.insert(entity)
         }
     }

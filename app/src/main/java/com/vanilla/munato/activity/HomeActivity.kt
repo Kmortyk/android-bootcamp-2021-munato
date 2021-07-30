@@ -201,7 +201,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun saveToLocalStorage(code: String, preview: PaintingPreview) {
-        localRepository.value.savePainting(code, preview)
+        localRepository.value.savePainting(
+            usersRepository.value.userCredential(),
+            code,
+            preview
+        )
+
         successSnack("Painting saved")
     }
 

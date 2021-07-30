@@ -8,7 +8,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 
 /* TODO
-   - сохранение работ в Room, чтобы не терять их при выходе с экрана или приложения
    - favourites download
 
    - удаление звёзд и сердечек

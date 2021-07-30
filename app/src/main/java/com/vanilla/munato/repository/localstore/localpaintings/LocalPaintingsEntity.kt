@@ -4,12 +4,15 @@ import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.sql.Timestamp
 
 @Entity(tableName = "local_paintings")
 data class LocalPaintingsEntity(
     @PrimaryKey(autoGenerate = true) val uid: Long, // local int id
+    @ColumnInfo(name="user") val user: String?,
     @ColumnInfo(name="code") val code: String?, // javascript code for this scene
     @ColumnInfo(name="preview") val preview: ByteArray?, // javascript code for this scene
+    @ColumnInfo(name="timestamp") val timestamp: Long = System.currentTimeMillis(),
     @Nullable var paintingID: String = "", // presented if published
 ) {
     override fun equals(other: Any?): Boolean {

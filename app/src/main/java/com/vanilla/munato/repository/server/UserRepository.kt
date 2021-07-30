@@ -1,5 +1,6 @@
 package com.vanilla.munato.repository.server
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -76,7 +77,13 @@ class UserRepository {
         })
     }
 
-    private fun userCredential() = "kmortyk" // TODO add sign up and log in
+    fun authorized() = FirebaseAuth.getInstance().currentUser != null
+
+    fun userCredential() : String {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        return user?.displayName ?: "<err user>"
+    }
 
     private fun userRef(): DatabaseReference {
         val usersRef = db.getReference("users")
