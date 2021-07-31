@@ -210,9 +210,33 @@ class HomeActivity : AppCompatActivity() {
             })
     }
 
+    fun removeStarFromPainting(paintingID: String) {
+        usersRepository.value.hasStarred(paintingID,
+            onSuccess = {
+                if(it) {
+                    // if starred in account
+                    // remove paintingID from account
+                    usersRepository.value.removeStarred(paintingID)
+                    // increase painting stars counter
+                    paintingsRepository.value.removeStar(paintingID,
+                        onSuccess = {
+                            successSnack("Painting is not starred")
+                        },
+                        onFailure = { err ->
+                            failSnack("Oops something went wrong (${err.message})")
+                        },
+                    )
+                } else {
+                    successSnack("Was not starred")
+                }
+            }, onFailure = {
+                failSnack("Oops something went wrong (${it.message})")
+            })
+    }
+
     fun saveToLocalStorage(code: String, preview: PaintingPreview) {
         localRepository.value.savePainting(
-            usersRepository.value.userCredential(),
+            usersRepository.value.userName(),
             code,
             preview
         )

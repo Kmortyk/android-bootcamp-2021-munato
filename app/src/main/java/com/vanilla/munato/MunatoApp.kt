@@ -9,8 +9,6 @@ import com.google.firebase.ktx.initialize
 
 /* TODO
    - удаление звёзд и сердечек
-
-   - оптимизация списка картин
 *  */
 
 class MunatoApp : Application() {

@@ -153,6 +153,14 @@ class PaintingsRepository {
     }
 
     fun addStar(paintingID: String, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
+        changeStarValue(paintingID, { it + 1 }, onSuccess, onFailure)
+    }
+
+    fun removeStar(paintingID: String, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
+        changeStarValue(paintingID, { if(it > 0) { it - 1 } else 0 }, onSuccess, onFailure)
+    }
+
+    private fun changeStarValue(paintingID: String, changeValueFun: (Int) -> Int, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
         val paintingsRef = db.getReference("paintings")
         val childRef = paintingsRef.child(paintingID)
 
@@ -168,7 +176,7 @@ class PaintingsRepository {
                     return Transaction.abort()
                 }
 
-                currentData.value = previous + 1
+                currentData.value = changeValueFun(previous)
 
                 return Transaction.success(currentData)
             }

@@ -65,6 +65,10 @@ class UserRepository {
         userRef().child(KEY_STARRED).child(paintingID).setValue("")
     }
 
+    fun removeStarred(paintingID: String) {
+        userRef().child(KEY_STARRED).child(paintingID).removeValue()
+    }
+
     fun hasStarred(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
         userRef().child(KEY_STARRED).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -79,10 +83,16 @@ class UserRepository {
 
     fun authorized() = FirebaseAuth.getInstance().currentUser != null
 
-    fun userCredential() : String {
+    fun userName() : String {
         val user = FirebaseAuth.getInstance().currentUser
 
         return user?.displayName ?: "<err user>"
+    }
+
+    fun userCredential() : String {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        return user?.uid ?: "<err uid>"
     }
 
     private fun userRef(): DatabaseReference {
