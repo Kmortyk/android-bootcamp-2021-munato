@@ -8,7 +8,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 
 /* TODO
-   - удаление звёзд и сердечек
+    - запретить менять опубликованные произведения
+    - пресеты для рисования
 *  */
 
 class MunatoApp : Application() {
