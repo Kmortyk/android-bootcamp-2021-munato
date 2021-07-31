@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Munato"
         android:name=".MunatoApp">
 
-        <activity android:name="com.vanilla.munato.activity.LoginActivity">
+        <activity android:name="com.vanilla.munato.activity.EntryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
