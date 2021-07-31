@@ -69,7 +69,7 @@ class CollectionFragment : Fragment() {
 
         val viewPagerAdapter = CollectionPagerAdapter(activity,
             MyPaintingsRecyclerViewAdapter { activity.openEditorFragment(it) },
-            FavouritePaintingsRecyclerViewAdapter(),)
+            FavouritePaintingsRecyclerViewAdapter { activity.openEditorFragment(it) })
 
         val viewPager = view.findViewById<ViewPager2>(R.id.collection_view_pager)
 

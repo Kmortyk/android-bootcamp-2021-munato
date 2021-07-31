@@ -8,28 +8,30 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.vanilla.munato.R
 import com.vanilla.munato.model.PaintingDownloadData
-import com.vanilla.munato.model.PaintingModel
-import com.vanilla.munato.model.PaintingPublishData
 
-class FavouritePaintingsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val tvHeader: TextView = itemView.findViewById(R.id.collection_tv_painting_name)
-    val tvStarsCount: TextView = itemView.findViewById(R.id.collection_itm_stars_text)
-    // val btnFork: Button = itemView.findViewById(R.id.collection_btn_edit)
+class FavouritePaintingsItemViewHolder(itemView: View, private val openEditorFun: (String) -> Unit) : RecyclerView.ViewHolder(itemView) {
+    private val tvHeader: TextView = itemView.findViewById(R.id.collection_tv_painting_name)
+    private val tvStarsCount: TextView = itemView.findViewById(R.id.collection_itm_stars_text)
+    private val btnFork: Button = itemView.findViewById(R.id.collection_btn_fork)
 
     fun setData(model: PaintingDownloadData) {
         tvHeader.text = model.model.name
         tvStarsCount.text = model.model.stars.toString()
+
+        btnFork.setOnClickListener {
+            openEditorFun(model.model.code ?: "")
+        }
     }
 }
 
-class FavouritePaintingsRecyclerViewAdapter :
+class FavouritePaintingsRecyclerViewAdapter(private val openEditorFun: (String) -> Unit) :
     RecyclerView.Adapter<FavouritePaintingsItemViewHolder>() {
     private val paintings = mutableListOf<PaintingDownloadData>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouritePaintingsItemViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.itm_favourite_painting, parent, false)
-        return FavouritePaintingsItemViewHolder(view)
+        return FavouritePaintingsItemViewHolder(view, openEditorFun)
     }
 
     override fun onBindViewHolder(holder: FavouritePaintingsItemViewHolder, position: Int) {

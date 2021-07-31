@@ -1,32 +1,12 @@
 package com.vanilla.munato.activity
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
-import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 import com.vanilla.munato.R
-import com.vanilla.munato.databinding.ActivityEntryBinding
 import com.vanilla.munato.fragment.GreetingFragment
 import com.vanilla.munato.fragment.LoginFragment
-import com.vanilla.munato.fragment.PaintingViewEditorFragment
-import java.lang.NullPointerException
-
-/*
-*   Необходимо использовать многопоточность
-    Необходимо использовать (БД + любую стороннюю библиотеку) ИЛИ сервисы Firebase
-    Приложение выполняет только заявленные функции, безопасно и не содержит вредоносного кода.
-*  */
 
 class EntryActivity : AppCompatActivity() {
     companion object {
