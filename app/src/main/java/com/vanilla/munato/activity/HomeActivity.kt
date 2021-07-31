@@ -225,7 +225,7 @@ class HomeActivity : AppCompatActivity() {
                     // increase painting stars counter
                     paintingsRepository.value.removeStar(paintingID,
                         onSuccess = {
-                            successSnack("Painting is not starred")
+                            successSnack("Star removed")
                         },
                         onFailure = { err ->
                             failSnack("Oops something went wrong (${err.message})")

@@ -10,8 +10,6 @@ import com.google.firebase.ktx.Firebase
 
 class UserRepository {
     companion object {
-        const val LOG_TAG = "UsersRepository"
-
         const val KEY_STARRED = "starred"
         const val KEY_FAVOURITE = "favourite"
     }

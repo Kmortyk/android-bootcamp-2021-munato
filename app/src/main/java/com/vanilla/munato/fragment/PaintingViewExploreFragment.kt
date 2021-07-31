@@ -134,13 +134,13 @@ class PaintingViewExploreFragment : Fragment() {
                 }
 
                 activity.isStarred(paintingID, { starred ->
-                    menuFillStar(starred)
-
                     if(starred) {
                         activity.removeStarFromPainting(paintingID)
                     } else {
                         activity.addStarToPainting(paintingID)
                     }
+
+                    menuFillStar(!starred)
                 }, {
                     activity.failSnack("Oops something went wrong ${it.message}")
                 })
@@ -155,13 +155,14 @@ class PaintingViewExploreFragment : Fragment() {
                 }
 
                 activity.isFavourite(paintingID, { favourite ->
-                    menuFillHeart(favourite)
 
                     if(favourite) {
                         activity.removeFromFavourite(paintingID)
                     } else {
                         activity.addToFavourite(paintingID)
                     }
+
+                    menuFillHeart(!favourite)
                 }, {
                     activity.failSnack("Oops something went wrong ${it.message}")
                 })
