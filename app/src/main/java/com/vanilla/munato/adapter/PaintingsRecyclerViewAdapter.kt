@@ -24,40 +24,32 @@ import com.bumptech.glide.request.target.Target
 import com.vanilla.munato.R
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingDownloadData
+import com.vanilla.munato.model.PaintingPreviewMethods
 import com.vanilla.munato.model.PaintingViewData
 
 
 const val PAINTINGS_DIFFERENCE = true
 
 class PaintingCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//    private val tvHeader: TextView = itemView.findViewById(R.id.itm_card_header_text)
     private val ivCardCover: ImageView = itemView.findViewById(R.id.itm_card_cover_img)
     private val tvStarsCount: TextView = itemView.findViewById(R.id.itm_stars_text)
     private val cardViewAccent: CardView = itemView.findViewById(R.id.accent_card)
 
     fun setData(painting: PaintingViewData) {
-//        tvHeader.text = painting.model.name
         tvStarsCount.text = painting.getModel().stars.toString()
 
         // start loading preview
         if(painting.getPreviewURL() != Uri.EMPTY) {
-            Glide.with(itemView.context)
-                .load(painting.getPreviewURL())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean) = false
-
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        if(resource != null && resource is BitmapDrawable && resource.bitmap != null) {
-                            val color = averageColor(resource.bitmap)
-                            cardViewAccent.backgroundTintList = ColorStateList.valueOf(color)
-                            painting.averageColor = color // cache average to model
-                        }
-
-                        return false
-                    }
-                })
-                .into(ivCardCover)
+            PaintingPreviewMethods.downloadPainting(
+                itemView.context,
+                painting.getPreviewURL(),
+                ivCardCover) { resource, _, _, _, _ ->
+                if(resource != null && resource is BitmapDrawable && resource.bitmap != null) {
+                    val color = averageColor(resource.bitmap)
+                    cardViewAccent.backgroundTintList = ColorStateList.valueOf(color)
+                    painting.averageColor = color // cache average to model
+                }
+            }
         } else {
             cardViewAccent.backgroundTintList = ColorStateList.valueOf(painting.averageColor)
         }
