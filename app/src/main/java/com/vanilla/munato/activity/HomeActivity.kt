@@ -151,6 +151,11 @@ class HomeActivity : AppCompatActivity() {
         successSnack("Added to favourite")
     }
 
+    fun removeFromFavourite(paintingID: String) {
+        usersRepository.value.removeFavourite(paintingID)
+        successSnack("Removed from favourite")
+    }
+
     fun loadFavouritePaintings(onFavouriteLoaded: (PaintingDownloadData) -> Unit) {
         loadFavourites {
             for(paintingID in it) {

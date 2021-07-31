@@ -29,6 +29,10 @@ class UserRepository {
         userRef().child(KEY_FAVOURITE).child(paintingID).setValue("")
     }
 
+    fun removeFavourite(paintingID: String) {
+        userRef().child(KEY_FAVOURITE).child(paintingID).removeValue()
+    }
+
     fun isFavourite(paintingID: String, onSuccess: (Boolean) -> Unit, onFailure: (DatabaseError) -> Unit) {
         userRef().child(KEY_FAVOURITE).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
