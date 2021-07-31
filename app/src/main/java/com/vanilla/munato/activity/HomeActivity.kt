@@ -151,8 +151,14 @@ class HomeActivity : AppCompatActivity() {
         successSnack("Added to favourite")
     }
 
-    fun loadFavouritePaintings(onFavouritesLoaded: (List<PaintingPublishData>) -> Unit) {
-        // TODO
+    fun loadFavouritePaintings(onFavouriteLoaded: (PaintingDownloadData) -> Unit) {
+        loadFavourites {
+            for(paintingID in it) {
+                paintingsRepository.value.loadPainting(paintingID, onFavouriteLoaded, { err ->
+                    failSnack("Sorry, can't load painting (${err.message})")
+                })
+            }
+        }
     }
 
     fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit) {

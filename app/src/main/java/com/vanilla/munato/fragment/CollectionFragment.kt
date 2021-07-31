@@ -43,7 +43,7 @@ class CollectionPagerAdapter(
                 activity.apply {
                     loadFavouritePaintings {
                         runOnUiThread {
-                            // favouriteCollectionAdapter.setData(it)
+                            favouriteCollectionAdapter.addData(it)
                         }
                     }
                 }

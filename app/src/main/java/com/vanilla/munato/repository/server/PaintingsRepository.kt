@@ -99,6 +99,21 @@ class PaintingsRepository {
         })
     }
 
+    fun loadPainting(paintingID: String, onSuccess: (PaintingDownloadData) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        db.getReference("paintings").child(paintingID).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val model = loadModel(snapshot)
+                loadPreview(snapshot) {
+                    onSuccess(PaintingDownloadData(model, it))
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onFailure(error)
+            }
+        })
+    }
+
     private fun loadModel(snapshot: DataSnapshot) : PaintingModel {
         if(!snapshot.hasChild(KEY_USER) ||
             !snapshot.hasChild(KEY_NAME) || !snapshot.hasChild(KEY_CODE) || !snapshot.hasChild(KEY_STARS)) {
