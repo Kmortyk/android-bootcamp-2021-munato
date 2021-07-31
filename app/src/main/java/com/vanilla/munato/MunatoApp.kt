@@ -8,8 +8,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 
 /* TODO
-   - favourites download
-
    - удаление звёзд и сердечек
 
    - оптимизация списка картин
