@@ -151,6 +151,10 @@ class HomeActivity : AppCompatActivity() {
         successSnack("Added to favourite")
     }
 
+    fun loadFavouritePaintings(onFavouritesLoaded: (List<PaintingPublishData>) -> Unit) {
+        // TODO
+    }
+
     fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit) {
         usersRepository.value.loadFavourites(
             onFavouritesLoaded = {

@@ -12,8 +12,6 @@ import com.google.firebase.ktx.initialize
 
    - удаление звёзд и сердечек
 
-   - кнопки edit
-
    - оптимизация списка картин
 *  */
 
