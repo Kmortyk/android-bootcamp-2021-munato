@@ -12,6 +12,7 @@ import com.vanilla.munato.R
 import com.vanilla.munato.databinding.ActivityHomeBinding
 import com.vanilla.munato.fragment.*
 import com.vanilla.munato.model.PaintingDownloadData
+import com.vanilla.munato.model.PaintingPreview
 import com.vanilla.munato.model.PaintingPublishData
 import com.vanilla.munato.repository.localstore.LocalRepository
 import com.vanilla.munato.repository.server.UserRepository
@@ -42,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
                     ftx.replace(R.id.home_fragment_container, CollectionFragment.newInstance())
                 }
                 R.id.itm_menu_create -> {
-                    ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, getScriptTemplate(this)))
+                    ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(getScriptTemplate(this)))
                 }
             }
 
@@ -75,7 +76,7 @@ class HomeActivity : AppCompatActivity() {
     fun returnFromEditorFragment(code: String) {
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-        ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(null, code))
+        ftx.replace(R.id.home_fragment_container, PaintingViewEditorFragment.newInstance(code))
         ftx.addToBackStack("editor_return")
         ftx.commit()
     }
@@ -150,6 +151,21 @@ class HomeActivity : AppCompatActivity() {
         successSnack("Added to favourite")
     }
 
+    fun removeFromFavourite(paintingID: String) {
+        usersRepository.value.removeFavourite(paintingID)
+        successSnack("Removed from favourite")
+    }
+
+    fun loadFavouritePaintings(onFavouriteLoaded: (PaintingDownloadData) -> Unit) {
+        loadFavourites {
+            for(paintingID in it) {
+                paintingsRepository.value.loadPainting(paintingID, onFavouriteLoaded, { err ->
+                    failSnack("Sorry, can't load painting (${err.message})")
+                })
+            }
+        }
+    }
+
     fun loadFavourites(onFavouritesLoaded: (List<String>) -> Unit) {
         usersRepository.value.loadFavourites(
             onFavouritesLoaded = {
@@ -197,5 +213,45 @@ class HomeActivity : AppCompatActivity() {
             }, onFailure = {
                 failSnack("Oops something went wrong (${it.message})")
             })
+    }
+
+    fun removeStarFromPainting(paintingID: String) {
+        usersRepository.value.hasStarred(paintingID,
+            onSuccess = {
+                if(it) {
+                    // if starred in account
+                    // remove paintingID from account
+                    usersRepository.value.removeStarred(paintingID)
+                    // increase painting stars counter
+                    paintingsRepository.value.removeStar(paintingID,
+                        onSuccess = {
+                            successSnack("Star removed")
+                        },
+                        onFailure = { err ->
+                            failSnack("Oops something went wrong (${err.message})")
+                        },
+                    )
+                } else {
+                    successSnack("Was not starred")
+                }
+            }, onFailure = {
+                failSnack("Oops something went wrong (${it.message})")
+            })
+    }
+
+    fun saveToLocalStorage(code: String, preview: PaintingPreview) {
+        localRepository.value.savePainting(
+            usersRepository.value.userName(),
+            code,
+            preview
+        )
+
+        successSnack("Painting saved")
+    }
+
+    fun loadMyPaintingsFromLocalStorage(onLoad: (List<PaintingPublishData>) -> Unit) {
+        localRepository.value.loadPaintings {
+            onLoad(it)
+        }
     }
 }

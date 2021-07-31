@@ -1,5 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_save_to_local_storage"
+        android:icon="@drawable/outline_save_24"
+        android:title="@string/painting_view_editor_action_bar_open_editor"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_publish"
         android:icon="@drawable/outline_arrow_circle_up_24"
@@ -11,4 +18,5 @@
         android:icon="@drawable/outline_arrow_forward_24"
         android:title="@string/painting_view_editor_action_bar_open_editor"
         app:showAsAction="ifRoom"/>
+
 </menu>
