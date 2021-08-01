@@ -64,12 +64,9 @@ class PaintingsRepository {
 
     private fun publishPaintingPreview(painting: PaintingPublishData, onSuccessFunction: () -> Unit, onFailureFunction: (Exception) -> Unit) {
         val storageRef = storage.getReference(STORAGE_IMAGES_DIR + "/" + painting.model.paintingID + ".jpg")
-        val preview = Bitmap.createScaledBitmap(painting.preview, painting.preview.width / 2, painting.preview.height / 2, false)
-        val compressedStream = ByteArrayOutputStream()
+        val preview = PaintingPreviewMethods.compressForPublish(painting.preview)
 
-        preview.compress(Bitmap.CompressFormat.JPEG, 70, compressedStream)
-
-        storageRef.putBytes(compressedStream.toByteArray())
+        storageRef.putBytes(preview)
             .addOnSuccessListener {
                 onSuccessFunction()
             }
@@ -97,6 +94,21 @@ class PaintingsRepository {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e(LOG_TAG, error.toString())
+                onFailure(error)
+            }
+        })
+    }
+
+    fun loadPainting(paintingID: String, onSuccess: (PaintingDownloadData) -> Unit, onFailure: (DatabaseError) -> Unit) {
+        db.getReference("paintings").child(paintingID).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val model = loadModel(snapshot)
+                loadPreview(snapshot) {
+                    onSuccess(PaintingDownloadData(model, it))
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
                 onFailure(error)
             }
         })
@@ -141,6 +153,14 @@ class PaintingsRepository {
     }
 
     fun addStar(paintingID: String, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
+        changeStarValue(paintingID, { it + 1 }, onSuccess, onFailure)
+    }
+
+    fun removeStar(paintingID: String, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
+        changeStarValue(paintingID, { if(it > 0) { it - 1 } else 0 }, onSuccess, onFailure)
+    }
+
+    private fun changeStarValue(paintingID: String, changeValueFun: (Int) -> Int, onSuccess: () -> Unit, onFailure: (DatabaseError) -> Unit) {
         val paintingsRef = db.getReference("paintings")
         val childRef = paintingsRef.child(paintingID)
 
@@ -156,7 +176,7 @@ class PaintingsRepository {
                     return Transaction.abort()
                 }
 
-                currentData.value = previous + 1
+                currentData.value = changeValueFun(previous)
 
                 return Transaction.success(currentData)
             }

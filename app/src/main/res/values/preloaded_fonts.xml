@@ -3,8 +3,15 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/actor</item>
         <item>@font/allerta</item>
+        <item>@font/amiko</item>
+        <item>@font/cabin</item>
         <item>@font/carme</item>
         <item>@font/delius</item>
+        <item>@font/kanit</item>
+        <item>@font/kanit_thin</item>
         <item>@font/montserrat</item>
+        <item>@font/questrial</item>
+        <item>@font/roboto</item>
+        <item>@font/ubuntu_light</item>
     </array>
 </resources>

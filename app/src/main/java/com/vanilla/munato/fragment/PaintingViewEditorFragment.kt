@@ -17,6 +17,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.vanilla.munato.R
 import com.vanilla.munato.activity.HomeActivity
 import com.vanilla.munato.model.PaintingModel
+import com.vanilla.munato.model.PaintingPreview
+import com.vanilla.munato.model.PaintingPreviewMethods
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,19 +38,15 @@ class PaintingViewEditorFragment : Fragment() {
          * @return A new instance of fragment CreatePaintingFragment.
          */
         @JvmStatic
-        fun newInstance(paintingModel: PaintingModel?, code: String?) =
+        fun newInstance(code: String) =
             PaintingViewEditorFragment().apply {
                 arguments = Bundle().apply {
-                    if(paintingModel != null)
-                        putParcelable(ARG_PAINTING_MODEL, paintingModel)
-                    if(code != null)
-                        putString(ARG_JAVASCRIPT_CODE, code)
+                    putString(ARG_JAVASCRIPT_CODE, code)
                 }
             }
     }
 
-    private var paintingModel: PaintingModel? = null
-    private var javascriptCode: String? = null
+    private var javascriptCode: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +54,8 @@ class PaintingViewEditorFragment : Fragment() {
         setHasOptionsMenu(true)
 
         arguments?.let {
-            if(it.containsKey(ARG_PAINTING_MODEL))
-                paintingModel = it.getParcelable(ARG_PAINTING_MODEL)
             if(it.containsKey(ARG_JAVASCRIPT_CODE))
-                javascriptCode = it.getString(ARG_JAVASCRIPT_CODE)
+                javascriptCode = it.getString(ARG_JAVASCRIPT_CODE) ?: ""
         }
     }
 
@@ -71,20 +67,21 @@ class PaintingViewEditorFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
         R.id.action_publish -> {
             val webView = requireView().findViewById<WebView>(R.id.web_view)
-            fetchScreenshot(webView)
-
-            true
+            fetchScreenshot(webView) { preview ->
+                (activity as HomeActivity).openPublishPaintingFragment(javascriptCode, preview)
+            }; true
         }
         R.id.action_open_editor -> {
-            val activity = activity as HomeActivity
-
-            if(javascriptCode != null) {
-                activity.openEditorFragment(javascriptCode)
-            } else {
-                activity.openEditorFragment(paintingModel?.code)
-            }
-            true
+            (activity as HomeActivity).openEditorFragment(javascriptCode); true
         }
+
+        R.id.action_save_to_local_storage -> {
+            val webView = requireView().findViewById<WebView>(R.id.web_view)
+            fetchScreenshot(webView) { preview ->
+                (activity as HomeActivity).saveToLocalStorage(javascriptCode, preview)
+            }; true
+        }
+
         else -> {
             super.onOptionsItemSelected(item)
         }
@@ -102,15 +99,8 @@ class PaintingViewEditorFragment : Fragment() {
         var template = getHTMLPageTemplate(activity)
         // val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
 
-        if(javascriptCode != null) {
-            webView.settings.javaScriptEnabled = true
-            template += "<script>${javascriptCode}</script>"
-        } else if(paintingModel != null) {
-            webView.settings.javaScriptEnabled = true
-            template += "<script>${paintingModel!!.code}</script>"
-        }
-
-        template += "<script>draw(ctx, canvas);</script>"
+        webView.settings.javaScriptEnabled = true
+        template += "<script>${javascriptCode}\n\ndraw(ctx, canvas);</script>"
 
         // https://stackoverflow.com/questions/37090396/android-webview-doesnt-load-html-sometimes
         webView.postDelayed({
@@ -120,7 +110,7 @@ class PaintingViewEditorFragment : Fragment() {
         return view
     }
 
-    private fun fetchScreenshot(webView: WebView) {
+    private fun fetchScreenshot(webView: WebView, onFetch: (PaintingPreview) -> Unit) {
         webView.evaluateJavascript("canvas.toDataURL();") {
             if(it == null || it == "" || !it.contains(",")) {
                 val view = view
@@ -128,24 +118,13 @@ class PaintingViewEditorFragment : Fragment() {
                     Snackbar.make(view, "Sorry, can't publish your work \uD83D\uDE13", Snackbar.LENGTH_SHORT).show()
                 }
             } else {
-                val code = when {
-                    javascriptCode != null -> { javascriptCode!! }
-                    paintingModel != null -> { paintingModel!!.code!! }
-                    else -> {
-                        Log.e("PaintingEditorView", "empty code to publish")
-                        ""
-                    }
-                }
-
                 Log.d("PaintingViewEditor", it)
 
-                val data = it.substring(it.indexOf(",") + 1)
-                val decodedString: ByteArray = Base64.decode(data, Base64.DEFAULT)
-                val preview = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                val preview = PaintingPreviewMethods.fromBase64(it)
 
                 // showPreviewDialog(preview)
 
-                (activity as HomeActivity).openPublishPaintingFragment(code, preview)
+                onFetch(preview)
             }
         }
     }

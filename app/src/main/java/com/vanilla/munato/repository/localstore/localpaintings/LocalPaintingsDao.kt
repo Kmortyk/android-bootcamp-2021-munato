@@ -8,12 +8,12 @@ import com.vanilla.munato.model.PaintingPreview
 
 @Dao
 interface LocalPaintingsDao {
-    @Query("SELECT * FROM local_paintings")
+    @Query("SELECT * FROM local_paintings;")
     fun getAll(): List<LocalPaintingsEntity>
 
-    @Update // TODO implement update
-    fun updatePaintingID(uid: Int, paintingID: String)
+    @Update
+    fun update(record: LocalPaintingsEntity)
 
-    @Insert // TODO, save preview as base64 string
-    fun insert(code: String, preview: PaintingPreview)
+    @Insert
+    fun insert(record: LocalPaintingsEntity)
 }

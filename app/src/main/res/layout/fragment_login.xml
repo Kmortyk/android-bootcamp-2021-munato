@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primaryBackgroundColor"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.EntryActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -55,11 +55,14 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_log_in"
             android:layout_width="match_parent"
+            android:layout_gravity="center"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="@color/primaryDarkColor"
+            android:fontFamily="@font/questrial"
             android:text="@string/log_in_button_text"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:cornerRadius="100dp" />
 
     </LinearLayout>
@@ -90,7 +93,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primaryDarkColor"
-            android:text="@string/log_out_button_text" />
+            android:text="@string/log_out_button_text"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/primaryDarkColor"
+            android:fontFamily="@font/questrial"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="100dp" />
 
     </LinearLayout>
 

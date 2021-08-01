@@ -7,6 +7,11 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 
+/* TODO
+    - запретить менять опубликованные произведения
+    - пресеты для рисования
+*  */
+
 class MunatoApp : Application() {
     override fun onCreate() {
         super.onCreate()

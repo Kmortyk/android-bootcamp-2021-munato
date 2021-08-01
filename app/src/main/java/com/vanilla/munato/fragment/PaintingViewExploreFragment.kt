@@ -69,15 +69,11 @@ class PaintingViewExploreFragment : Fragment() {
 
         activity.isStarred(paintingID,
             onSuccess = { starred ->
-                if(starred) {
-                    menuFillStar()
-                }
+                menuFillStar(starred)
 
                 activity.isFavourite(paintingID,
                     onSuccess = { favourite ->
-                        if(favourite) {
-                            menuFillHeart()
-                        }
+                        menuFillHeart(favourite)
                     },
                     onFailure = {
                         activity.failSnack("Oops something went wrong ($it)")
@@ -88,22 +84,30 @@ class PaintingViewExploreFragment : Fragment() {
             })
     }
 
-    private fun menuFillStar() {
+    private fun menuFillStar(starred: Boolean) {
         val activity = activity as HomeActivity
         val menu = fragmentMenu ?: return
 
-        val starFilledDrawable = ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_star_white_24, activity.theme)
+        val drawable = if(starred) {
+            ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_star_white_24, activity.theme)
+        } else {
+            ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_star_outline_white_24, activity.theme)
+        }
 
-        menu.findItem(R.id.action_star).icon = starFilledDrawable
+        menu.findItem(R.id.action_star).icon = drawable
     }
 
-    private fun menuFillHeart() {
+    private fun menuFillHeart(favourite: Boolean) {
         val activity = activity as HomeActivity
         val menu = fragmentMenu ?: return
 
-        val heartFilledDrawable = ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_favorite_white_24, activity.theme)
+        val drawable = if(favourite) {
+            ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_favorite_white_24, activity.theme)
+        } else {
+            ResourcesCompat.getDrawable(activity.resources, R.drawable.outline_favorite_border_white_24, activity.theme)
+        }
 
-        menu.findItem(R.id.action_add_to_favourite).icon = heartFilledDrawable
+        menu.findItem(R.id.action_add_to_favourite).icon = drawable
     }
 
     override fun onOptionsItemSelected(item: MenuItem) : Boolean {
@@ -129,9 +133,17 @@ class PaintingViewExploreFragment : Fragment() {
                     return false
                 }
 
-                activity.addStarToPainting(paintingID)
+                activity.isStarred(paintingID, { starred ->
+                    if(starred) {
+                        activity.removeStarFromPainting(paintingID)
+                    } else {
+                        activity.addStarToPainting(paintingID)
+                    }
 
-                menuFillStar()
+                    menuFillStar(!starred)
+                }, {
+                    activity.failSnack("Oops something went wrong ${it.message}")
+                })
 
                 true
             }
@@ -142,9 +154,18 @@ class PaintingViewExploreFragment : Fragment() {
                     return false
                 }
 
-                activity.addToFavourite(paintingID)
+                activity.isFavourite(paintingID, { favourite ->
 
-                menuFillHeart()
+                    if(favourite) {
+                        activity.removeFromFavourite(paintingID)
+                    } else {
+                        activity.addToFavourite(paintingID)
+                    }
+
+                    menuFillHeart(!favourite)
+                }, {
+                    activity.failSnack("Oops something went wrong ${it.message}")
+                })
 
                 true
             }

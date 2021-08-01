@@ -12,7 +12,16 @@
         app:cardCornerRadius="15dp"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:cardUseCompatPadding="true"/>
+        app:cardUseCompatPadding="true">
+
+        <ImageView
+            android:id="@+id/itm_my_painting_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/panorama_3311973_1920_3" />
+
+    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         app:cardCornerRadius="15dp"
@@ -36,32 +45,6 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/collection_itm_stars_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/carme"
-                    android:gravity="center"
-                    android:text="@string/collection_itm_painting_stars_placeholder"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
-
-                <ImageView
-                    android:id="@+id/itm_img_star"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/outline_star_black_24"
-                    app:tint="@color/secondaryColor" />
-
-            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/collection_btn_edit"
