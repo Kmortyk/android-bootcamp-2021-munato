@@ -95,11 +95,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun openPublishPaintingFragment(code: String, image: Bitmap) {
-        val username = "kmortyk" //TODO get username
-
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(username, code, image))
+        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(
+            usersRepository.value.userName(),
+            code,
+            image
+        ))
+
         ftx.addToBackStack("publish_painting")
         ftx.commit()
     }
