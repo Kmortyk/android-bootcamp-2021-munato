@@ -2,10 +2,8 @@ package com.vanilla.munato.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
@@ -15,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.vanilla.munato.R
 import com.vanilla.munato.activity.EntryActivity
+import egolabsapps.basicodemine.videolayout.VideoLayout
 
 class LoginFragment : Fragment() {
     companion object {
@@ -84,10 +83,30 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+
+        val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
+        videoLayout?.onResumeVideoLayout()
+
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             runFirebaseLogin()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        activity?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS.inv(),
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS.inv()
+        )
+
+        val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
+        videoLayout?.onPauseVideoLayout()
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
