@@ -109,6 +109,13 @@ class LoginFragment : Fragment() {
         videoLayout?.onPauseVideoLayout()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
+        videoLayout?.onDestroyVideoLayout()
+    }
+
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
 
