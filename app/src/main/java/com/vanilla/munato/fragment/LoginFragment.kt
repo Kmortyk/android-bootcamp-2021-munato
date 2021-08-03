@@ -83,11 +83,6 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        activity?.window?.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
-
         val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
         videoLayout?.onResumeVideoLayout()
 
@@ -99,11 +94,6 @@ class LoginFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-
-        activity?.window?.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS.inv(),
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS.inv()
-        )
 
         val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
         videoLayout?.onPauseVideoLayout()
