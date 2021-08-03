@@ -8,103 +8,110 @@
     android:background="@color/primaryBackgroundColor"
     tools:context=".activity.EntryActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:tintMode="src_over"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/pexels_karolina_grabowska_4046810"
+        app:tint="#25AC6D4B"
+        android:contentDescription="@string/log_in_img_description" />
+
     <egolabsapps.basicodemine.videolayout.VideoLayout
         android:id="@+id/videoLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        app:sound="true"
+        app:sound="false"
         app:video_gravity="centerCrop"
         app:path_or_url="video/login_background.mp4"
         app:loop="true"/>
 
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:scaleType="centerCrop"-->
-<!--        android:tintMode="src_over"-->
-<!--        app:srcCompat="@drawable/pexels_karolina_grabowska_4046810"-->
-<!--        app:tint="#25AC6D4B"-->
-<!--        android:contentDescription="@string/log_in_img_description" />-->
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/mr_kindly_jasmine_g"
-        android:padding="20dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="50sp" />
-
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/login_ui"
-        android:layout_width="278dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:elevation="5dp"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tvHelloUser"
-            android:layout_width="match_parent"
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/log_in_hello_user_text"
+            android:fontFamily="@font/mr_kindly_jasmine_g"
+            android:padding="20dp"
+            android:text="@string/app_name"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="34sp"
-            android:textStyle="bold" />
+            android:textSize="50sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_log_in"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+        <LinearLayout
+            android:layout_width="278dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/primaryDarkColor"
-            android:fontFamily="@font/questrial"
-            android:text="@string/log_in_button_text"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="100dp" />
+            android:elevation="5dp"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvHelloUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/log_in_hello_user_text"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:visibility="visible">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_log_in"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:fontFamily="@font/questrial"
+                android:text="@string/log_in_button_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="100dp" />
 
-        <TextView
-            android:id="@+id/tvEmail"
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/log_in_email_prefix"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#c0c0c0" />
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/log_in_email_prefix"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_log_out"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#c0c0c0" />
 
-            android:text="@string/log_out_button_text"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/primaryDarkColor"
-            android:fontFamily="@font/questrial"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-    </LinearLayout>
+                android:text="@string/log_out_button_text"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/primaryDarkColor"
+                android:fontFamily="@font/questrial"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
+        </LinearLayout>
+
+
+    </FrameLayout>
 </FrameLayout>

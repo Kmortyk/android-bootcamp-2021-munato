@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
@@ -86,12 +87,15 @@ class LoginFragment : Fragment() {
         val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
         videoLayout?.onResumeVideoLayout()
 
+        view?.findViewById<FrameLayout>(R.id.login_ui)?.visibility = View.INVISIBLE
+
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             runFirebaseLogin()
             return
         }
 
+        view?.findViewById<FrameLayout>(R.id.login_ui)?.visibility = View.VISIBLE
         view?.findViewById<TextView>(R.id.tvHelloUser)?.text = helloUserText(user.displayName)
         view?.findViewById<TextView>(R.id.tvEmail)?.text = emailText(user.email)
     }
