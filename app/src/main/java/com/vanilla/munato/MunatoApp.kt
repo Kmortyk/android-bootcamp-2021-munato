@@ -10,6 +10,7 @@ import com.google.firebase.ktx.initialize
 /* TODO
     - запретить менять опубликованные произведения
     - пресеты для рисования
+    - pagination firebase adapter
 *  */
 
 class MunatoApp : Application() {
