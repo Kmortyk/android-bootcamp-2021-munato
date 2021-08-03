@@ -2,6 +2,9 @@
     <string name="app_name">Munato</string>
     <string name="log_in_img_description">Beautiful background image</string>
     <string name="log_in_button_text">Start journey →</string>
+    <string name="log_in_hello_user_text">Hello, </string>
+    <string name="log_in_hello_user_placeholder">user</string>
+    <string name="log_in_email_prefix">E-Mail: </string>
     <string name="log_out_button_text">Login another account</string>
     <string name="log_out_another_device_text">Please log in to your account again</string>
     <string name="log_out_error_text">Failed to logout from your account</string>
