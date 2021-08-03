@@ -1,7 +1,12 @@
 package com.vanilla.munato.fragment
 
+import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.vanilla.munato.activity.HomeActivity
@@ -55,22 +60,29 @@ class EditorFragment : Fragment() {
         super.onCreateOptionsMenu(menu,inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
-        R.id.action_open_painting_view -> {
-            val code = if(editor != null) {
-                editor!!.text.toString()
-            } else {
-                ""
+    override fun onOptionsItemSelected(item: MenuItem) : Boolean {
+        val activity = activity as HomeActivity
+
+        return when (item.itemId) {
+            R.id.action_open_painting_view -> {
+                val code = if (editor != null) {
+                    editor!!.text.toString()
+                } else {
+                    ""
+                }
+
+                activity.returnFromEditorFragment(code)
+
+                true
             }
+            R.id.action_open_presets -> {
+                activity.openPresetsFragment()
 
-            val activity = activity as HomeActivity
-
-            activity.returnFromEditorFragment(code)
-
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 
@@ -96,5 +108,29 @@ class EditorFragment : Fragment() {
 //        }
 
         return view
+    }
+
+    fun addCodeFragment(code: String) {
+        editor?.let { editor ->
+            activity?.let { activity ->
+                addToClipboard(activity, code) // todo why
+
+                editor.pasteText()
+            }
+        }
+    }
+
+    private fun addToClipboard(activity: Activity, code: String) {
+        val sdk = Build.VERSION.SDK_INT
+        if (sdk < Build.VERSION_CODES.HONEYCOMB) {
+            val clipboard: ClipboardManager? =
+                ContextCompat.getSystemService(activity, ClipboardManager::class.java)
+            clipboard?.text = code
+        } else {
+            val clipboard: ClipboardManager? =
+                ContextCompat.getSystemService(activity, ClipboardManager::class.java)
+            val clip = ClipData.newPlainText("codeFragment", code)
+            clipboard?.setPrimaryClip(clip)
+        }
     }
 }

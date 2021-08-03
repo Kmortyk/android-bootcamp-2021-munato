@@ -106,7 +106,7 @@ class PublishPaintingFragment : Fragment() {
                 val sdk = Build.VERSION.SDK_INT
                 if (sdk < Build.VERSION_CODES.HONEYCOMB) {
                     val clipboard: ClipboardManager? = getSystemService(activity, ClipboardManager::class.java)
-                    clipboard?.text = "text to clip"
+                    clipboard?.text = paintingID
                 } else {
                     val clipboard: ClipboardManager? = getSystemService(activity, ClipboardManager::class.java)
                     val clip = ClipData.newPlainText("paintingID", paintingID)

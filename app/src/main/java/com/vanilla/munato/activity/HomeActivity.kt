@@ -81,6 +81,14 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
+    fun openPresetsFragment() {
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+        ftx.replace(R.id.home_fragment_container, PresetsFragment.newInstance())
+        ftx.addToBackStack("presets_fragment")
+        ftx.commit()
+    }
+
     private fun openExploreFragment(add: Boolean) {
         val ftx = supportFragmentManager.beginTransaction()
 
