@@ -1,12 +1,11 @@
 package com.vanilla.munato.fragment
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -15,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.vanilla.munato.R
 import com.vanilla.munato.activity.EntryActivity
+import egolabsapps.basicodemine.videolayout.VideoLayout
 
 class LoginFragment : Fragment() {
     companion object {
@@ -84,27 +84,64 @@ class LoginFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
+        videoLayout?.onResumeVideoLayout()
+
+        view?.findViewById<FrameLayout>(R.id.login_ui)?.visibility = View.INVISIBLE
+
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {
             runFirebaseLogin()
+            return
         }
+
+        view?.findViewById<FrameLayout>(R.id.login_ui)?.visibility = View.VISIBLE
+        view?.findViewById<TextView>(R.id.tvHelloUser)?.text = helloUserText(user.displayName)
+        view?.findViewById<TextView>(R.id.tvEmail)?.text = emailText(user.email)
+    }
+
+    private fun helloUserText(userFromDB: String?): String {
+        var userName = resources.getText(R.string.log_in_hello_user_placeholder)
+
+        userFromDB?.let {
+            userName = it
+        }
+
+        return resources.getText(R.string.log_in_hello_user_text).toString() + " " + userName + "!"
+    }
+
+    private fun emailText(emailFromDB: String?): String {
+        emailFromDB?.let {
+            return resources.getText(R.string.log_in_email_prefix).toString() + " " + it
+        }
+
+        return ""
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
+        videoLayout?.onPauseVideoLayout()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val videoLayout = view?.findViewById<VideoLayout>(R.id.videoLayout)
+        videoLayout?.onDestroyVideoLayout()
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
         val response = result.idpResponse
 
         // check if we successfully signed in
-        if (result.resultCode == AppCompatActivity.RESULT_OK) {
-            val user = FirebaseAuth.getInstance().currentUser
-            if (user != null) {
-                return
-            }
-        }
-
-        val errorCode = response?.error?.errorCode
-        errorCode?.let {
-            view?.let {
-                Snackbar.make(it, "${resources.getString(R.string.login_err_code)} $it", Snackbar.LENGTH_LONG).show()
+        if (result.resultCode != AppCompatActivity.RESULT_OK) {
+            val errorCode = response?.error?.errorCode
+            errorCode?.let {
+                view?.let {
+                    Snackbar.make(it, "${resources.getString(R.string.login_err_code)} $it", Snackbar.LENGTH_LONG).show()
+                }
             }
         }
     }
