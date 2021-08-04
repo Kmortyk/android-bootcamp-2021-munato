@@ -1,6 +1,7 @@
 package com.vanilla.munato.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vanilla.munato.R
 import com.vanilla.munato.adapter.PresetsRecyclerViewAdapter
 
-class PresetsFragment : Fragment() {
+class PresetsFragment(private val editorFragment: EditorFragment) : Fragment() {
     companion object {
         @JvmStatic
-        fun newInstance() = PresetsFragment().apply {}
+        fun newInstance(editorFragment: EditorFragment) = PresetsFragment(editorFragment).apply {}
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,11 +33,9 @@ class PresetsFragment : Fragment() {
         rvPresets.adapter = PresetsRecyclerViewAdapter { code ->
             val fm = activity?.supportFragmentManager
             fm?.let {
-                val fragment = it.fragments.lastOrNull()
+                editorFragment.addCodeFragment(code)
 
-                (fragment as EditorFragment).addCodeFragment(code)
-
-                it.popBackStack()
+                it.popBackStackImmediate()
             }
         }
 

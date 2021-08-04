@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/preset_rect.xml" value="0.290625" />
         <entry key="app/src/main/res/layout/fragment_presets.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/itm_my_painting.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/itm_preset.xml" value="0.184375" />

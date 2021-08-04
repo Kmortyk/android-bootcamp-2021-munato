@@ -81,10 +81,13 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
+    // call from editor
     fun openPresetsFragment() {
+        val currentFragment = supportFragmentManager.fragments.last() as EditorFragment
+
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-        ftx.replace(R.id.home_fragment_container, PresetsFragment.newInstance())
+        ftx.replace(R.id.home_fragment_container, PresetsFragment.newInstance(currentFragment))
         ftx.addToBackStack("presets_fragment")
         ftx.commit()
     }

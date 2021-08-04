@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -90,7 +91,6 @@ class EditorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val activity = activity as HomeActivity
         val view = inflater.inflate(R.layout.fragment_editor, container, false)
 
@@ -103,34 +103,22 @@ class EditorFragment : Fragment() {
             }
         }
 
-//        view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
-//            activity.returnFromEditorFragment(editor.text.toString())
-//        }
-
         return view
     }
 
     fun addCodeFragment(code: String) {
         editor?.let { editor ->
             activity?.let { activity ->
-                addToClipboard(activity, code) // todo why
+                val pos = editor.cursor.left
+                var editorCode = editor.text.toString()
 
-                editor.pasteText()
+                editorCode =
+                    editorCode.substring(0, pos) +
+                    code +
+                    editorCode.substring(pos, editorCode.length)
+
+                initCode = editorCode
             }
-        }
-    }
-
-    private fun addToClipboard(activity: Activity, code: String) {
-        val sdk = Build.VERSION.SDK_INT
-        if (sdk < Build.VERSION_CODES.HONEYCOMB) {
-            val clipboard: ClipboardManager? =
-                ContextCompat.getSystemService(activity, ClipboardManager::class.java)
-            clipboard?.text = code
-        } else {
-            val clipboard: ClipboardManager? =
-                ContextCompat.getSystemService(activity, ClipboardManager::class.java)
-            val clip = ClipData.newPlainText("codeFragment", code)
-            clipboard?.setPrimaryClip(clip)
         }
     }
 }

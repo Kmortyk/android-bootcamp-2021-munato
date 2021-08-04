@@ -25,8 +25,8 @@ class PresetsRecyclerViewHolder(itemView: View, val returnToEditor: (String) -> 
 }
 
 class PresetsRecyclerViewAdapter(private val returnToEditor: (String) -> Unit) : RecyclerView.Adapter<PresetsRecyclerViewHolder>() {
-    private val presets = mutableListOf<Preset>(
-
+    private val presets = mutableListOf(
+        Preset("Rectangle", R.drawable.preset_rect, "ctx.fillRect(x, y, width, height);")
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PresetsRecyclerViewHolder {
