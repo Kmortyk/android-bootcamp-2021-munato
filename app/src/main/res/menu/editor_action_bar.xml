@@ -2,8 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_open_presets"
+        android:icon="@drawable/outline_widgets_white_24"
+        android:title="@string/painting_view_editor_action_bar_open_editor"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_open_painting_view"
         android:icon="@drawable/outline_arrow_back_24"
-        android:title="@string/painting_view_editor_action_bar_open_editor"
+        android:title="@string/painting_view_editor_action_bar_open_widgets"
         app:showAsAction="ifRoom"/>
 </menu>

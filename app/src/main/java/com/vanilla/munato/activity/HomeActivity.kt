@@ -81,6 +81,17 @@ class HomeActivity : AppCompatActivity() {
         ftx.commit()
     }
 
+    // call from editor
+    fun openPresetsFragment() {
+        val currentFragment = supportFragmentManager.fragments.last() as EditorFragment
+
+        val ftx = supportFragmentManager.beginTransaction()
+        ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+        ftx.replace(R.id.home_fragment_container, PresetsFragment.newInstance(currentFragment))
+        ftx.addToBackStack("presets_fragment")
+        ftx.commit()
+    }
+
     private fun openExploreFragment(add: Boolean) {
         val ftx = supportFragmentManager.beginTransaction()
 
@@ -95,11 +106,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun openPublishPaintingFragment(code: String, image: Bitmap) {
-        val username = "kmortyk" //TODO get username
-
         val ftx = supportFragmentManager.beginTransaction()
         ftx.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(username, code, image))
+        ftx.replace(R.id.home_fragment_container, PublishPaintingFragment.newInstance(
+            usersRepository.value.userName(),
+            code,
+            image
+        ))
+
         ftx.addToBackStack("publish_painting")
         ftx.commit()
     }

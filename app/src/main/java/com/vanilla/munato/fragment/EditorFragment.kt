@@ -1,7 +1,13 @@
 package com.vanilla.munato.fragment
 
+import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.vanilla.munato.activity.HomeActivity
@@ -55,22 +61,29 @@ class EditorFragment : Fragment() {
         super.onCreateOptionsMenu(menu,inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem)= when (item.itemId) {
-        R.id.action_open_painting_view -> {
-            val code = if(editor != null) {
-                editor!!.text.toString()
-            } else {
-                ""
+    override fun onOptionsItemSelected(item: MenuItem) : Boolean {
+        val activity = activity as HomeActivity
+
+        return when (item.itemId) {
+            R.id.action_open_painting_view -> {
+                val code = if (editor != null) {
+                    editor!!.text.toString()
+                } else {
+                    ""
+                }
+
+                activity.returnFromEditorFragment(code)
+
+                true
             }
+            R.id.action_open_presets -> {
+                activity.openPresetsFragment()
 
-            val activity = activity as HomeActivity
-
-            activity.returnFromEditorFragment(code)
-
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 
@@ -78,7 +91,6 @@ class EditorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val activity = activity as HomeActivity
         val view = inflater.inflate(R.layout.fragment_editor, container, false)
 
@@ -91,10 +103,22 @@ class EditorFragment : Fragment() {
             }
         }
 
-//        view.findViewById<FloatingActionButton>(R.id.btn_return_from_editor).setOnClickListener {
-//            activity.returnFromEditorFragment(editor.text.toString())
-//        }
-
         return view
+    }
+
+    fun addCodeFragment(code: String) {
+        editor?.let { editor ->
+            activity?.let { activity ->
+                val pos = editor.cursor.left
+                var editorCode = editor.text.toString()
+
+                editorCode =
+                    editorCode.substring(0, pos) +
+                    code +
+                    editorCode.substring(pos, editorCode.length)
+
+                initCode = editorCode
+            }
+        }
     }
 }
