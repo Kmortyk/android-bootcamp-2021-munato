@@ -198,7 +198,7 @@ class PaintingViewExploreFragment : Fragment() {
             template += "<script>${paintingModel!!.code}</script>"
         }
 
-        template += "<script>draw(ctx, canvas);</script>"
+        template += "<script>draw(ctx, width, height);</script>"
 
         // https://stackoverflow.com/questions/37090396/android-webview-doesnt-load-html-sometimes
 
