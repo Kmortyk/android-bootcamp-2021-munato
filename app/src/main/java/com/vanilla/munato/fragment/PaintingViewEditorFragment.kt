@@ -100,7 +100,7 @@ class PaintingViewEditorFragment : Fragment() {
         // val btnOpenEditor = view.findViewById<FloatingActionButton>(R.id.btn_open_editor)
 
         webView.settings.javaScriptEnabled = true
-        template += "<script>${javascriptCode}\n\ndraw(ctx, canvas);</script>"
+        template += "<script>${javascriptCode}\n\ndraw(ctx, width, height);</script>"
 
         // https://stackoverflow.com/questions/37090396/android-webview-doesnt-load-html-sometimes
         webView.postDelayed({
