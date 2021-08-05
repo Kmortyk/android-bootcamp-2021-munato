@@ -1,5 +1,4 @@
 function draw(ctx, cw, ch) {
-    canvas.style.background = "linear-gradient(#000, #151515)";
     const cl = new CanvasLightning(ctx, cw, ch);
 
     setupRAF();
@@ -149,6 +148,10 @@ function CanvasLightning(ctx, cw, ch) {
         loopIt();
     };
 
+    window.addEventListener('resize', function(event){
+        _this.cw = window.innerWidth;
+        _this.ch = window.innerHeight;
+    });
 }
 
 // Setup requestAnimationFrame
