@@ -147,11 +147,6 @@ function CanvasLightning(ctx, cw, ch) {
         };
         loopIt();
     };
-
-    window.addEventListener('resize', function(event){
-        _this.cw = window.innerWidth;
-        _this.ch = window.innerHeight;
-    });
 }
 
 // Setup requestAnimationFrame
