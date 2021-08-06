@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -39,6 +40,7 @@ class PaintingPreviewMethods {
             val decodedString: ByteArray = Base64.decode(data, Base64.DEFAULT)
 
             if(decodedString.isEmpty()) {
+                Log.e("PaintingPreviewMethods", "Failed to decode string. Replace with empty painting preview")
                 return EmptyPaintingPreview
             }
 

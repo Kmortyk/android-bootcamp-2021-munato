@@ -1,8 +1,8 @@
-function draw(ctx, canvas) {
+function draw(ctx, cw, ch) {
     let startAngle = 0
     let endAngle = 2 * Math.PI
 
-    let startRadius = canvas.width * 0.3
+    let startRadius = cw * 0.3
     let endRadius = 1
     let stepRadius = 10
 
@@ -12,17 +12,16 @@ function draw(ctx, canvas) {
     // draw background
     ctx.fillRect(
         0, 0,
-        canvas.width,
-        canvas.height
+        cw, ch
     );
 
     // draw circles
-    for(r = startRadius; r > endRadius; r -= stepRadius) {
+    for(let r = startRadius; r > endRadius; r -= stepRadius) {
         ctx.beginPath();
 
         ctx.arc(
-                canvas.width / 2,
-                canvas.height / 2,
+                cw / 2,
+                ch / 2,
                 r,
                 startAngle,
                 endAngle
