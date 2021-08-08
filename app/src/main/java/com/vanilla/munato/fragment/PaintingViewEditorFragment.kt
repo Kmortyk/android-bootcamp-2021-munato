@@ -30,7 +30,7 @@ private const val ARG_PAINTING_MODEL = "painting_model"
  * Use the [PaintingViewFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PaintingViewEditorFragment : Fragment() {
+open class PaintingViewEditorFragment : Fragment() {
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -127,27 +127,6 @@ class PaintingViewEditorFragment : Fragment() {
                 onFetch(preview)
             }
         }
-    }
-
-    /**
-     * Debug function. Shows dialog with preview.
-     */
-    private fun showPreviewDialog(b: Bitmap) {
-        val alertDialog = LayoutInflater.from(context).inflate(R.layout.alert_dialog_image, null)
-
-        val imageView = alertDialog.findViewById<ImageView>(R.id.alert_dialog_image)
-        imageView.setImageBitmap(b)
-
-        // show dialog with preview
-        AlertDialog.Builder(context)
-            .setView(alertDialog)
-            .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-                dialogInterface.dismiss()
-            }
-            .setNegativeButton(android.R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
-                dialogInterface.cancel()
-            }
-            .show()
     }
 
     private fun getHTMLPageTemplate(context: Context) : String {
